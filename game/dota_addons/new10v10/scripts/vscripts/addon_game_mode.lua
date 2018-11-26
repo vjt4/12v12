@@ -30,6 +30,7 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetModifyGoldFilter( Dynamic_Wrap( CMegaDotaGameMode, "FilterModifyGold" ), self )
 	GameRules:GetGameModeEntity():SetModifyExperienceFilter( Dynamic_Wrap(CMegaDotaGameMode, "FilterModifyExperience" ), self )
 	GameRules:GetGameModeEntity():SetBountyRunePickupFilter( Dynamic_Wrap(CMegaDotaGameMode, "FilterBountyRunePickup" ), self )
+	GameRules:GetGameModeEntity():SetModifierGainedFilter( Dynamic_Wrap( CMegaDotaGameMode, "ModifierGainedFilter" ), self )
 	GameRules:GetGameModeEntity():SetRuneSpawnFilter( Dynamic_Wrap( CMegaDotaGameMode, "RuneSpawnFilter" ), self )
 	GameRules:GetGameModeEntity():SetTowerBackdoorProtectionEnabled( true )
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
@@ -43,6 +44,27 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetThink( "OnThink2", self, 0.25 ) 
 end
 
+function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
+	if filterTable.name_const == "modifier_tiny_toss" then
+		local parent = EntIndexToHScript(filterTable.entindex_parent_const)
+		local caster = EntIndexToHScript(filterTable.entindex_caster_const)
+		local ability = EntIndexToHScript(filterTable.entindex_ability_const)
+ 		if PlayerResource:IsDisableHelpSetForPlayerID(parent:GetPlayerOwnerID(), caster:GetPlayerOwnerID()) then
+			ability:EndCooldown()
+			ability:RefundManaCost()
+			DisplayError(caster:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
+			return false
+		end
+	end
+ 	return true
+end
+
+function DisplayError(playerId, message)
+	local player = PlayerResource:GetPlayer(playerId)
+	if player then
+		CustomGameEventManager:Send_ServerToPlayer(player, "display_custom_error", { message = message })
+	end
+end
 
 function CMegaDotaGameMode:RuneSpawnFilter(kv)
 	kv.rune_type = RandomInt(0, 6)
