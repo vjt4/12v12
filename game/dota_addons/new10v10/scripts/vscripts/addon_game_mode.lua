@@ -28,6 +28,7 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetModifyGoldFilter( Dynamic_Wrap( CMegaDotaGameMode, "FilterModifyGold" ), self )
 	GameRules:GetGameModeEntity():SetModifyExperienceFilter( Dynamic_Wrap(CMegaDotaGameMode, "FilterModifyExperience" ), self )
 	GameRules:GetGameModeEntity():SetBountyRunePickupFilter( Dynamic_Wrap(CMegaDotaGameMode, "FilterBountyRunePickup" ), self )
+	GameRules:GetGameModeEntity():SetRuneSpawnFilter( Dynamic_Wrap( CMegaDotaGameMode, "RuneSpawnFilter" ), self )
 	GameRules:GetGameModeEntity():SetTowerBackdoorProtectionEnabled( true )
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
 
@@ -38,6 +39,12 @@ function CMegaDotaGameMode:InitGameMode()
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 ) 
 	GameRules:GetGameModeEntity():SetThink( "OnThink2", self, 0.25 ) 
+end
+
+
+function CMegaDotaGameMode:RuneSpawnFilter(kv)
+	kv.rune_type = RandomInt(0, 6)
+	return true
 end
 
 CustomGameEventManager:RegisterListener("set_disable_help", function(_, data)
