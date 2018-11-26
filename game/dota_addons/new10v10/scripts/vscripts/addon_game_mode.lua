@@ -34,6 +34,7 @@ function CMegaDotaGameMode:InitGameMode()
 	self.m_CurrentGoldScaleFactor = GOLD_SCALE_FACTOR_INITIAL
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 ) 
+	GameRules:GetGameModeEntity():SetThink( "OnThink2", self, 0.25 ) 
 end
 
 CustomGameEventManager:RegisterListener("set_disable_help", function(_, data)
@@ -62,6 +63,13 @@ function CMegaDotaGameMode:OnThink()
 --		print( "XP scale = " .. self.m_CurrentXpScaleFactor )
 	end
 	return 5
+end
+
+function CMegaDotaGameMode:OnThink2()
+	if GameRules:IsGamePaused() then
+		PauseGame(false)
+	end
+	return 0.25
 end
 
 
