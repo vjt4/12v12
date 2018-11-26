@@ -376,3 +376,20 @@
 	text-align: center;
 }
 
+#DisableHelpButton
+{
+	margin-right: 17px;
+	margin-top: 0px;
+	horizontal-align: right;
+	vertical-align: top;
+}
+ #DisableHelpButton .TickBox
+{
+	width: 14px;
+	height:14px;
+}
+ .not_local_player_team #DisableHelpButton,
+.is_local_player #DisableHelpButton
+{
+	visibility: collapse;
+}
