@@ -36,10 +36,12 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
 
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(CMegaDotaGameMode, 'OnGameRulesStateChange'), self)
+	ListenToGameEvent('npc_spawned', Dynamic_Wrap(CMegaDotaGameMode, 'OnNPCSpawned'), self)
 
 
 	self.m_CurrentGoldScaleFactor = GOLD_SCALE_FACTOR_INITIAL
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
+	self.couriers = {}
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 ) 
 	GameRules:GetGameModeEntity():SetThink( "OnThink2", self, 0.25 ) 
 end
@@ -57,6 +59,18 @@ function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
 		end
 	end
  	return true
+end
+
+function CMegaDotaGameMode:OnNPCSpawned(keys)
+	local npc = EntIndexToHScript(keys.entindex)
+    
+	if npc:IsRealHero() then
+		local unitTeam = npc:GetTeam()
+		if not self.couriers[unitTeam] then
+			self.couriers[unitTeam] = true
+			npc:AddItemByName("item_courier")
+		end
+	end
 end
 
 function DisplayError(playerId, message)
