@@ -31,6 +31,9 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetTowerBackdoorProtectionEnabled( true )
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
 
+	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(CMegaDotaGameMode, 'OnGameRulesStateChange'), self)
+
+
 	self.m_CurrentGoldScaleFactor = GOLD_SCALE_FACTOR_INITIAL
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 ) 
@@ -95,4 +98,24 @@ function CMegaDotaGameMode:FilterModifyExperience( filterTable )
 --	print( self.m_CurrentXpScaleFactor )
 	filterTable["experience"] = self.m_CurrentXpScaleFactor * filterTable["experience"]
 	return true
+end
+
+function CMegaDotaGameMode:OnGameRulesStateChange(keys)
+	print("[BAREBONES] GameRules State Changed")
+	DeepPrintTable(keys)
+    
+	local newState = GameRules:State_Get()
+    if newState == DOTA_GAMERULES_STATE_STRATEGY_TIME then
+        for i=0, DOTA_MAX_TEAM_PLAYERS do
+            if PlayerResource:IsValidPlayer(i) then
+                if PlayerResource:HasSelectedHero(i) == false then
+
+                    local player = PlayerResource:GetPlayer(i)
+                    player:MakeRandomHeroSelection()
+
+                    local hero_name = PlayerResource:GetSelectedHeroName(i)
+                end
+            end
+        end
+	end
 end
