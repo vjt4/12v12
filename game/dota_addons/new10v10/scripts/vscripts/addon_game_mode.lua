@@ -6,6 +6,7 @@ local XP_SCALE_FACTOR_INITIAL = 2
 local XP_SCALE_FACTOR_FINAL = 2
 local XP_SCALE_FACTOR_FADEIN_SECONDS = (60 * 60) -- 60 minutes
 
+require( 'timers' )
 require("statcollection/init")
 
 if CMegaDotaGameMode == nil then
@@ -36,12 +37,10 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
 
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(CMegaDotaGameMode, 'OnGameRulesStateChange'), self)
-	ListenToGameEvent('npc_spawned', Dynamic_Wrap(CMegaDotaGameMode, 'OnNPCSpawned'), self)
 
 
 	self.m_CurrentGoldScaleFactor = GOLD_SCALE_FACTOR_INITIAL
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
-	self.couriers = {}
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 ) 
 	GameRules:GetGameModeEntity():SetThink( "OnThink2", self, 0.25 ) 
 end
@@ -59,18 +58,6 @@ function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
 		end
 	end
  	return true
-end
-
-function CMegaDotaGameMode:OnNPCSpawned(keys)
-	local npc = EntIndexToHScript(keys.entindex)
-    
-	if npc:IsRealHero() then
-		local unitTeam = npc:GetTeam()
-		if not self.couriers[unitTeam] then
-			self.couriers[unitTeam] = true
-			npc:AddItemByName("item_courier")
-		end
-	end
 end
 
 function DisplayError(playerId, message)
@@ -162,5 +149,27 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
                 end
             end
         end
+	end
+	if newState == DOTA_GAMERULES_STATE_PRE_GAME then
+		Timers:CreateTimer(30, function()
+			for i=0,PlayerResource:GetPlayerCount() do
+				local hero = PlayerResource:GetSelectedHeroEntity(i)
+				if hero ~= nil then
+					if hero:GetTeam() == DOTA_TEAM_GOODGUYS then
+						hero:AddItemByName("item_courier")
+						break
+					end
+				end
+			end
+			for i=0,PlayerResource:GetPlayerCount() do
+				local hero = PlayerResource:GetSelectedHeroEntity(i)
+				if hero ~= nil then
+					if hero:GetTeam() == DOTA_TEAM_BADGUYS then
+						hero:AddItemByName("item_courier")
+						break
+					end
+				end
+			end
+		end)
 	end
 end
