@@ -6,8 +6,10 @@ local XP_SCALE_FACTOR_INITIAL = 2
 local XP_SCALE_FACTOR_FINAL = 2
 local XP_SCALE_FACTOR_FADEIN_SECONDS = (60 * 60) -- 60 minutes
 
-require( 'timers' )
+--require( 'timers' )
 require("statcollection/init")
+
+LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
 
 if CMegaDotaGameMode == nil then
 	_G.CMegaDotaGameMode = class({}) -- put CMegaDotaGameMode in the global scope
@@ -35,14 +37,51 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetRuneSpawnFilter( Dynamic_Wrap( CMegaDotaGameMode, "RuneSpawnFilter" ), self )
 	GameRules:GetGameModeEntity():SetTowerBackdoorProtectionEnabled( true )
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
+	GameRules:EnableCustomGameSetupAutoLaunch(true)
+	GameRules:SetCustomGameSetupAutoLaunchDelay(0)
 
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(CMegaDotaGameMode, 'OnGameRulesStateChange'), self)
+	ListenToGameEvent( "npc_spawned", Dynamic_Wrap( CMegaDotaGameMode, "OnNPCSpawned" ), self )
 
 
 	self.m_CurrentGoldScaleFactor = GOLD_SCALE_FACTOR_INITIAL
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
+	self.couriers = {}
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 ) 
 	GameRules:GetGameModeEntity():SetThink( "OnThink2", self, 0.25 ) 
+end
+
+function CMegaDotaGameMode:OnNPCSpawned( event )
+	local spawnedUnit = EntIndexToHScript( event.entindex )
+	local unitTeam = spawnedUnit:GetTeam()
+	spawnedUnit:SetContextThink("AddCourier", function()
+		if self.couriers[unitTeam] then return end
+		self.couriers[unitTeam] = true
+		local firstSlotItem = spawnedUnit:GetItemInSlot(DOTA_ITEM_SLOT_1)
+		if firstSlotItem then spawnedUnit:TakeItem(firstSlotItem) end
+
+		local playerId = spawnedUnit:GetPlayerID()
+		local courier = spawnedUnit:AddItemByName("item_courier")
+		if courier then
+			spawnedUnit:CastAbilityImmediately(courier, playerId)
+		end
+
+		spawnedUnit:SetContextThink("AddCourierUpgrade", function()
+			for _,courier in ipairs(Entities:FindAllByClassname("npc_dota_courier")) do
+				local owner = courier:GetOwner()
+				if IsValidEntity(owner) and owner:GetPlayerID() == playerId then
+					courier:SetOwner(nil)
+					courier:UpgradeToFlyingCourier()
+					courier:AddNewModifier(courier, nil, "modifier_core_courier", nil)
+				end
+			end
+			if firstSlotItem then
+				spawnedUnit:AddItem(firstSlotItem)
+			end
+		end, 0)
+	end, 0)
+
+
 end
 
 function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
@@ -150,26 +189,26 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
             end
         end
 	end
-	if newState == DOTA_GAMERULES_STATE_PRE_GAME then
-		Timers:CreateTimer(30, function()
-			for i=0,PlayerResource:GetPlayerCount() do
-				local hero = PlayerResource:GetSelectedHeroEntity(i)
-				if hero ~= nil then
-					if hero:GetTeam() == DOTA_TEAM_GOODGUYS then
-						hero:AddItemByName("item_courier")
-						break
-					end
-				end
-			end
-			for i=0,PlayerResource:GetPlayerCount() do
-				local hero = PlayerResource:GetSelectedHeroEntity(i)
-				if hero ~= nil then
-					if hero:GetTeam() == DOTA_TEAM_BADGUYS then
-						hero:AddItemByName("item_courier")
-						break
-					end
-				end
-			end
-		end)
-	end
+	--if newState == DOTA_GAMERULES_STATE_PRE_GAME then
+	--	Timers:CreateTimer(30, function()
+	--		for i=0,PlayerResource:GetPlayerCount() do
+	--			local hero = PlayerResource:GetSelectedHeroEntity(i)
+	--			if hero ~= nil then
+	--				if hero:GetTeam() == DOTA_TEAM_GOODGUYS then
+	--					hero:AddItemByName("item_courier")
+	--					break
+	--				end
+	--			end
+	--		end
+	--		for i=0,PlayerResource:GetPlayerCount() do
+	--			local hero = PlayerResource:GetSelectedHeroEntity(i)
+	--			if hero ~= nil then
+	--				if hero:GetTeam() == DOTA_TEAM_BADGUYS then
+	--					hero:AddItemByName("item_courier")
+	--					break
+	--				end
+	--			end
+	--		end
+	--	end)
+	--end
 end
