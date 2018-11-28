@@ -2,34 +2,80 @@
 {
 	width: 100%;
 	height: 210px;
-    margin-top: 50px;
-    flow-children: right;
+	margin-top: 20px;
+   
 }
 
-#HeroSelectTeamsContainer
+.HeroSelectTeamRowsContainer
 {
-    width: 100%;
-    flow-children: right;
+	width: 80%;
+	height: 210px;
+	flow-children: down;
+	horizontal-align: center;
+}
+
+#HeroSelectTeamsContainer,
+#HeroSelectTeamsContainer2
+{
+	width: 100%;
+	flow-children: right;
+	margin-bottom: 5px;
 }
 
 .HeroSelectOverlayTimer
 {
-	width: 80px;
-	height: 100%;
-	margin-right: 9px;
+	vertical-align: center;
+	margin-left: 200px;
+	margin-bottom: 75px;
+}
+
+.AspectRatio4x3 .HeroSelectOverlayTimer
+{
+	margin-left: 50px;
+}
+
+#PhaseInstructions > Label
+{
+	visibility: collapse;
+	font-size: 25px;
+	color: #CCCCCC;
+	vertical-align: center;
+	text-align: center;
+	width: 300px;
+	margin-left: 85px;
+	margin-top: 115px;
+	text-transform: uppercase;  
+}
+
+
+.AspectRatio4x3 #PhaseInstructions > Label
+{
+	margin-left: -65px;
+}
+
+#PhaseInstructions > Label.Visible
+{
+	visibility:visible;
 }
 
 #Timer
 {
-	margin-top: 8px;
-    font-size: 48px;
-    color: #CCCCCC;
-	horizontal-align: center;
+	font-size: 48px;
+	color: #CCCCCC;
+	horizontal-align: left;
+	vertical-align: center;
+	width: 100%;
+	text-align: center;
+	margin-left: 3px;
+	margin-right: 3px;
+	margin-top: 5px;
 }
 
 #TimerBg
 {
 	wash-color: #222222;
+	vertical-align: center;
+	horizontal-align: center;
 }
 
 #TimerBg,
@@ -37,23 +83,22 @@
 {
 	width: 70px;
 	height: 70px;
-	margin-top: 2px;
-	horizontal-align: center;
+
 }
 
 #TimerLabel
 {
-	margin-top: 76px;
-    color: #a9aaaa;
-    font-size: 16px;
+	visibility: collapse;
+	color: #a9aaaa;
+	font-size: 16px;
 	text-transform: uppercase;
-	horizontal-align: center;
+	
 }
 
 .HeroSelectTeamRoot
 {
-    margin-left: 9px;
-    margin-right: 9px;
+	margin-left: 9px;
+	margin-right: 9px;
 }
 
 .HeroSelectTeamRoot.no_players
@@ -63,33 +108,21 @@
 
 #PlayersContainer
 {
-    horizontal-align: center;
-    flow-children: right;
-    height: 70px;
+	horizontal-align: center;
+	flow-children: right;
+	height: 70px;
 }
 
 .local_player_team #PlayerPortraitsOverlay
 {
 	width: 100%;
-    height: 45px;
-    box-shadow: fill #ffffff80 -3px -3px 3px 6px;
+	height: 50px;
+	box-shadow: fill #ffffff80 -3px -3px 3px 6px;
 }
-
-.AspectRatio4x3 #PlayerPortraitsOverlay,
-.AspectRatio5x4 #PlayerPortraitsOverlay
-{
-    height: 36px;
-}
-
-.AspectRatio16x10 #PlayerPortraitsOverlay
-{
-    height: 41px;
-}
-
 
 #EndSpacer
 {
-    width: fill-parent-flow(1);
+	width: fill-parent-flow(1);
 }
 
 #Spacer
@@ -98,20 +131,18 @@
 
 .HeroSelectPlayerRoot
 {
-    flow-children: down;
+	flow-children: down;
 }
 
 #TeamHeader
 {
-    width: 100%;
-	height: 48px;
+	width: 100%;
+	height: 52px;
 }
-
 
 #TeamHeaderAndPlayers
 {
 	horizontal-align: center;
-    flow-children: down;
 }
 
 #TeamHeaderLogoName
@@ -124,6 +155,8 @@
 {
 	width: 100%;
 	height: 24px;
+	vertical-align: bottom;
+	margin-bottom: -5px;
 }
 
 #TeamLogo
@@ -135,42 +168,24 @@
 
 #PlayerPortrait
 {
-    background-color: #444444;
-    border: 1px solid black;
-    width: 80px;
-    height: 45px;
-	margin-left: 1px;
-}
-
-.AspectRatio4x3 #PlayerPortrait,
-.AspectRatio5x4 #PlayerPortrait
-{
-    width: 60px;
-    height: 36px;
-}
-
-.AspectRatio16x10 #PlayerPortrait
-{
-    width: 70px;
-    height: 41px;
+	background-color: #444444;
+	border: 1px solid black;
+	width: 90px;
+	height: 50px;
 }
 
 #PlayerName
 {
-    color: #a9aaaa;
-    font-size: 16px;
-    text-align: center;
+	color: white;
+	font-size: 15px;
+	text-align: center;
+	horizontal-align: center;
+	vertical-align: center;
 	width: 100%;
-	white-space: nowrap;
-	margin: 3px;
-}
-
-.many_players #PlayerName
-{
-    font-size: 14px;
+	text-overflow: clip;
 }
 
 .HeroSelectPlayerRoot.hero_highlighted #PlayerPortrait
 {
-    saturation: 0.0;
+	saturation: 0.0;
 }

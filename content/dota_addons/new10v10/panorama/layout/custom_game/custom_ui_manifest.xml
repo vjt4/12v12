@@ -1,4 +1,8 @@
 <root>
+	<scripts>
+		<include src="file://{resources}/scripts/custom_game/util.js" />
+	</scripts>
+
 	<script>
 		GameUI.CustomUIConfig().multiteam_top_scoreboard =
 		{
@@ -6,15 +10,51 @@
 		};
 
 //		GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false );
-		GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false );
+//		GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false );
 		GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_FLYOUT_SCOREBOARD, false );
 
-
 		GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ENDGAME, false );
+
+		function FillTopBarPlayer(TeamContainer) {
+			// Fill players top bar in case on partial lobbies
+			var playerCount = TeamContainer.GetChildCount();
+			for (var i = playerCount + 1; i <= 12; i++) {
+				var newPlayer = $.CreatePanel('DOTATopBarPlayer', TeamContainer, 'RadiantPlayer-1');
+				if (newPlayer) {
+					newPlayer.FindChildTraverse('PlayerColor').style.backgroundColor = '#FFFFFFFF';
+				}
+				newPlayer.SetHasClass('EnemyTeam', true);
+			}
+		}
+
+		// Set vanilla topbar for 10v10
+		SetupTopBar();
+
+		function SetupTopBar() {
+			var topbarRadiantPlayersContainer = FindDotaHudElement('TopBarRadiantPlayersContainer');
+			FillTopBarPlayer(topbarRadiantPlayersContainer);
+
+			var topbarDirePlayersContainer = FindDotaHudElement('TopBarDirePlayersContainer');
+			FillTopBarPlayer(topbarDirePlayersContainer);
+		}
+
+		HidePickScreen()
+
+		function HidePickScreen() {
+			if (!Game.GameStateIs(3)) {
+//				$.Msg("Hide Pick Screen and Repeat!")
+				FindDotaHudElement("PreGame").style.opacity = "0";
+				$.Schedule(1.0, HidePickScreen)
+			}
+			else {
+				FindDotaHudElement("PreGame").style.opacity = "1";				
+			}
+		}
 	</script>
 
 	<Panel>
-		<CustomUIElement type="HudTopBar"			layoutfile="file://{resources}/layout/custom_game/multiteam_top_scoreboard.xml" />
+<!--		<CustomUIElement type="HudTopBar"			layoutfile="file://{resources}/layout/custom_game/multiteam_top_scoreboard.xml" /> -->
+		<CustomUIElement type="HeroSelection"		layoutfile="file://{resources}/layout/custom_game/multiteam_hero_select_overlay.xml" />
 		<CustomUIElement type="FlyoutScoreboard"	layoutfile="file://{resources}/layout/custom_game/multiteam_flyout_scoreboard.xml" />
 		<CustomUIElement type="HeroSelection" 		layoutfile="file://{resources}/layout/custom_game/multiteam_hero_select_overlay.xml" />
 		<CustomUIElement type="EndScreen" 			layoutfile="file://{resources}/layout/custom_game/multiteam_end_screen.xml" />
