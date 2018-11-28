@@ -12,9 +12,9 @@ modifier_core_courier = {
 			MODIFIER_PROPERTY_FIXED_NIGHT_VISION,
 		}
 	end,
-	GetModifierMoveSpeed_Max = function() return 1100 end,
-	GetModifierMoveSpeed_Limit = function() return 1100 end,
-	GetModifierMoveSpeed_Absolute = function() return 1100 end,
+	GetModifierMoveSpeed_Max = function() return 800 end,
+	GetModifierMoveSpeed_Limit = function() return 800 end,
+	GetModifierMoveSpeed_Absolute = function() return 800 end,
 	GetFixedDayVision = function() return 150 end,
 	GetFixedNightVision = function() return 150 end,
 
