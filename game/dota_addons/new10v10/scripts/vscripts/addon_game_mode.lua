@@ -172,6 +172,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 
 		for team = 2, 3 do
 			self.couriers[team] = CreateUnitByName("npc_dota_courier", courier_spawn[team]:GetAbsOrigin(), true, nil, nil, team)
+			self.couriers[team]:AddNewModifier(self.couriers[team], nil, "modifier_core_courier", {})
 		end
 
 --		Timers:CreateTimer(30, function()
