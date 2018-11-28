@@ -187,13 +187,12 @@
     border-bottom: 1px solid #000000;
 }
 
-
 #HeroIcon
 {
     border-left: 1px solid black;
-    border-right: 1px solid black;
-    width: 64px;
-    height: 36px;
+	border-right: 1px solid black;
+    width: 51px;
+    height: 29px;
 }
 
 .AspectRatio4x3 #HeroIcon,
