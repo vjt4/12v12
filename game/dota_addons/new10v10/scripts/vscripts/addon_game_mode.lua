@@ -24,8 +24,8 @@ function CMegaDotaGameMode:InitGameMode()
 	print( "10v10 Mode Loaded!" )
 
 	-- Adjust team limits
-	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 10 )
-	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 10 )
+	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 12 )
+	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 12 )
 	GameRules:SetStrategyTime( 0.0 )
 	GameRules:SetShowcaseTime( 0.0 )
 
