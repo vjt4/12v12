@@ -47,8 +47,19 @@ function CMegaDotaGameMode:InitGameMode()
 	self.m_CurrentGoldScaleFactor = GOLD_SCALE_FACTOR_INITIAL
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
 	self.couriers = {}
-	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 ) 
-	GameRules:GetGameModeEntity():SetThink( "OnThink2", self, 0.25 ) 
+	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 )
+	GameRules:GetGameModeEntity():SetThink( "OnThink2", self, 0.25 )
+
+	ListenToGameEvent("dota_player_used_ability", function(event)
+		local hero = PlayerResource:GetSelectedHeroEntity(event.PlayerID)
+		if not hero then return end
+		if event.abilityname == "night_stalker_darkness" then
+			local ability = hero:FindAbilityByName(event.abilityname)
+			CustomGameEventManager:Send_ServerToAllClients("time_nightstalker_darkness", {
+				duration = ability:GetSpecialValueFor("duration")
+			})
+		end
+	end, nil)
 end
 
 function CMegaDotaGameMode:OnNPCSpawned( event )
@@ -102,7 +113,7 @@ end)
 
 function CMegaDotaGameMode:OnThink()
 	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-		-- update the scale factor: 
+		-- update the scale factor:
 	 	-- * SCALE_FACTOR_INITIAL at the start of the game
 		-- * SCALE_FACTOR_FINAL after SCALE_FACTOR_FADEIN_SECONDS have elapsed
 		local curTime = GameRules:GetDOTATime( false, false )
@@ -151,7 +162,7 @@ end
 function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	print("[BAREBONES] GameRules State Changed")
 	DeepPrintTable(keys)
-    
+
 	local newState = GameRules:State_Get()
     if newState == DOTA_GAMERULES_STATE_STRATEGY_TIME then
         for i=0, DOTA_MAX_TEAM_PLAYERS do
