@@ -6,7 +6,7 @@ local XP_SCALE_FACTOR_INITIAL = 2
 local XP_SCALE_FACTOR_FINAL = 2
 local XP_SCALE_FACTOR_FADEIN_SECONDS = (60 * 60) -- 60 minutes
 
---require( 'timers' )
+require( 'timers' )
 require("util")
 require("statcollection/init")
 
@@ -66,6 +66,13 @@ function CMegaDotaGameMode:OnNPCSpawned( event )
 	local spawnedUnit = EntIndexToHScript( event.entindex )
 
 	if spawnedUnit:IsRealHero() then
+		-- Silencer Nerf
+		Timers:CreateTimer(1, function()
+			if spawnedUnit:HasModifier("modifier_silencer_int_steal") then
+				spawnedUnit:RemoveModifierByName('modifier_silencer_int_steal')	
+			end
+		end)
+		
 		if self.couriers[spawnedUnit:GetTeamNumber()] then
 			self.couriers[spawnedUnit:GetTeamNumber()]:SetControllableByPlayer(spawnedUnit:GetPlayerID(), true)
 		end
