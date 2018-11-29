@@ -37,6 +37,7 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetModifierGainedFilter( Dynamic_Wrap( CMegaDotaGameMode, "ModifierGainedFilter" ), self )
 	GameRules:GetGameModeEntity():SetRuneSpawnFilter( Dynamic_Wrap( CMegaDotaGameMode, "RuneSpawnFilter" ), self )
 	GameRules:GetGameModeEntity():SetTowerBackdoorProtectionEnabled( true )
+	GameRules:GetGameModeEntity():SetPauseEnabled(IsInToolsMode())
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
 	GameRules:EnableCustomGameSetupAutoLaunch(false)
 	GameRules:SetCustomGameSetupAutoLaunchDelay(5)
@@ -48,7 +49,6 @@ function CMegaDotaGameMode:InitGameMode()
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
 	self.couriers = {}
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 )
-	GameRules:GetGameModeEntity():SetThink( "OnThink2", self, 0.25 )
 
 	ListenToGameEvent("dota_player_used_ability", function(event)
 		local hero = PlayerResource:GetSelectedHeroEntity(event.PlayerID)
@@ -125,13 +125,6 @@ function CMegaDotaGameMode:OnThink()
 --		print( "XP scale = " .. self.m_CurrentXpScaleFactor )
 	end
 	return 5
-end
-
-function CMegaDotaGameMode:OnThink2()
-	if GameRules:IsGamePaused() then
-		PauseGame(false)
-	end
-	return 0.25
 end
 
 
