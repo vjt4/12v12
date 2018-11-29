@@ -15,19 +15,8 @@
 
 		GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ENDGAME, false );
 
-		function FillTopBarPlayer(TeamContainer) {
-			// Fill players top bar in case on partial lobbies
-			var playerCount = TeamContainer.GetChildCount();
-			for (var i = playerCount + 1; i <= 12; i++) {
-				var newPlayer = $.CreatePanel('DOTATopBarPlayer', TeamContainer, 'RadiantPlayer-1');
-				if (newPlayer) {
-					newPlayer.FindChildTraverse('PlayerColor').style.backgroundColor = '#FFFFFFFF';
-				}
-				newPlayer.SetHasClass('EnemyTeam', true);
-			}
-		}
-
-		// Set vanilla topbar for 10v10
+		// Credits: EarthSalamander #42
+		// Set vanilla topbar for 12v12
 		SetupTopBar();
 
 		function SetupTopBar() {
@@ -100,11 +89,12 @@
 			}
 		}
 
+		// Credits: EarthSalamander #42
+		// Hide vanilla pick screen in loading screen
 		HidePickScreen()
 
 		function HidePickScreen() {
 			if (!Game.GameStateIs(3)) {
-//				$.Msg("Hide Pick Screen and Repeat!")
 				FindDotaHudElement("PreGame").style.opacity = "0";
 				$.Schedule(1.0, HidePickScreen)
 			}
