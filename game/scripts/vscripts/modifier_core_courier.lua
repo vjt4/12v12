@@ -20,8 +20,8 @@ modifier_core_courier = {
 
 	CheckState = function()
 		return {
-			[MODIFIER_STATE_NO_HEALTH_BAR] = true,
-			[MODIFIER_STATE_INVULNERABLE] = true,
+			--[MODIFIER_STATE_NO_HEALTH_BAR] = true,
+			--[MODIFIER_STATE_INVULNERABLE] = true,
 		}
 	end,
 }
