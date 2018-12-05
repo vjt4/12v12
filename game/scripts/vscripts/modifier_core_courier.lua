@@ -12,9 +12,6 @@ modifier_core_courier = {
 			MODIFIER_PROPERTY_FIXED_NIGHT_VISION,
 		}
 	end,
-	GetModifierMoveSpeed_Max = function() return 800 end,
-	GetModifierMoveSpeed_Limit = function() return 800 end,
-	GetModifierMoveSpeed_Absolute = function() return 800 end,
 	GetFixedDayVision = function() return 150 end,
 	GetFixedNightVision = function() return 150 end,
 
@@ -25,3 +22,27 @@ modifier_core_courier = {
 		}
 	end,
 }
+
+function modifier_core_courier:GetModifierMoveSpeed_Max()
+	if self:GetCaster():HasFlyMovementCapability() then
+		return 1100
+	else
+		return 800
+	end
+end
+
+function modifier_core_courier:GetModifierMoveSpeed_Limit()
+	if self:GetCaster():HasFlyMovementCapability() then
+		return 1100
+	else
+		return 800
+	end
+end
+
+function modifier_core_courier:GetModifierMoveSpeed_Absolute()
+	if self:GetCaster():HasFlyMovementCapability() then
+		return 1100
+	else
+		return 800
+	end
+end
