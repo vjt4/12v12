@@ -39,8 +39,8 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetTowerBackdoorProtectionEnabled( true )
 	GameRules:GetGameModeEntity():SetPauseEnabled(IsInToolsMode())
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
-	GameRules:EnableCustomGameSetupAutoLaunch(false)
-	GameRules:SetCustomGameSetupAutoLaunchDelay(5)
+	GameRules:LockCustomGameSetupTeamAssignment(true)
+	GameRules:SetCustomGameSetupAutoLaunchDelay(0)
 
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(CMegaDotaGameMode, 'OnGameRulesStateChange'), self)
 	ListenToGameEvent( "npc_spawned", Dynamic_Wrap( CMegaDotaGameMode, "OnNPCSpawned" ), self )
@@ -69,10 +69,10 @@ function CMegaDotaGameMode:OnNPCSpawned( event )
 		-- Silencer Nerf
 		Timers:CreateTimer(1, function()
 			if spawnedUnit:HasModifier("modifier_silencer_int_steal") then
-				spawnedUnit:RemoveModifierByName('modifier_silencer_int_steal')	
+				spawnedUnit:RemoveModifierByName('modifier_silencer_int_steal')
 			end
 		end)
-		
+
 		if self.couriers[spawnedUnit:GetTeamNumber()] then
 			self.couriers[spawnedUnit:GetTeamNumber()]:SetControllableByPlayer(spawnedUnit:GetPlayerID(), true)
 		end
@@ -164,7 +164,16 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	DeepPrintTable(keys)
 
 	local newState = GameRules:State_Get()
-    if newState == DOTA_GAMERULES_STATE_STRATEGY_TIME then
+	if newState == DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP then
+		local playerId = 0
+		for team = DOTA_TEAM_FIRST, DOTA_TEAM_CUSTOM_MAX do
+			for i = 1, GameRules:GetCustomGameTeamMaxPlayers(team) do
+				PlayerResource:SetCustomTeamAssignment(playerId, team)
+				playerId = playerId + 1
+				if not PlayerResource:IsValidPlayerID(playerId) then return end
+			end
+		end
+	elseif newState == DOTA_GAMERULES_STATE_STRATEGY_TIME then
         for i=0, DOTA_MAX_TEAM_PLAYERS do
             if PlayerResource:IsValidPlayer(i) then
                 if PlayerResource:HasSelectedHero(i) == false then
