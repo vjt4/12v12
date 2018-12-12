@@ -2,7 +2,9 @@
 {
 	maps			"dota"
 	"IsPlayable"	"1"
+	"PenaltiesEnabled"			"1"
 	"EnablePickRules"    "1"
+	"CheckAFKPlayers"	"1"
 	"dota"
 	{
 					"MaxPlayers"                    "24"
