@@ -44,6 +44,7 @@ function CMegaDotaGameMode:InitGameMode()
 
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(CMegaDotaGameMode, 'OnGameRulesStateChange'), self)
 	ListenToGameEvent( "npc_spawned", Dynamic_Wrap( CMegaDotaGameMode, "OnNPCSpawned" ), self )
+	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CMegaDotaGameMode, 'OnEntityKilled' ), self )
 
 	self.m_CurrentGoldScaleFactor = GOLD_SCALE_FACTOR_INITIAL
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
@@ -62,6 +63,21 @@ function CMegaDotaGameMode:InitGameMode()
 	end, nil)
 end
 
+---------------------------------------------------------------------------
+-- Event: OnEntityKilled
+---------------------------------------------------------------------------
+function CMegaDotaGameMode:OnEntityKilled( event )
+	local killedUnit = EntIndexToHScript( event.entindex_killed )
+	local killedTeam = killedUnit:GetTeam()
+	print("fired")
+	
+	local extraTime = 0
+	if killedUnit:IsRealHero() then
+		print(killedUnit:GetRespawnTime())
+		killedUnit:SetTimeUntilRespawn( killedUnit:GetRespawnTime() * 0.7 )
+	end
+	
+end
 function CMegaDotaGameMode:OnNPCSpawned( event )
 	local spawnedUnit = EntIndexToHScript( event.entindex )
 
