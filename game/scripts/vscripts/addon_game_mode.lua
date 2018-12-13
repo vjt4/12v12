@@ -29,6 +29,7 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 12 )
 	GameRules:SetStrategyTime( 0.0 )
 	GameRules:SetShowcaseTime( 0.0 )
+	GameRules:SetSameHeroSelectionEnabled(true)
 
 	-- Hook up gold & xp filters
 	GameRules:GetGameModeEntity():SetModifyGoldFilter( Dynamic_Wrap( CMegaDotaGameMode, "FilterModifyGold" ), self )
@@ -41,6 +42,7 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
 	GameRules:EnableCustomGameSetupAutoLaunch(false)
 	GameRules:SetCustomGameSetupAutoLaunchDelay(5)
+	GameRules:GetGameModeEntity():SetKillableTombstones( true )
 
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(CMegaDotaGameMode, 'OnGameRulesStateChange'), self)
 	ListenToGameEvent( "npc_spawned", Dynamic_Wrap( CMegaDotaGameMode, "OnNPCSpawned" ), self )
@@ -74,7 +76,14 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 	local extraTime = 0
 	if killedUnit:IsRealHero() then
 		print(killedUnit:GetRespawnTime())
-		killedUnit:SetTimeUntilRespawn( killedUnit:GetRespawnTime() * 0.7 )
+		--killedUnit:SetTimeUntilRespawn( killedUnit:GetRespawnTime() * 0.7 )
+		local newItem = CreateItem( "item_tombstone", killedUnit, killedUnit )
+		newItem:SetPurchaseTime( 0 )
+		newItem:SetPurchaser( killedUnit )
+		local tombstone = SpawnEntityFromTableSynchronous( "dota_item_tombstone_drop", {} )
+		tombstone:SetContainedItem( newItem )
+		tombstone:SetAngles( 0, RandomFloat( 0, 360 ), 0 )
+		FindClearSpaceForUnit( tombstone, killedUnit:GetAbsOrigin(), true )
 	end
 	
 end
