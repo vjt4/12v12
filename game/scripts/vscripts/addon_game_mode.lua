@@ -77,13 +77,24 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 	if killedUnit:IsRealHero() then
 		print(killedUnit:GetRespawnTime())
 		--killedUnit:SetTimeUntilRespawn( killedUnit:GetRespawnTime() * 0.7 )
-		local newItem = CreateItem( "item_tombstone", killedUnit, killedUnit )
-		newItem:SetPurchaseTime( 0 )
-		newItem:SetPurchaser( killedUnit )
-		local tombstone = SpawnEntityFromTableSynchronous( "dota_item_tombstone_drop", {} )
-		tombstone:SetContainedItem( newItem )
-		tombstone:SetAngles( 0, RandomFloat( 0, 360 ), 0 )
-		FindClearSpaceForUnit( tombstone, killedUnit:GetAbsOrigin(), true )
+		print(killedTeam)
+		if killedUnit:GetTeam() == DOTA_TEAM_GOODGUYS then
+			local newItem = CreateItem( "item_tombstone_radiant", killedUnit, killedUnit )
+			newItem:SetPurchaseTime( 0 )
+			newItem:SetPurchaser( killedUnit )
+			local tombstone = SpawnEntityFromTableSynchronous( "dota_item_tombstone_drop", {} )
+			tombstone:SetContainedItem( newItem )
+			tombstone:SetAngles( 0, RandomFloat( 0, 360 ), 0 )
+			FindClearSpaceForUnit( tombstone, killedUnit:GetAbsOrigin(), true )
+		elseif killedUnit:GetTeam() == DOTA_TEAM_BADGUYS then
+			local newItem = CreateItem( "item_tombstone_dire", killedUnit, killedUnit )
+			newItem:SetPurchaseTime( 0 )
+			newItem:SetPurchaser( killedUnit )
+			local tombstone = SpawnEntityFromTableSynchronous( "dota_item_tombstone_drop", {} )
+			tombstone:SetContainedItem( newItem )
+			tombstone:SetAngles( 0, RandomFloat( 0, 360 ), 0 )
+			FindClearSpaceForUnit( tombstone, killedUnit:GetAbsOrigin(), true )
+		end	
 	end
 	
 end
