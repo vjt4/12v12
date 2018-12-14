@@ -64,39 +64,70 @@ function CMegaDotaGameMode:InitGameMode()
 	end, nil)
 end
 
+function GetActivePlayerCountForTeam(team)
+    local number = 0
+    for x=0,DOTA_MAX_TEAM do
+        local pID = PlayerResource:GetNthPlayerIDOnTeam(team,x)
+        if PlayerResource:IsValidPlayerID(pID) and (PlayerResource:GetConnectionState(pID) == 1 or PlayerResource:GetConnectionState(pID) == 2) then
+            number = number + 1
+        end
+    end
+    return number
+end
+
+function GetActiveHumanPlayerCountForTeam(team)
+    local number = 0
+    for x=0,DOTA_MAX_TEAM do
+        local pID = PlayerResource:GetNthPlayerIDOnTeam(team,x)
+        if PlayerResource:IsValidPlayerID(pID) and not self:isPlayerBot(pID) and (PlayerResource:GetConnectionState(pID) == 1 or PlayerResource:GetConnectionState(pID) == 2) then
+            number = number + 1
+        end
+    end
+    return number
+end
+
+function otherTeam(team)
+    if team == DOTA_TEAM_BADGUYS then
+        return DOTA_TEAM_GOODGUYS
+    elseif team == DOTA_TEAM_GOODGUYS then
+        return DOTA_TEAM_BADGUYS
+    end
+    return -1
+end
+
 ---------------------------------------------------------------------------
 -- Event: OnEntityKilled
 ---------------------------------------------------------------------------
 function CMegaDotaGameMode:OnEntityKilled( event )
-	local killedUnit = EntIndexToHScript( event.entindex_killed )
-	local killedTeam = killedUnit:GetTeam()
-	print("fired")
-	
-	local extraTime = 0
-	if killedUnit:IsRealHero() then
-		print(killedUnit:GetRespawnTime())
-		--killedUnit:SetTimeUntilRespawn( killedUnit:GetRespawnTime() * 0.7 )
-		print(killedTeam)
-		if killedUnit:GetTeam() == DOTA_TEAM_GOODGUYS then
-			local newItem = CreateItem( "item_tombstone_radiant", killedUnit, killedUnit )
-			newItem:SetPurchaseTime( 0 )
-			newItem:SetPurchaser( killedUnit )
-			local tombstone = SpawnEntityFromTableSynchronous( "dota_item_tombstone_drop", {} )
-			tombstone:SetContainedItem( newItem )
-			tombstone:SetAngles( 0, RandomFloat( 0, 360 ), 0 )
-			FindClearSpaceForUnit( tombstone, killedUnit:GetAbsOrigin(), true )
-		elseif killedUnit:GetTeam() == DOTA_TEAM_BADGUYS then
-			local newItem = CreateItem( "item_tombstone_dire", killedUnit, killedUnit )
-			newItem:SetPurchaseTime( 0 )
-			newItem:SetPurchaser( killedUnit )
-			local tombstone = SpawnEntityFromTableSynchronous( "dota_item_tombstone_drop", {} )
-			tombstone:SetContainedItem( newItem )
-			tombstone:SetAngles( 0, RandomFloat( 0, 360 ), 0 )
-			FindClearSpaceForUnit( tombstone, killedUnit:GetAbsOrigin(), true )
-		end	
-	end
-	
+    local killedUnit = EntIndexToHScript( event.entindex_killed )
+    local killedTeam = killedUnit:GetTeam()
+    --print("fired")
+    if killedUnit:IsRealHero() then
+	    local timeLeft = killedUnit:GetRespawnTime()
+	    timeLeft = timeLeft * 0.75 -- Respawn time reduced by 25%
+
+	    local herosTeam = GetActivePlayerCountForTeam(killedUnit:GetTeamNumber())
+	    local opposingTeam = GetActivePlayerCountForTeam(otherTeam(killedUnit:GetTeamNumber()))
+	    local difference = herosTeam - opposingTeam
+	    --print(difference)
+	    -- Disadvantaged teams get 5 seconds less respawn time for every missing player
+	    local addedTime = 0
+	    if difference < 0 then
+	        addedTime = difference * 5
+	    end
+
+	    timeLeft = timeLeft + addedTime
+	    --print(timeLeft)
+
+	    if timeLeft < 1 then
+	        timeLeft = 1
+	    end
+
+	    killedUnit:SetTimeUntilRespawn(timeLeft)
+    end
+    
 end
+
 function CMegaDotaGameMode:OnNPCSpawned( event )
 	local spawnedUnit = EntIndexToHScript( event.entindex )
 
