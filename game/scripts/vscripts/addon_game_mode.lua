@@ -42,6 +42,9 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:EnableCustomGameSetupAutoLaunch(false)
 	GameRules:SetCustomGameSetupAutoLaunchDelay(5)
 	GameRules:GetGameModeEntity():SetKillableTombstones( true )
+	if IsInToolsMode() then
+		GameRules:GetGameModeEntity():SetDraftingBanningTimeOverride(0)
+	end
 
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(CMegaDotaGameMode, 'OnGameRulesStateChange'), self)
 	ListenToGameEvent( "npc_spawned", Dynamic_Wrap( CMegaDotaGameMode, "OnNPCSpawned" ), self )
@@ -102,18 +105,37 @@ function CMegaDotaGameMode:OnEntityKilled( event )
     local killedUnit = EntIndexToHScript( event.entindex_killed )
     local killedTeam = killedUnit:GetTeam()
     --print("fired")
-    if killedUnit:IsRealHero() then
-	    local timeLeft = killedUnit:GetRespawnTime()
-	    timeLeft = timeLeft * 0.75 -- Respawn time reduced by 25%
+    if killedUnit:IsRealHero() and not killedUnit:IsReincarnating() then
+	    local dotaTime = GameRules:GetDOTATime(false, false)
+	    local timeToStartReduction = 0 -- 20 minutes
+	    local respawnReduction = 0.75 -- Original Reduction rate
 
+	    -- Reducation Rate slowly increases after a certain time, eventually getting to original levels, this is to prevent games lasting too long
+	    if dotaTime > timeToStartReduction then
+	    	dotaTime = dotaTime - timeToStartReduction
+	    	respawnReduction = respawnReduction + ((dotaTime / 60) / 100) -- 0.75 + Minutes of Game Time / 100 e.g. 25 minutes fo game time = 0.25
+	    end
+
+	    if respawnReduction > 1 then 
+	    	respawnReduction = 1
+	    end
+
+	    local timeLeft = killedUnit:GetRespawnTime()
+	 	timeLeft = timeLeft * respawnReduction -- Respawn time reduced by a rate
+	    
+	    -- Disadvantaged teams get 5 seconds less respawn time for every missing player
 	    local herosTeam = GetActivePlayerCountForTeam(killedUnit:GetTeamNumber())
 	    local opposingTeam = GetActivePlayerCountForTeam(otherTeam(killedUnit:GetTeamNumber()))
-	    local difference = herosTeam - opposingTeam
-	    --print(difference)
-	    -- Disadvantaged teams get 5 seconds less respawn time for every missing player
+	    local difference = herosTeam - opposingTeam   
+		   
 	    local addedTime = 0
 	    if difference < 0 then
 	        addedTime = difference * 5
+	        local RespawnReductionRate = string.format("%.2f", tostring(respawnReduction))
+		    local OriginalRespawnTime = tostring(math.floor(timeLeft))
+		    local TimeToReduce = tostring(math.floor(addedTime))
+		    local NewRespawnTime = tostring(math.floor(timeLeft + addedTime))
+	        GameRules:SendCustomMessage( "ReductionRate:"  .. " " .. RespawnReductionRate .. " " .. "OriginalTime:" .. " " ..OriginalRespawnTime .. " " .. "TimeToReduce:" .. " " ..TimeToReduce .. " " .. "NewRespawnTime:" .. " " .. NewRespawnTime, 0, 0)
 	    end
 
 	    timeLeft = timeLeft + addedTime
