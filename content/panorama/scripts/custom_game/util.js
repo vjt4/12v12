@@ -12,6 +12,14 @@ function GetDotaHud() {
 	}
 }
 
+function SubscribeToNetTableKey(tableName, key, callback) {
+    var immediateValue = CustomNetTables.GetTableValue(tableName, key) || {};
+    if (immediateValue != null) callback(immediateValue);
+    CustomNetTables.SubscribeNetTableListener(tableName, function (_tableName, currentKey, value) {
+        if (currentKey === key && value != null) callback(value);
+    });
+}
+
 function FindDotaHudElement(id) {
 	return GetDotaHud().FindChildTraverse(id);
 }

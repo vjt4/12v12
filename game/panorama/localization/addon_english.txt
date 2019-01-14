@@ -1,0 +1,20 @@
+"addon"
+{
+	"Language" "english"
+	"Tokens"
+	{
+        "patreon_perks"									"Patreon Perks"
+        "emblem_supporter"								"Supporter Emblem"
+        "emblem_supporter_description"					"In-game particle effect that follows your player, available in multiple colours."
+        "emblem_enable"									"Enable Emblem:"
+        "emblem_disable"								"Disable Emblem:"
+        "color_choose"									"Choose Colour:"
+        "boots_free"									"Free Boots"
+        "boots_free_description"						"Start the game with free boots!"
+        "boots_enable"									"Enable Boots"
+        "boots_disable"									"Disable Boots"
+        "random_unlimited"								"Unlimited Random"
+        "random_unlimited_description"					"Unlock unlimited use of smart random button!"
+        "patron_become"					"Become a Patron"
+	}
+}

@@ -9,8 +9,11 @@ local XP_SCALE_FACTOR_FADEIN_SECONDS = (60 * 60) -- 60 minutes
 require( 'timers' )
 require("util")
 require("statcollection/init")
+require("patreons")
+require("utility_functions")
 
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_donator", LUA_MODIFIER_MOTION_NONE)
 
 if CMegaDotaGameMode == nil then
 	_G.CMegaDotaGameMode = class({}) -- put CMegaDotaGameMode in the global scope
@@ -54,6 +57,39 @@ function CMegaDotaGameMode:InitGameMode()
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
 	self.couriers = {}
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 )
+
+	local firstPlayerLoaded
+	ListenToGameEvent("player_connect_full", function()
+		if firstPlayerLoaded then return end
+		firstPlayerLoaded = true
+
+		local players = {}
+		for i = 0, 23 do
+			if PlayerResource:IsValidPlayerID(i) then
+				table.insert(players, tostring(PlayerResource:GetSteamID(i)))
+			end
+		end
+
+		SendWebApiRequest("before-match", { mapName = GetMapName(), players = players }, function(data)
+			local publicStats = {}
+			for _,player in ipairs(data.players) do
+				local playerId = GetPlayerIdBySteamId(player.steamId)
+				Patreons:SetPlayerSettings(playerId, player.patreon)
+
+				publicStats[playerId] = {
+					streak = player.streak,
+					bestStreak = player.bestStreak,
+					averageKills = player.averageKills,
+					averageDeaths = player.averageDeaths,
+					averageAssists = player.averageAssists,
+					wins = player.wins,
+					loses = player.loses,
+				}
+			end
+
+			CustomNetTables:SetTableValue("game_state", "player_stats", publicStats)
+		end)
+	end, nil)
 
 	ListenToGameEvent("dota_player_used_ability", function(event)
 		local hero = PlayerResource:GetSelectedHeroEntity(event.PlayerID)
@@ -163,6 +199,16 @@ function CMegaDotaGameMode:OnNPCSpawned( event )
 		
 		if self.couriers[spawnedUnit:GetTeamNumber()] then
 			self.couriers[spawnedUnit:GetTeamNumber()]:SetControllableByPlayer(spawnedUnit:GetPlayerID(), true)
+		end
+
+		if not spawnedUnit.firstTimeSpawned then
+			spawnedUnit.firstTimeSpawned = true
+			spawnedUnit:SetContextThink("HeroFirstSpawn", function()
+				local playerId = spawnedUnit:GetPlayerID()
+				if spawnedUnit == PlayerResource:GetSelectedHeroEntity(playerId) then
+					Patreons:GiveOnSpawnBonus(playerId)
+				end
+			end, 2/30)
 		end
 	end
 end

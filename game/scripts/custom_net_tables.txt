@@ -2,6 +2,7 @@
 {
 	custom_net_tables =
 	[
-		"disable_help"
+		"disable_help",
+		"game_state"
 	]
 }

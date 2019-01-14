@@ -1,0 +1,75 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/custom_game/patreon.css" />
+		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
+	</styles>
+ 	<scripts>
+		<include src="file://{resources}/scripts/custom_game/util.js" />
+		<include src="file://{resources}/scripts/custom_game/patreon.js" />
+	</scripts>
+ 	<Panel hittest="false" class="PatreonRoot">
+		<TextButton id="PatreonButton" onactivate="OnPatreonButtonPressed()" text="#patreon_perks" />
+		<Button id="PatreonButtonSmaller" onactivate="OnPatreonButtonPressed()">
+			<Image src="file://{images}/custom_game/Patreon/patreon.png" />
+		</Button>
+ 		<Panel hittest="true" id="PatreonWindow">
+			<Panel hittest="true" class="PatreonHeader">
+					<Button id="PatreonCloseButton" onactivate="OnPatreonButtonPressed()" class="PatreonCloseButton">
+						<Label id="PatreonCloseButtonLabel" class="PatreonCloseButtonLabel" text="X"/>
+					</Button>
+					<Label id="HeaderLabel" class="PatreonLabel" text="#patreon_perks"/>
+			</Panel>
+			<Panel hittest="true" class="SupporterEmblem">
+				<Label id="SupporterEmblemTitle" class="SupporterEmblemTitle" text="#emblem_supporter"/>
+				<Label id="SupporterEmblemLabel" class="SupporterEmblemLabel" text="#emblem_supporter_description"/>
+				<Image class="SupporterEmblemImage" src="file://{images}/custom_game/Patreon/emb.png" />
+				<MoviePanel class="SupporterEmblemImage" src="http://s1.webmshare.com/D4VWQ.webm" repeat="true" autoplay="onload" />
+				<ToggleButton id="SupporterEmblemEnableDisable" class="SupporterEmblemEnableDisableLabel" text="#emblem_enable" onactivate="ToggleEmblem()" />
+					<Label id="ChooseColourLabel" class="ChooseColourLabel" text="#color_choose"/>
+					<Panel hittest="true" class="SelectColourBackground" />
+					<Button id="ColourMaroon" onactivate="OnColourPressed('Maroon')"/>
+					<Button id="ColourBrown" onactivate="OnColourPressed('Brown')"/>
+					<Button id="ColourOlive" onactivate="OnColourPressed('Olive')"/>
+					<Button id="ColourTeal" onactivate="OnColourPressed('Teal')"/>
+					<Button id="ColourNavy" onactivate="OnColourPressed('Navy')"/>
+					<Button id="ColourBlack" onactivate="OnColourPressed('Black')"/>
+					<Button id="ColourRed" onactivate="OnColourPressed('Red')"/>
+					<Button id="ColourOrange" onactivate="OnColourPressed('Orange')"/>
+					<Button id="ColourYellow" onactivate="OnColourPressed('Yellow')"/>
+					<Button id="ColourLime" onactivate="OnColourPressed('Lime')"/>
+					<Button id="ColourGreen" onactivate="OnColourPressed('Green')"/>
+					<Button id="ColourCyan" onactivate="OnColourPressed('Cyan')"/>
+					<Button id="ColourBlue" onactivate="OnColourPressed('Blue')"/>
+					<Button id="ColourPurple" onactivate="OnColourPressed('Purple')"/>
+					<Button id="ColourMagenta" onactivate="OnColourPressed('Magenta')"/>
+					<Button id="ColourGrey" onactivate="OnColourPressed('Grey')"/>
+					<Button id="ColourPink" onactivate="OnColourPressed('Pink')"/>
+					<Button id="ColourApricot" onactivate="OnColourPressed('Apricot')"/>
+					<Button id="ColourBeige" onactivate="OnColourPressed('Beige')"/>
+					<Button id="ColourMint" onactivate="OnColourPressed('Mint')"/>
+					<Button id="ColourLavender" onactivate="OnColourPressed('Lavender')"/>
+					<Button id="ColourWhite" class="SelecetedColor" onactivate="OnColourPressed('White')"/>
+				<Panel hittest="true" class="Divider"/>
+			</Panel>
+			<Panel hittest="true" class="FreeBoots">
+				<Label id="FreeBootsTitle" class="FreeBootsTitle" text="#boots_free"/>
+				<Label id="FreeBootsLabel" class="FreeBootsLabel" text="#boots_free_description"/>
+				<Image class="FreeBootsImage" src="file://{images}/custom_game/Patreon/boot.png" />
+				<MoviePanel class="FreeBootsImage" src="http://s1.webmshare.com/KA6Jm.webm" repeat="true" autoplay="onload" />
+				<ToggleButton id="FreeBootsEnableDisable" class="FreeBootsEnableDisableLabel" text="#boots_enable" onactivate="BootsEnableToggle()" />
+				<Panel hittest="true" class="Divider2"/>
+			</Panel>
+			<Panel hittest="true" class="RandomButton">
+				<Label id="RandomButtonTitle" class="RandomButtonTitle" text="#random_unlimited"/>
+				<Label id="RandomButtonLabel" class="RandomButtonLabel" text="#random_unlimited_description"/>
+				<Image class="RandomButtonImage" src="file://{images}/custom_game/Patreon/random.png" />
+				<MoviePanel class="RandomButtonImage" src="http://s1.webmshare.com/w7Rde.webm" repeat="true" autoplay="onload" />
+			</Panel>
+			<Panel hittest="true" class="PatreonFooter">	
+				<Button id="BecomeAPatronButton" class="BecomeAPatronButton">
+					<Label id="BecomeAPatronButtonLabel" class="BecomeAPatronButtonLabel" text="#patron_become" onactivate="ExternalBrowserGoToURL('https://www.patreon.com/join/dota2unofficial?');"/>
+				</Button> 
+			</Panel>
+		</Panel>
+	</Panel>
+</root>
