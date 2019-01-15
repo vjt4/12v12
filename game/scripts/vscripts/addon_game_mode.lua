@@ -171,7 +171,7 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 		    local OriginalRespawnTime = tostring(math.floor(timeLeft))
 		    local TimeToReduce = tostring(math.floor(addedTime))
 		    local NewRespawnTime = tostring(math.floor(timeLeft + addedTime))
-	        GameRules:SendCustomMessage( "ReductionRate:"  .. " " .. RespawnReductionRate .. " " .. "OriginalTime:" .. " " ..OriginalRespawnTime .. " " .. "TimeToReduce:" .. " " ..TimeToReduce .. " " .. "NewRespawnTime:" .. " " .. NewRespawnTime, 0, 0)
+	        --GameRules:SendCustomMessage( "ReductionRate:"  .. " " .. RespawnReductionRate .. " " .. "OriginalTime:" .. " " ..OriginalRespawnTime .. " " .. "TimeToReduce:" .. " " ..TimeToReduce .. " " .. "NewRespawnTime:" .. " " .. NewRespawnTime, 0, 0)
 	    end
 
 	    timeLeft = timeLeft + addedTime
