@@ -1,5 +1,8 @@
-""
+"addon"
 {
+	"Language" "russian"
+	"Tokens"
+	{
 	"patreon_perks"									"Возможности для поддержавших"
 	"emblem_supporter"								"Эмблема поддержавшего"
 	"emblem_supporter_description"					"Внутриигровой эффект, который следует за вашим героем, доступный в нескольких цветах."
@@ -13,4 +16,5 @@
 	"random_unlimited"								"Неограниченный случайный выбор"
 	"random_unlimited_description"					"Снимите ограничение с кнопки выбора случайного из лучших героев!"
 	"patron_become"					"Поддержать"
+	}
 }
