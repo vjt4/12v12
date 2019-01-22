@@ -3,6 +3,9 @@
 	"Language" "english"
 	"Tokens"
 	{
+		"patreon_bonus_button_text"						"Free Boots"
+    	"patreon_bonus_button_tooltip"					"Support DOTA 12v12 to get this feature"
+
         "patreon_perks"									"Patreon Perks"
         "emblem_supporter"								"Supporter Emblem"
         "emblem_supporter_description"					"In-game particle effect that follows your player, available in multiple colours."
