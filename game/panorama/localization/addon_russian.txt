@@ -3,7 +3,7 @@
 	"Language" "russian"
 	"Tokens"
 	{
-	"patreon_perks"									"Возможности для поддержавших"
+	"patreon_perks"									"Возм. для поддержавших"
 	"emblem_supporter"								"Эмблема поддержавшего"
 	"emblem_supporter_description"					"Внутриигровой эффект, который следует за вашим героем, доступный в нескольких цветах."
 	"emblem_enable"									"Активировать эмблему:"
