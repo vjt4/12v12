@@ -1,6 +1,6 @@
 "AddonInfo"
 {
-	maps			"dota dota_spring dota_autumn dota_snow dota_reef dota_journey dota_desert dota_cravern dota_summer"
+	maps			"dota dota_summer dota_spring dota_autumn dota_snow dota_desert dota_journey dota_reef dota_cravern"
 	"IsPlayable"	"1"
 	"PenaltiesEnabled"			"1"
 	"EnablePickRules"    "1"
