@@ -21,10 +21,10 @@ rl.on('line', (dotaPath) => {
   rl.close();
 
   (async () => {
-    await fs.promises.rename('./game', gamePath + '/12v12');
-    await fs.promises.rename('./content', contentPath + '/12v12');
-    await fs.promises.symlink(gamePath + '/12v12', './game', 'junction');
-    await fs.promises.symlink(contentPath + '/12v12', './content', 'junction');
+    await fs.promises.rename('./game', gamePath + '/dota_12v12');
+    await fs.promises.rename('./content', contentPath + '/dota_12v12');
+    await fs.promises.symlink(gamePath + '/dota_12v12', './game', 'junction');
+    await fs.promises.symlink(contentPath + '/dota_12v12', './content', 'junction');
   })().catch(err => {
     console.error(err);
     process.exit(1);
