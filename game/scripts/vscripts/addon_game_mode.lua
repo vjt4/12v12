@@ -42,8 +42,8 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetTowerBackdoorProtectionEnabled( true )
 	GameRules:GetGameModeEntity():SetPauseEnabled(IsInToolsMode())
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
-	GameRules:EnableCustomGameSetupAutoLaunch(false)
-	GameRules:SetCustomGameSetupAutoLaunchDelay(5)
+	GameRules:LockCustomGameSetupTeamAssignment(true)
+	GameRules:SetCustomGameSetupAutoLaunchDelay(1) 
 	GameRules:GetGameModeEntity():SetKillableTombstones( true )
 	if IsInToolsMode() then
 		GameRules:GetGameModeEntity():SetDraftingBanningTimeOverride(0)
