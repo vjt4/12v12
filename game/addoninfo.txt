@@ -45,4 +45,8 @@
 	{
 					"MaxPlayers"                    "24"
 	}
+	"dota_coloseum"
+	{
+					"MaxPlayers"                    "24"
+	}
 }
