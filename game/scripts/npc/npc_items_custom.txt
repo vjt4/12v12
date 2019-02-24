@@ -1,4 +1,27 @@
 "DOTAAbilities"
 {
-
+    "item_patreon"//item name and description
+    {
+        "BaseClass"	"item_datadriven"
+        "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_POINT_TARGET | DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityCastAnimation"			"ACT_INVALID"
+        "Model"	"models/props_gameplay/red_box.vmdl"
+        "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
+        "AbilityTextureName"	"custom/item_patreon"//need item icon
+        "AbilityCastRange"	"800"
+        "AbilityCastPoint"	"0.2"
+        "AbilityCooldown"	"1"
+        "AbilityManaCost"	"0"
+        "ItemCost"	"0"
+        "OnSpellStart"
+        {
+            "RunScript"
+            {
+                "ScriptFile"	"item_patreon.lua"
+                "Function"	    "OnSpellStart"
+            }
+        }
+    }
 }
