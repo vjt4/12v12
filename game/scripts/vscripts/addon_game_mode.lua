@@ -190,6 +190,7 @@ function CMegaDotaGameMode:OnEntityKilled( event )
     
 end
 
+LinkLuaModifier("modifier_fix_neutral", LUA_MODIFIER_MOTION_NONE)
 function CMegaDotaGameMode:OnNPCSpawned( event )
 	local spawnedUnit = EntIndexToHScript( event.entindex )
 
@@ -213,6 +214,12 @@ function CMegaDotaGameMode:OnNPCSpawned( event )
 					Patreons:GiveOnSpawnBonus(playerId)
 				end
 			end, 2/30)
+		end
+	--neutral hotfix
+	else
+		if spawnedUnit:GetTeam() == DOTA_TEAM_NEUTRALS and spawnedUnit:GetUnitName() ~= "" and spawnedUnit:GetUnitName() ~= "npc_dota_roshan" then
+			spawnedUnit:AddNewModifier(spawnedUnit, nil, "modifier_fix_neutral", {duration = math.ceil(GameRules:GetDOTATime(false,true)/60)*60 - GameRules:GetDOTATime(false,true) + 0.1})
+			spawnedUnit.mycreationtime = math.ceil(GameRules:GetDOTATime(false,true)/60)*60
 		end
 	end
 end
