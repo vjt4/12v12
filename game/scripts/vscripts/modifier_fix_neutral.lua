@@ -11,7 +11,7 @@ modifier_fix_neutral = {
 }
 
 function modifier_fix_neutral:OnDestroy()
-	local units = FindUnitsInRadius(DOTA_TEAM_NEUTRALS, self:GetCaster():GetAbsOrigin(), nil, 375, DOTA_UNIT_TARGET_TEAM_BOTH, DOTA_UNIT_TARGET_ALL, DOTA_UNIT_TARGET_FLAG_NONE, FIND_ANY_ORDER, false)
+	local units = FindUnitsInRadius(DOTA_TEAM_NEUTRALS, self:GetCaster():GetAbsOrigin(), nil, 375, DOTA_UNIT_TARGET_TEAM_BOTH, DOTA_UNIT_TARGET_OTHER, DOTA_UNIT_TARGET_FLAG_NONE, FIND_ANY_ORDER, false)
 	if #units ~= 0 then
 		local spawn = true
 		for i=1,#units do
