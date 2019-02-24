@@ -34,6 +34,7 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:SetShowcaseTime( 0.0 )
 
 	-- Hook up gold & xp filters
+    GameRules:GetGameModeEntity():SetItemAddedToInventoryFilter( Dynamic_Wrap( CMegaDotaGameMode, "ItemAddedToInventoryFilter" ), self )
 	GameRules:GetGameModeEntity():SetModifyGoldFilter( Dynamic_Wrap( CMegaDotaGameMode, "FilterModifyGold" ), self )
 	GameRules:GetGameModeEntity():SetModifyExperienceFilter( Dynamic_Wrap(CMegaDotaGameMode, "FilterModifyExperience" ), self )
 	GameRules:GetGameModeEntity():SetBountyRunePickupFilter( Dynamic_Wrap(CMegaDotaGameMode, "FilterBountyRunePickup" ), self )
@@ -382,4 +383,29 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 --			end
 --		end)
 	end
+end
+
+function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
+	if filterTable["item_entindex_const"] == nil then 
+		return true
+	end
+ 	if filterTable["inventory_parent_entindex_const"] == nil then
+		return true
+	end
+	local hInventoryParent = EntIndexToHScript( filterTable["inventory_parent_entindex_const"] )
+	local hItem = EntIndexToHScript( filterTable["item_entindex_const"] )
+		if hItem ~= nil and hInventoryParent ~= nil and hInventoryParent:IsRealHero() then
+		local plyID = hInventoryParent:GetPlayerID()
+		if not plyID then return true end
+		local itemName = hItem:GetName()
+		if itemName == "item_patreon" then
+			local psets = Patreons:GetPlayerSettings(plyID)
+			if psets.level < 1 then
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "Error Test" })--need error text
+				UTIL_Remove(hItem)
+				return false
+			end
+		end
+	end
+	return true
 end
