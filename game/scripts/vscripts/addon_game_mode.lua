@@ -33,10 +33,6 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:SetStrategyTime( 0.0 )
 	GameRules:SetShowcaseTime( 0.0 )
 
-	--shop hotfix
-	GameRules:SetUseUniversalShopMode( true )
-	ListenToGameEvent('dota_item_purchased', Dynamic_Wrap(CMegaDotaGameMode, 'OnItemPurchased'), self)
-
 	-- Hook up gold & xp filters
 	GameRules:GetGameModeEntity():SetModifyGoldFilter( Dynamic_Wrap( CMegaDotaGameMode, "FilterModifyGold" ), self )
 	GameRules:GetGameModeEntity():SetModifyExperienceFilter( Dynamic_Wrap(CMegaDotaGameMode, "FilterModifyExperience" ), self )
@@ -385,28 +381,5 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 --				end
 --			end
 --		end)
-	end
-end
-
-
---shop hotfix
-function CMegaDotaGameMode:OnItemPurchased( keys )
-	local id = keys.PlayerID
-	if not id then return end
-	local hero = PlayerResource:GetSelectedHeroEntity(id)
-	local itemname = keys.itemname
-	--print(hero:HasAnyAvailableInventorySpace())
-	if hero:HasAnyAvailableInventorySpace() then
-		for i=9,15 do
-			local item = hero:GetItemInSlot(i)
-			if item ~= nil then
-				if item:GetName() == itemname then
-					hero:AddItemByName(itemname)
-					hero:RemoveItem(item)
-					--print(i)
-					return
-				end
-			end
-		end
 	end
 end
