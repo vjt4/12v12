@@ -2,14 +2,14 @@ function OnSpellStart( event )
     local caster = event.caster
     local abilityname = event.Ability
     local psets = Patreons:GetPlayerSettings(caster:GetPlayerID())
-    if psets.level > 0 then
+    --if psets.level > 0 then
         local pa1 = caster:AddAbility(abilityname)
         pa1:SetLevel(1)
         pa1:CastAbility()
         caster:RemoveAbility(abilityname)
-    else
-        CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(caster:GetPlayerID()), "display_custom_error", { message = "Error Test" })--need error text
-    end
+    --else
+    --    CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(caster:GetPlayerID()), "display_custom_error", { message = "Error Test" })--need error text
+    --end
 end
 
 function OnSpellStartBundle( event )

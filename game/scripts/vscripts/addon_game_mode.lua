@@ -399,14 +399,14 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		if not plyID then return true end
 		local itemName = hItem:GetName()
 		local pitems = {
-			"item_patreon_1",
-			"item_patreon_2",
-			"item_patreon_3",
-			"item_patreon_4",
-			"item_patreon_5",
-			"item_patreon_6",
-			"item_patreon_7",
-			"item_patreon_8",
+		--	"item_patreon_1",
+		--	"item_patreon_2",
+		--	"item_patreon_3",
+		--	"item_patreon_4",
+		--	"item_patreon_5",
+		--	"item_patreon_6",
+		--	"item_patreon_7",
+		--	"item_patreon_8",
 			"item_patreonbundle_1",
 			"item_patreonbundle_2"
 		}

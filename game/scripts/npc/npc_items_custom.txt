@@ -60,6 +60,7 @@
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
         "AbilityTextureName"	"custom/seasonal_summon_cny_balloon"//need item icon
+        "ItemPurchasable"	"0"
         "AbilityCastRange"	"800"
         "AbilityCastPoint"	"0.2"
         "AbilityCooldown"	"1"
@@ -83,6 +84,7 @@
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
         "AbilityTextureName"	"custom/seasonal_summon_dragon"//need item icon
+        "ItemPurchasable"	"0"
         "AbilityCastRange"	"350"
         "AbilityCastPoint"	"0.3"
         "AbilityCooldown"	"3"
@@ -107,6 +109,7 @@
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
         "AbilityTextureName"	"custom/seasonal_summon_cny_tree"//need item icon
+        "ItemPurchasable"	"0"
         "AbilityCastRange"	"250"
         "AbilityCastPoint"	"0"
         "AbilityCooldown"	"1.5"
@@ -130,6 +133,7 @@
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
         "AbilityTextureName"	"custom/seasonal_firecrackers"//need item icon
+        "ItemPurchasable"	"0"
         "AbilityCastPoint"	"0"
         "AbilityCooldown"	"1.5"
         "AbilityManaCost"	"0"
@@ -154,6 +158,7 @@
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
         "AbilityTextureName"	"custom/seasonal_throw_snowball"//need item icon
+        "ItemPurchasable"	"0"
         "AbilityCastRange"	"600"
         "AbilityCastPoint"	"0.2"
         "AbilityCooldown"	"0.5"
@@ -177,6 +182,7 @@
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
         "AbilityTextureName"	"custom/seasonal_summon_snowman"//need item icon
+        "ItemPurchasable"	"0"
         "AbilityCastRange"	"350"
         "AbilityCastPoint"	"0.3"
         "AbilityCooldown"	"10"
@@ -201,6 +207,7 @@
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
         "AbilityTextureName"	"custom/seasonal_decorate_tree"//need item icon
+        "ItemPurchasable"	"0"
         "AbilityCastRange"	"165"
         "AbilityCastPoint"	"0"
         "AbilityCooldown"	"5"
@@ -226,6 +233,7 @@
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
         "AbilityTextureName"	"custom/item_patreon_8"//need item icon
+        "ItemPurchasable"	"0"
         "AbilityCastRange"	"1200"
         "AbilityCastPoint"	"0"
         "AbilityCooldown"	"0.5"
