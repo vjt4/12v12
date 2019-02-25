@@ -22,13 +22,13 @@ function OnSpellStartBundle( event )
     local item3 = event.Item3
     local item4 = event.Item4
     local psets = Patreons:GetPlayerSettings(caster:GetPlayerID())
-    if psets.level > 0 then
+    --if psets.level > 0 then
         ability:RemoveSelf()
         caster:AddItemByName(item1)
         caster:AddItemByName(item2)
         caster:AddItemByName(item3)
         caster:AddItemByName(item4)
-    else
-        CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(caster:GetPlayerID()), "display_custom_error", { message = "#nopatreonerror" })
-    end
+    --else
+    --    CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(caster:GetPlayerID()), "display_custom_error", { message = "#nopatreonerror" })
+    --end
 end
