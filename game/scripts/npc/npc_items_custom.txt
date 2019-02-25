@@ -1,13 +1,13 @@
 "DOTAAbilities"
 {
-    "item_patreonbundle_1"//item name and description
+    "item_patreonbundle_1"
     {
         "BaseClass"	"item_datadriven"
         "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/2019_Consumables_Bundle"//need item icon
+        "AbilityTextureName"	"custom/2019_Consumables_Bundle"
         "AbilityCastPoint"	"0"
         "AbilityCooldown"	"1"
         "AbilityManaCost"	"0"
@@ -25,14 +25,14 @@
             }
         }
     }
-    "item_patreonbundle_2"//item name and description
+    "item_patreonbundle_2"
     {
         "BaseClass"	"item_datadriven"
         "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/Frosthaven_Consumables_Bundle"//need item icon
+        "AbilityTextureName"	"custom/Frosthaven_Consumables_Bundle"
         "AbilityCastPoint"	"0"
         "AbilityCooldown"	"1"
         "AbilityManaCost"	"0"
@@ -50,7 +50,7 @@
             }
         }
     }
-    "item_patreon_1"//item name and description
+    "item_patreon_1"
     {
         "BaseClass"	"item_datadriven"
         "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_POINT_TARGET | DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
@@ -59,7 +59,7 @@
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/seasonal_summon_cny_balloon"//need item icon
+        "AbilityTextureName"	"custom/seasonal_summon_cny_balloon"
         "ItemPurchasable"	"0"
         "AbilityCastRange"	"800"
         "AbilityCastPoint"	"0.2"
@@ -76,14 +76,14 @@
             }
         }
     }
-    "item_patreon_2"//item name and description
+    "item_patreon_2"
     {
         "BaseClass"	"item_datadriven"
         "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/seasonal_summon_dragon"//need item icon
+        "AbilityTextureName"	"custom/seasonal_summon_dragon"
         "ItemPurchasable"	"0"
         "AbilityCastRange"	"350"
         "AbilityCastPoint"	"0.3"
@@ -100,7 +100,7 @@
             }
         }
     }
-    "item_patreon_3"//item name and description
+    "item_patreon_3"
     {
         "BaseClass"	"item_datadriven"
         "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
@@ -108,7 +108,7 @@
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/seasonal_summon_cny_tree"//need item icon
+        "AbilityTextureName"	"custom/seasonal_summon_cny_tree"
         "ItemPurchasable"	"0"
         "AbilityCastRange"	"250"
         "AbilityCastPoint"	"0"
@@ -125,14 +125,14 @@
             }
         }
     }
-    "item_patreon_4"//item name and description
+    "item_patreon_4"
     {
         "BaseClass"	"item_datadriven"
         "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/seasonal_firecrackers"//need item icon
+        "AbilityTextureName"	"custom/seasonal_firecrackers"
         "ItemPurchasable"	"0"
         "AbilityCastPoint"	"0"
         "AbilityCooldown"	"1.5"
@@ -148,7 +148,7 @@
             }
         }
     }
-    "item_patreon_5"//item name and description
+    "item_patreon_5"
     {
         "BaseClass"	"item_datadriven"
         "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
@@ -157,7 +157,7 @@
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/seasonal_throw_snowball"//need item icon
+        "AbilityTextureName"	"custom/seasonal_throw_snowball"
         "ItemPurchasable"	"0"
         "AbilityCastRange"	"600"
         "AbilityCastPoint"	"0.2"
@@ -174,14 +174,14 @@
             }
         }
     }
-    "item_patreon_6"//item name and description
+    "item_patreon_6"
     {
         "BaseClass"	"item_datadriven"
         "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/seasonal_summon_snowman"//need item icon
+        "AbilityTextureName"	"custom/seasonal_summon_snowman"
         "ItemPurchasable"	"0"
         "AbilityCastRange"	"350"
         "AbilityCastPoint"	"0.3"
@@ -198,7 +198,7 @@
             }
         }
     }
-    "item_patreon_7"//item name and description
+    "item_patreon_7"
     {
         "BaseClass"	"item_datadriven"
         "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
@@ -206,7 +206,7 @@
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/seasonal_decorate_tree"//need item icon
+        "AbilityTextureName"	"custom/seasonal_decorate_tree"
         "ItemPurchasable"	"0"
         "AbilityCastRange"	"165"
         "AbilityCastPoint"	"0"
@@ -223,7 +223,7 @@
             }
         }
     }
-    "item_patreon_8"//item name and description
+    "item_patreon_8"
     {
         "BaseClass"	"item_datadriven"
         "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_DIRECTIONAL | DOTA_ABILITY_BEHAVIOR_POINT"
@@ -232,11 +232,11 @@
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/item_patreon_8"//need item icon
+        "AbilityTextureName"	"custom/item_patreon_8"
         "ItemPurchasable"	"0"
         "AbilityCastRange"	"1200"
         "AbilityCastPoint"	"0"
-        "AbilityCooldown"	"0.5"
+        "AbilityCooldown"	"1.5"
         "AbilityManaCost"	"0"
         "ItemCost"	"0"
         "OnSpellStart"

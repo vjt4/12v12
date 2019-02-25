@@ -6,7 +6,9 @@ function OnSpellStart( event )
         local pa1 = caster:AddAbility(abilityname)
         pa1:SetLevel(1)
         pa1:CastAbility()
-        caster:RemoveAbility(abilityname)
+        Timers:CreateTimer(1, function()
+            caster:RemoveAbility(abilityname)
+        end)
     --else
     --    CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(caster:GetPlayerID()), "display_custom_error", { message = "Error Test" })--need error text
     --end
