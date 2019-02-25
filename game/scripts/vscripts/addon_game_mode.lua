@@ -204,8 +204,6 @@ function CMegaDotaGameMode:OnNPCSpawned( event )
 
 		if not spawnedUnit.firstTimeSpawned then
 			spawnedUnit.firstTimeSpawned = true
-			spawnedUnit:AddItemByName("item_patreonbundle_1")
-			spawnedUnit:AddItemByName("item_patreonbundle_2")
 			spawnedUnit:SetContextThink("HeroFirstSpawn", function()
 				local playerId = spawnedUnit:GetPlayerID()
 				if spawnedUnit == PlayerResource:GetSelectedHeroEntity(playerId) then
@@ -415,7 +413,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		local pitem = false
 		for i=1,#pitems do
 			if itemName == pitems[i] then
-				--pitem = true
+				pitem = true
 				break
 			end
 		end
