@@ -422,7 +422,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		if pitem == true then
 			local psets = Patreons:GetPlayerSettings(plyID)
 			if psets.level < 1 then
-				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "Error Test" })--need error text
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#nopatreonerror" })
 				UTIL_Remove(hItem)
 				return false
 			end

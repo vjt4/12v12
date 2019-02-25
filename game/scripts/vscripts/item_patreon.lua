@@ -10,7 +10,7 @@ function OnSpellStart( event )
             caster:RemoveAbility(abilityname)
         end)
     --else
-    --    CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(caster:GetPlayerID()), "display_custom_error", { message = "Error Test" })--need error text
+    --    CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(caster:GetPlayerID()), "display_custom_error", { message = "#nopatreonerror" })
     --end
 end
 
@@ -29,6 +29,6 @@ function OnSpellStartBundle( event )
         caster:AddItemByName(item3)
         caster:AddItemByName(item4)
     else
-        CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(caster:GetPlayerID()), "display_custom_error", { message = "Error Test" })--need error text
+        CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(caster:GetPlayerID()), "display_custom_error", { message = "#nopatreonerror" })
     end
 end
