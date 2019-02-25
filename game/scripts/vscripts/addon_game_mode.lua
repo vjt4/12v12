@@ -204,8 +204,6 @@ function CMegaDotaGameMode:OnNPCSpawned( event )
 
 		if not spawnedUnit.firstTimeSpawned then
 			spawnedUnit.firstTimeSpawned = true
-			local pa1 = spawnedUnit:AddAbility("seasonal_firecrackers")
-			pa1:SetLevel(1)
 			spawnedUnit:SetContextThink("HeroFirstSpawn", function()
 				local playerId = spawnedUnit:GetPlayerID()
 				if spawnedUnit == PlayerResource:GetSelectedHeroEntity(playerId) then

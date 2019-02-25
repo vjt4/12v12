@@ -232,7 +232,7 @@
 		"AbilityCastAnimation"			"ACT_INVALID"
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/item_patreon_8"
+        "AbilityTextureName"	"custom/seasonal_festive_firework"
         "ItemPurchasable"	"0"
         "AbilityCastRange"	"1200"
         "AbilityCastPoint"	"0"
