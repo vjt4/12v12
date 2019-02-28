@@ -102,6 +102,15 @@ function CMegaDotaGameMode:InitGameMode()
 			})
 		end
 	end, nil)
+
+	_G.kicks = {
+		false,
+		false,
+		false,
+		false,
+		false
+	}
+	CustomGameEventManager:RegisterListener("GetKicks", Dynamic_Wrap(CMegaDotaGameMode, 'GetKicks'))
 end
 
 function GetActivePlayerCountForTeam(team)
@@ -427,4 +436,8 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		end
 	end
 	return true
+end
+
+function CMegaDotaGameMode:GetKicks( data )
+    CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.id), "setkicks", {kicks = _G.kicks})
 end

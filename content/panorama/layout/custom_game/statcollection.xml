@@ -2,6 +2,7 @@
     <scripts>
         <include src="file://{resources}/scripts/custom_game/statcollection.js" />
 		<include src="file://{resources}/scripts/custom_game/display_error.js" />
+		<include src="file://{resources}/scripts/custom_game/kicks.js" />
     </scripts>
     <Panel></Panel>
 </root> 
