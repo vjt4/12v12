@@ -437,7 +437,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		if itemName == "item_banhammer" then
 			local psets = Patreons:GetPlayerSettings(plyID)
 			if psets.level < 2 then
-				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#nopatreonerror" })
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#nopatreonerror2" })
 				UTIL_Remove(hItem)
 				return false
 			end
