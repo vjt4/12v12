@@ -259,7 +259,7 @@
         "Model"	"models/props_gameplay/red_box.vmdl"
         "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
         "AbilityTextureName"	"custom/banhammer"
-        "ItemPurchasable"	"0"
+        "ItemPurchasable"	"1"
         "AbilityCastRange"	"999999"
         "AbilityCastPoint"	"0"
         "AbilityCooldown"	"0"
