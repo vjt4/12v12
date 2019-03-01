@@ -1,5 +1,14 @@
 Patreons = Patreons or {}
 Patreons.playerSettings = Patreons.playerSettings or {}
+for i=0,23 do
+	if Patreons.playerSettings[i] == nil then
+		Patreons.playerSettings[i] = {level = 0}
+	else
+		if Patreons.playerSettings[i].level == nil then
+			Patreons.playerSettings[i] = {level = 0}
+		end
+	end
+end
 
 local colorNames = {
 	White = Vector(255, 255, 255),
