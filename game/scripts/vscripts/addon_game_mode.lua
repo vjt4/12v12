@@ -440,6 +440,12 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#nopatreonerror2" })
 				UTIL_Remove(hItem)
 				return false
+			else
+				if GameRules:GetDOTATime(false,false) < 300 then
+					CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#notyettime" })
+					UTIL_Remove(hItem)
+					return false
+				end
 			end
 		end
 	end
