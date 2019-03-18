@@ -40,6 +40,8 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetBountyRunePickupFilter( Dynamic_Wrap(CMegaDotaGameMode, "FilterBountyRunePickup" ), self )
 	GameRules:GetGameModeEntity():SetModifierGainedFilter( Dynamic_Wrap( CMegaDotaGameMode, "ModifierGainedFilter" ), self )
 	GameRules:GetGameModeEntity():SetRuneSpawnFilter( Dynamic_Wrap( CMegaDotaGameMode, "RuneSpawnFilter" ), self )
+	GameRules:GetGameModeEntity():SetExecuteOrderFilter(Dynamic_Wrap(CMegaDotaGameMode, 'ExecuteOrderFilter'), self)
+
 	GameRules:GetGameModeEntity():SetTowerBackdoorProtectionEnabled( true )
 	GameRules:GetGameModeEntity():SetPauseEnabled(IsInToolsMode())
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
@@ -454,4 +456,22 @@ end
 
 function CMegaDotaGameMode:GetKicks( data )
     CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.id), "setkicks", {kicks = _G.kicks})
+end
+
+function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
+	local order_type = filterTable.order_type
+	local playerId = filterTable.issuer_player_id_const
+	local ability = EntIndexToHScript(filterTable.entindex_ability)
+	local unit = EntIndexToHScript(filterTable.units["0"])
+
+	if unit:IsCourier() then
+		if (order_type == DOTA_UNIT_ORDER_DROP_ITEM or order_type == DOTA_UNIT_ORDER_GIVE_ITEM) and ability and ability:IsItem() then
+			local purchaser = ability:GetPurchaser()
+			if purchaser and purchaser:GetPlayerID() ~= playerId then
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#hud_error_courier_cant_order_item" })
+				return false
+			end
+		end
+	end
+	return true
 end
