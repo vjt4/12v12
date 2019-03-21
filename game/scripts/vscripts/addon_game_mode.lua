@@ -482,7 +482,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 		if (order_type == DOTA_UNIT_ORDER_DROP_ITEM or order_type == DOTA_UNIT_ORDER_GIVE_ITEM) and ability and ability:IsItem() then
 			local purchaser = ability:GetPurchaser()
 			if purchaser and purchaser:GetPlayerID() ~= playerId then
-				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#hud_error_courier_cant_order_item" })
+				--CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#hud_error_courier_cant_order_item" })
 				return false
 			end
 		end
