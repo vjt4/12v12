@@ -11,3 +11,16 @@ function CDOTA_BaseNPC:IsRealHero()
 		return self:IsHero() and not (self:IsIllusion() or self:IsClone()) and not self:IsFakeHero()
 	end
 end
+
+function IsInBox(point, point1, point2)
+	return point.x > point1.x and point.y > point1.y and point.x < point2.x and point.y < point2.y
+end
+
+function IsInTriggerBox(trigger, vector)
+	local origin = trigger:GetAbsOrigin()
+	return IsInBox(
+		vector,
+		origin + trigger:GetBoundingMins(),
+		origin + trigger:GetBoundingMaxs()
+	)
+end

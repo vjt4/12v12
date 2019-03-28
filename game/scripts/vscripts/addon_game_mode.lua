@@ -517,6 +517,10 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	local playerId = filterTable.issuer_player_id_const
 	local ability = EntIndexToHScript(filterTable.entindex_ability)
 	local unit = nil
+	local abilityname = nil
+	if ability and ability.GetAbilityName then
+		abilityname = ability:GetAbilityName()
+	end
 
 	if filterTable.units ~= nil then
 		if filterTable.units["0"] ~= nil then
@@ -532,6 +536,28 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 			if PlayerResource:IsDisableHelpSetForPlayerID(target:GetPlayerOwnerID(), unit:GetPlayerOwnerID()) and (ability:GetName() == "oracle_fates_edict" or ability:GetName() == "oracle_purifying_flames") then
 				DisplayError(unit:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
 				return false
+			end
+		end
+	end
+
+	if order_type == DOTA_UNIT_ORDER_CAST_POSITION then
+		if abilityname == "item_ward_dispenser" or abilityname == "item_ward_sentry" or abilityname == "item_ward_observer" then
+			local list = Entities:FindAllByClassname("trigger_multiple")
+			local orderVector = Vector(filterTable.position_x, filterTable.position_y, 0)
+			local fs = {
+				Vector(5000,6912,0),
+				Vector(-5300,-6938,0)
+			}
+			if PlayerResource:GetTeam(playerId) == 2 then
+				fs = {fs[2],fs[1]}
+			end
+			for i=1,#list do
+				if list[i]:GetName():find("neutralcamp") ~= nil then
+					if IsInTriggerBox(list[i], orderVector) and ( fs[1] - orderVector ):Length2D() < ( fs[2] - orderVector ):Length2D() then
+						CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#block_spawn_error" })
+						return false
+					end
+				end
 			end
 		end
 	end
