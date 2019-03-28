@@ -12,15 +12,33 @@ function CDOTA_BaseNPC:IsRealHero()
 	end
 end
 
+function math.sign(x)
+	if x > 0 then
+		return 1
+	elseif x < 0 then
+		return -1
+	else
+		return 0
+	end
+end
+
+function ExpandVector(vec, by)
+	return Vector(
+		(math.abs(vec.x) + by) * math.sign(vec.x),
+		(math.abs(vec.y) + by) * math.sign(vec.y),
+		(math.abs(vec.z) + by) * math.sign(vec.z)
+	)
+end
+
 function IsInBox(point, point1, point2)
 	return point.x > point1.x and point.y > point1.y and point.x < point2.x and point.y < point2.y
 end
 
-function IsInTriggerBox(trigger, vector)
+function IsInTriggerBox(trigger, extension, vector)
 	local origin = trigger:GetAbsOrigin()
 	return IsInBox(
 		vector,
-		origin + trigger:GetBoundingMins(),
-		origin + trigger:GetBoundingMaxs()
+		origin + ExpandVector(trigger:GetBoundingMins(), extension),
+		origin + ExpandVector(trigger:GetBoundingMaxs(), extension)
 	)
 end

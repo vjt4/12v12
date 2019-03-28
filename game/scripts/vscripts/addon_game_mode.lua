@@ -46,7 +46,7 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetPauseEnabled(IsInToolsMode())
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
 	GameRules:LockCustomGameSetupTeamAssignment(true)
-	GameRules:SetCustomGameSetupAutoLaunchDelay(1) 
+	GameRules:SetCustomGameSetupAutoLaunchDelay(1)
 	GameRules:GetGameModeEntity():SetKillableTombstones( true )
 	if IsInToolsMode() then
 		GameRules:GetGameModeEntity():SetDraftingBanningTimeOverride(0)
@@ -164,18 +164,18 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 	    	respawnReduction = respawnReduction + ((dotaTime / 60) / 100) -- 0.75 + Minutes of Game Time / 100 e.g. 25 minutes fo game time = 0.25
 	    end
 
-	    if respawnReduction > 1 then 
+	    if respawnReduction > 1 then
 	    	respawnReduction = 1
 	    end
 
 	    local timeLeft = killedUnit:GetRespawnTime()
 	 	timeLeft = timeLeft * respawnReduction -- Respawn time reduced by a rate
-	    
+
 	    -- Disadvantaged teams get 5 seconds less respawn time for every missing player
 	    local herosTeam = GetActivePlayerCountForTeam(killedUnit:GetTeamNumber())
 	    local opposingTeam = GetActivePlayerCountForTeam(otherTeam(killedUnit:GetTeamNumber()))
-	    local difference = herosTeam - opposingTeam   
-		   
+	    local difference = herosTeam - opposingTeam
+
 	    local addedTime = 0
 	    if difference < 0 then
 	        addedTime = difference * 5
@@ -195,7 +195,7 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 
 	    killedUnit:SetTimeUntilRespawn(timeLeft)
     end
-    
+
 end
 
 function CMegaDotaGameMode:OnNPCSpawned( event )
@@ -205,10 +205,10 @@ function CMegaDotaGameMode:OnNPCSpawned( event )
 		-- Silencer Nerf
 		Timers:CreateTimer(1, function()
 			if spawnedUnit:HasModifier("modifier_silencer_int_steal") then
-				spawnedUnit:RemoveModifierByName('modifier_silencer_int_steal')	
+				spawnedUnit:RemoveModifierByName('modifier_silencer_int_steal')
 			end
 		end)
-		
+
 		if self.couriers[spawnedUnit:GetTeamNumber()] then
 			self.couriers[spawnedUnit:GetTeamNumber()]:SetControllableByPlayer(spawnedUnit:GetPlayerID(), true)
 		end
@@ -397,7 +397,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 end
 
 function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
-	if filterTable["item_entindex_const"] == nil then 
+	if filterTable["item_entindex_const"] == nil then
 		return true
 	end
  	if filterTable["inventory_parent_entindex_const"] == nil then
@@ -553,7 +553,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 			end
 			for i=1,#list do
 				if list[i]:GetName():find("neutralcamp") ~= nil then
-					if IsInTriggerBox(list[i], orderVector) and ( fs[1] - orderVector ):Length2D() < ( fs[2] - orderVector ):Length2D() then
+					if IsInTriggerBox(list[i], 12, orderVector) and ( fs[1] - orderVector ):Length2D() < ( fs[2] - orderVector ):Length2D() then
 						CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#block_spawn_error" })
 						return false
 					end
