@@ -10,6 +10,7 @@ modifier_core_courier = {
 			MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE,
 			MODIFIER_PROPERTY_FIXED_DAY_VISION,
 			MODIFIER_PROPERTY_FIXED_NIGHT_VISION,
+			MODIFIER_EVENT_ON_TAKEDAMAGE,
 		}
 	end,
 	GetFixedDayVision = function() return 150 end,
@@ -44,5 +45,15 @@ function modifier_core_courier:GetModifierMoveSpeed_Absolute()
 		return 1600
 	else
 		return 800
+	end
+end
+
+function modifier_core_courier:OnTakeDamage()
+	if self:GetCaster():GetHealth() < 1 then
+		local courier_spawn = {}
+		courier_spawn[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant")
+		courier_spawn[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire")
+		self:GetCaster():SetHealth( self:GetCaster():GetMaxHealth() )
+		self:GetCaster():SetAbsOrigin(courier_spawn[self:GetCaster():GetTeam()]:GetAbsOrigin())
 	end
 end
