@@ -26,9 +26,9 @@ end
 
 function modifier_silencer_new_int_steal:OnHeroKilled(keys)
     if IsServer() then
-        local bonus = 2
+        local bonus = 1
         if self:GetCaster():FindAbilityByName("special_bonus_unique_silencer_2"):GetLevel() > 0 then
-			bonus = bonus + 2
+			bonus = bonus + 1
 		end
         if keys.target and keys.target:IsRealHero() and (keys.reincarnate == false or keys.reincarnate == nil) and keys.target:GetTeam() ~= self:GetCaster():GetTeam() then
             if keys.attacker == self:GetCaster() then
