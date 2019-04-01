@@ -14,6 +14,7 @@ require("utility_functions")
 
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_donator", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_silencer_new_int_steal", LUA_MODIFIER_MOTION_NONE)
 
 if CMegaDotaGameMode == nil then
 	_G.CMegaDotaGameMode = class({}) -- put CMegaDotaGameMode in the global scope
@@ -206,6 +207,7 @@ function CMegaDotaGameMode:OnNPCSpawned( event )
 		Timers:CreateTimer(1, function()
 			if spawnedUnit:HasModifier("modifier_silencer_int_steal") then
 				spawnedUnit:RemoveModifierByName('modifier_silencer_int_steal')
+				spawnedUnit:AddNewModifier(spawnedUnit, nil, "modifier_silencer_new_int_steal", {})
 			end
 		end)
 
