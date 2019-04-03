@@ -55,6 +55,6 @@ function modifier_core_courier:OnTakeDamage()
 		courier_spawn[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire")
 		self:GetCaster():SetHealth( self:GetCaster():GetMaxHealth() )
 		self:GetCaster():SetAbsOrigin(courier_spawn[self:GetCaster():GetTeam()]:GetAbsOrigin())
-		self:GetCaster():AddNewModifier(self:GetCaster(), nil, "modifier_stunned", { duration = 10 })
+		self:GetCaster():AddNewModifier(self:GetCaster(), nil, "modifier_stunned", { duration = 60 })
 	end
 end
