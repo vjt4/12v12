@@ -114,6 +114,7 @@ function CMegaDotaGameMode:InitGameMode()
 		false
 	}
 	CustomGameEventManager:RegisterListener("GetKicks", Dynamic_Wrap(CMegaDotaGameMode, 'GetKicks'))
+	CustomGameEventManager:RegisterListener("OnTimerClick", Dynamic_Wrap(CMegaDotaGameMode, 'OnTimerClick'))
 end
 
 function GetActivePlayerCountForTeam(team)
@@ -576,4 +577,18 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 		end
 	end
 	return true
+end
+
+msgtimer = {}
+function CMegaDotaGameMode:OnTimerClick(keys)
+	print(GameRules:GetGameTime())
+	if msgtimer[keys.id] ~= nil then
+		if GameRules:GetGameTime() - msgtimer[keys.id] > 3 then
+			Say(PlayerResource:GetPlayer(keys.id), keys.time, true)
+			msgtimer[keys.id] = GameRules:GetGameTime()
+		end
+	else
+		Say(PlayerResource:GetPlayer(keys.id), keys.time, true)
+		msgtimer[keys.id] = GameRules:GetGameTime()
+	end
 end

@@ -50,7 +50,7 @@
 			<Panel id="NightTime" class="TimeOfDayIcon NightIcon"/>
 			<DOTAHeroImage id="NightstalkerNight" class="TimeOfDayIcon" heroname="npc_dota_hero_night_stalker" heroimagestyle="icon"/>
 			<!-- <Image id="CurrentWeatherIcon" onactivate="ToggleWeatherParticles()" /> -->
-			<Label id="GameTime" text="{s:time_of_day}" hittest="false"/>
+			<Label id="GameTime" text="{s:time_of_day}" onactivate="TimerClick()"/>
 		</Panel>
 		<Panel id="DayGlow" hittest="false" />
 		<Panel id="NightGlow" hittest="false" />

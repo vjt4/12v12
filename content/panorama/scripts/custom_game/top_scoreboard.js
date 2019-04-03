@@ -121,6 +121,14 @@ function Update() {
 	context.SetHasClass("AltPressed", GameUI.IsAltDown())
 }
 
+function TimerClick()
+{
+	if (GameUI.IsAltDown())
+	{
+		GameEvents.SendCustomGameEventToServer( "OnTimerClick", {id: Game.GetLocalPlayerID(),time: $("#GameTime").text});
+	}
+}
+
 (function() {
 	GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
 	GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false);
