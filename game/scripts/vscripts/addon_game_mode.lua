@@ -392,6 +392,24 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
             end
         end
 	elseif newState == DOTA_GAMERULES_STATE_PRE_GAME then
+        
+        local toAdd = {
+            luna_moon_glaive_fountain = 4,
+        }
+
+        local fountains = Entities:FindAllByClassname('ent_dota_fountain')
+        -- Loop over all ents
+        for k,fountain in pairs(fountains) do
+            for skillName,skillLevel in pairs(toAdd) do
+                fountain:AddAbility(skillName)
+                local ab = fountain:FindAbilityByName(skillName)
+                if ab then
+                    ab:SetLevel(skillLevel)
+                end
+            end
+
+        end
+ 
 		local courier_spawn = {}
 		courier_spawn[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant")
 		courier_spawn[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire")

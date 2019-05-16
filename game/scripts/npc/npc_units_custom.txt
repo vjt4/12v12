@@ -1,5 +1,154 @@
 // Units File
 "DOTAUnits"
 {
-	"Version"	"1"
+	"Version"	"0"
+
+
+	"npc_dota_goodguys_tower1_top"
+	{
+		"StatusHealth"				"2800"	
+		"StatusHealthRegen"			"0"
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_goodguys_tower1_mid"
+	{
+		"StatusHealth"				"2800"	
+		"StatusHealthRegen"			"0"
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_goodguys_tower1_bot"
+	{
+		"StatusHealth"				"2800"	
+		"StatusHealthRegen"			"0"
+		"AttackRate"				"0.8"	
+	}	
+
+	"dota_fountain"
+	{
+		"AttackRange"				"1800"
+		"AttackAcquisitionRange"	"1800"
+	}
+
+	"npc_dota_goodguys_tower2_top"
+	{
+		"StatusHealth"				"2900"		// Base health.
+		"StatusHealthRegen"			"0"			// Health regeneration rate.
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_goodguys_tower2_mid"
+	{
+		"StatusHealth"				"2900"		// Base health.
+		"StatusHealthRegen"			"0"			// Health regeneration rate.
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_goodguys_tower2_bot"
+	{
+		"StatusHealth"				"2900"		// Base health.
+		"StatusHealthRegen"			"0"			// Health regeneration rate.
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_goodguys_tower3_top"
+	{
+		"StatusHealth"				"3000"		
+		"StatusHealthRegen"			"0"		
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_goodguys_tower3_mid"
+	{
+		"StatusHealth"				"3000"		
+		"StatusHealthRegen"			"0"		
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_goodguys_tower3_bot"
+	{
+		"StatusHealth"				"3000"		
+		"StatusHealthRegen"			"0"		
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_goodguys_tower4"
+	{
+		"StatusHealth"				"3100"		
+		"StatusHealthRegen"			"0"	
+		"AttackRate"				"0.8"	
+	}	
+
+
+	"npc_dota_badguys_tower1_top"
+	{
+		"StatusHealth"				"2800"	
+		"StatusHealthRegen"			"0"
+		"AttackRate"				"0.8"	
+	}	
+
+
+	"npc_dota_badguys_tower1_mid"
+	{
+		"StatusHealth"				"2800"	
+		"StatusHealthRegen"			"0"
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_badguys_tower1_bot"
+	{
+		"StatusHealth"				"2800"	
+		"StatusHealthRegen"			"0"
+		"AttackRate"				"0.8"		
+	}	
+
+	"npc_dota_badguys_tower2_top"
+	{
+		"StatusHealth"				"2900"		// Base health.
+		"StatusHealthRegen"			"0"			// Health regeneration rate.
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_badguys_tower2_mid"
+	{
+		"StatusHealth"				"2900"		// Base health.
+		"StatusHealthRegen"			"0"			// Health regeneration rate.
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_badguys_tower2_bot"
+	{
+		"StatusHealth"				"2900"		// Base health.
+		"StatusHealthRegen"			"0"			// Health regeneration rate.
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_badguys_tower3_top"
+	{
+		"StatusHealth"				"3000"		
+		"StatusHealthRegen"			"0"		
+		"AttackRate"				"0.8"		
+	}	
+
+	"npc_dota_badguys_tower3_mid"
+	{
+		"StatusHealth"				"3000"		
+		"StatusHealthRegen"			"0"	
+		"AttackRate"				"0.8"	
+	}	
+	"npc_dota_badguys_tower3_bot"
+	{
+		"StatusHealth"				"3000"		
+		"StatusHealthRegen"			"0"	
+		"AttackRate"				"0.8"	
+	}	
+
+	"npc_dota_badguys_tower4"
+	{
+		"StatusHealth"				"3100"		
+		"StatusHealthRegen"			"0"	
+		"AttackRate"				"0.8"	
+	}	
+
 }
