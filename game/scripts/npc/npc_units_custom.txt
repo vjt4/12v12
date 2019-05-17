@@ -27,8 +27,8 @@
 
 	"dota_fountain"
 	{
-		"AttackRange"				"1800"
-		"AttackAcquisitionRange"	"1800"
+		"AttackRange"				"1600"
+		"AttackAcquisitionRange"	"1600"
 	}
 
 	"npc_dota_goodguys_tower2_top"

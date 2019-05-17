@@ -252,12 +252,12 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bounces"					"6"
+				"bounces"					"3"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage_reduction_percent"	"0"
+				"damage_reduction_percent"	"10"
 			}
 		}
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"													

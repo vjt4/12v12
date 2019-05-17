@@ -408,6 +408,11 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
                 end
             end
 
+            local item = CreateItem('item_monkey_king_bar', fountain, fountain)
+            if item then
+                fountain:AddItem(item)
+            end
+
         end
  
 		local courier_spawn = {}
