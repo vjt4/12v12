@@ -8,8 +8,8 @@
 	</scripts>
 
 	<Panel class="Hud">
-		<Panel id="HighFive">
-			<Button id="HighFiveButton" onactivate="HighFiveActivate()" onmouseover="HighFiveOver()" onmouseout="HighFiveOut()" />
+		<Button id="HighFive" onactivate="HighFiveActivate()" onmouseover="HighFiveOver()" onmouseout="HighFiveOut()">
+			<Button id="HighFiveButton" />
 			
 			<Image id="HighFiveImage" src="file://{images}/compendium/international2019/prestigerewards/high_five_lvl_1.png" hittest="false" hittestchildren="false" >
 				<Panel id="Cooldown">
@@ -17,6 +17,6 @@
 					<Label id="CooldownText" text="0" />
 				</Panel>
 			</Image>
-		</Panel>
+		</Button>
 	</Panel>
 </root>
