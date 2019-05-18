@@ -12,6 +12,8 @@ require("statcollection/init")
 require("patreons")
 require("utility_functions")
 
+require( "high_five" )
+
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_donator", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_silencer_new_int_steal", LUA_MODIFIER_MOTION_NONE)

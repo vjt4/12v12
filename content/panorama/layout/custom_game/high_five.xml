@@ -1,0 +1,22 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/custom_game/high_five.css" />
+	</styles>
+
+	<scripts>
+		<include src="file://{resources}/scripts/custom_game/high_five.js" />
+	</scripts>
+
+	<Panel class="Hud">
+		<Panel id="HighFive">
+			<Button id="HighFiveButton" onactivate="HighFiveActivate()" onmouseover="HighFiveOver()" onmouseout="HighFiveOut()" />
+			
+			<Image id="HighFiveImage" src="file://{images}/compendium/international2019/prestigerewards/high_five_lvl_1.png" hittest="false" hittestchildren="false" >
+				<Panel id="Cooldown">
+					<Panel id="CooldownBackground" />
+					<Label id="CooldownText" text="0" />
+				</Panel>
+			</Image>
+		</Panel>
+	</Panel>
+</root>
