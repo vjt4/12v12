@@ -1,39 +1,22 @@
-function HighFiveActivate() {
-	GameEvents.SendCustomGameEventToServer( "high_five_activate", { unit: Players.GetLocalPlayerPortraitUnit() } )
-}
+highFiveButton = null
 
-function HighFiveOver() {
-	$.DispatchEvent( "DOTAShowAbilityTooltip", $( "#HighFiveButton" ), "high_five" );
-}
+function CreateButton( parent ) {
+	highFiveButton = $.CreatePanel( "Button", parent, "" )
+	if ( highFiveButton ) {
+		highFiveButton.BLoadLayout( "file://{resources}/layout/custom_game/high_five_button.xml", false, false )
 
-function HighFiveOut() {
-	$.DispatchEvent( "DOTAHideAbilityTooltip", $( "#HighFiveButton" ) );
+		parent.MoveChildBefore( highFiveButton, parent.FindChildTraverse( "center_bg" ) )
+	}
 }
 
 function Update() {
-	var ability = Entities.GetAbilityByName( Players.GetLocalPlayerPortraitUnit(), "high_five" )
-	var panel = $( "#HighFive" )
-	
-	if ( ability != -1 ) {
-		panel.style.visibility = "visible"
+	var hud = $.GetContextPanel().GetParent().GetParent().GetParent()
+	var pp = hud.FindChildTraverse( "HUDElements" ).FindChildTraverse( "lower_hud" )
+	pp.FindChildTraverse( "buffs" ).style.transform = "translateY( -46px )"
+	pp.FindChildTraverse( "debuffs" ).style.transform = "translateY( -46px )"
 
-		var cooldown_panel = $( "#Cooldown" )
-
-		if ( !Abilities.IsCooldownReady( ability ) ) {
-			cooldown_panel.style.visibility = "visible"
-
-			var remaining = Abilities.GetCooldownTimeRemaining( ability )
-
-			$( "#CooldownText" ).text = Math.floor( remaining )
-
-			/*var progress = ( -360 * ( remaining / Abilities.GetCooldownLength( ability ) ) ).toString()
-
-			$( "#CooldownBackground" ).style.clip = "radial( 50% 50%, 0deg, " + progress + "deg )"*/
-		} else {
-			cooldown_panel.style.visibility = "collapse"
-		}
-	} else {
-		panel.style.visibility = "collapse"
+	if ( !highFiveButton ) { 
+		CreateButton( pp.FindChildTraverse( "center_with_stats" ).FindChildTraverse( "center_block" ) )
 	}
 
 	$.Schedule( 1 / 30, Update )

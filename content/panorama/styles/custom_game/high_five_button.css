@@ -1,8 +1,8 @@
 .Hud {
-	horizontal-align: center;
-	vertical-align: bottom;
-	margin-bottom: 145px;
-	margin-left: 364px;
+	horizontal-align: right;
+	vertical-align: top;
+	margin-top: 32px;
+	margin-right: 189px;
 }
 
 #HighFive {
