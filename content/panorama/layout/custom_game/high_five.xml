@@ -1,7 +1,0 @@
-<root>
-	<scripts>
-		<include src="file://{resources}/scripts/custom_game/high_five.js" />
-	</scripts>
-
-	<Panel />
-</root>

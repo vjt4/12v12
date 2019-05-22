@@ -2,8 +2,9 @@ highFiveButton = null
 
 function CreateButton( parent ) {
 	highFiveButton = $.CreatePanel( "Button", parent, "" )
+
 	if ( highFiveButton ) {
-		highFiveButton.BLoadLayout( "file://{resources}/layout/custom_game/high_five_button.xml", false, false )
+		highFiveButton.BLoadLayout( "file://{resources}/layout/custom_game/high_five_and_banner_buttons.xml", false, false )
 
 		parent.MoveChildBefore( highFiveButton, parent.FindChildTraverse( "center_bg" ) )
 	}
