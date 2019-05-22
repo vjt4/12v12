@@ -410,7 +410,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
                 end
             end
 
-            local item = CreateItem('item_monkey_king_bar', fountain, fountain)
+            local item = CreateItem('item_monkey_king_bar_fountain', fountain, fountain)
             if item then
                 fountain:AddItem(item)
             end

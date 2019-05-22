@@ -252,7 +252,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bounces"					"3"
+				"bounces"					"2"
 			}
 			"03"
 			{

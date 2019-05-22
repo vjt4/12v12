@@ -50,6 +50,50 @@
             }
         }
     }
+
+    "item_monkey_king_bar_fountain"
+    {
+        // General
+        //-------------------------------------------------------------------------------------------------------------
+        "BaseClass"                            "item_monkey_king_bar"                                                       
+        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_PASSIVE"
+
+        // Item Info
+        //-------------------------------------------------------------------------------------------------------------
+        "ItemCost"                      "4175"
+        "ItemShopTags"                  "damage;attack_speed;hard_to_tag"
+        "ItemQuality"                   "epic"
+        "ItemAliases"                   "mkb;monkey king bar"
+        "ItemDeclarations"              "DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
+        "ShouldBeSuggested"             "1"
+        
+        // Special  
+        //-------------------------------------------------------------------------------------------------------------
+        "AbilitySpecial"
+        {
+            "01"
+            {
+                "var_type"              "FIELD_INTEGER"
+                "bonus_damage"          "0"
+            }
+            "02"
+            {
+                "var_type"              "FIELD_INTEGER"
+                "bonus_attack_speed"    "0"
+            }
+            "03"
+            {
+                "var_type"              "FIELD_INTEGER"
+                "bonus_chance"          "75"
+            }
+            "04"
+            {
+                "var_type"              "FIELD_INTEGER"
+                "bonus_chance_damage"           "0"
+            }
+        }
+    }
+
     "item_patreon_1"
     {
         "BaseClass"	"item_datadriven"
