@@ -13,7 +13,16 @@ end, nil )
 
 CustomGameEventManager:RegisterListener( "cons_ability_activate", function( id, keys )
 	local npc = EntIndexToHScript( keys.unit )
+
+	local p = Patreons:GetPlayerSettings( npc:GetPlayerID() )
+
 	if not npc then return end
+
+	if p and p.level == 0 and keys.ability == "seasonal_ti9_banner" then
+		CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( npc:GetPlayerID() ), "display_custom_error", { message = "#nopatreonerror" } )
+		return
+	end
+
 	local ability = npc:FindAbilityByName( keys.ability )
 
 	if ability then
