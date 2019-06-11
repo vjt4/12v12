@@ -26,6 +26,8 @@
 				FindDotaHudElement("PreGame").style.opacity = "1";
 			}
 		}
+
+		FindDotaHudElement( "PreGame" ).FindChild( "Header" ).style.visibility = "collapse"
 	</script>
 
 	<Panel>
