@@ -142,6 +142,46 @@ function CMegaDotaGameMode:InitGameMode()
 	}
 	CustomGameEventManager:RegisterListener("GetKicks", Dynamic_Wrap(CMegaDotaGameMode, 'GetKicks'))
 	CustomGameEventManager:RegisterListener("OnTimerClick", Dynamic_Wrap(CMegaDotaGameMode, 'OnTimerClick'))
+
+	Timers:CreateTimer( 0.6, function()
+		for i = 0, GameRules:NumDroppedItems() - 1 do
+			local container = GameRules:GetDroppedItem( i )
+
+			if container then
+				local item = container:GetContainedItem()
+
+				if item:GetAbilityName():find( "item_ward_" ) then
+					local owner = item:GetOwner()
+
+					if owner then
+						local team = owner:GetTeam()
+						local fountain
+						local multiplier
+
+						if team == DOTA_TEAM_GOODGUYS then
+							multiplier = -350
+							fountain = Entities:FindByName( nil, "ent_dota_fountain_good" )
+						elseif team == DOTA_TEAM_BADGUYS then
+							multiplier = -650
+							fountain = Entities:FindByName( nil, "ent_dota_fountain_bad" )		
+						end
+
+						local fountain_pos = fountain:GetAbsOrigin()
+
+						if ( fountain_pos - container:GetAbsOrigin() ):Length2D() > 1200 then
+							local pos_item = fountain_pos:Normalized() * multiplier + RandomVector( RandomFloat( 0, 200 ) ) + fountain_pos
+							pos_item.z = fountain_pos.z
+
+							container:SetAbsOrigin( pos_item )
+							CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( owner:GetPlayerID() ), "display_custom_error", { message = "#dropped_wards_return_error" } )
+						end
+					end
+				end
+			end
+		end
+
+		return 0.6
+	end )
 end
 
 function GetActivePlayerCountForTeam(team)
