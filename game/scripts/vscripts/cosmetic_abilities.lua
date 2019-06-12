@@ -10,10 +10,6 @@ local PATREON_LEVEL_FOR_ABILITY = {
 	["seasonal_summon_dragon"] = 0,
 	["seasonal_summon_cny_tree"] = 0,
 	["seasonal_firecrackers"] = 0,
-	["frostivus2018_throw_snowball"] = 0,
-	["frostivus2018_summon_snowman"] = 0,
-	["frostivus2018_decorate_tree"] = 0,
-	["frostivus2018_festive_firework"] = 0,
 	["seasonal_ti9_shovel"] = 0,
 	["seasonal_ti9_instruments"] = 0,
 	["seasonal_ti9_monkey"] = 0,
@@ -21,6 +17,7 @@ local PATREON_LEVEL_FOR_ABILITY = {
 	["seasonal_throw_snowball"] = 0,
 	["seasonal_festive_firework"] = 0,
 	["seasonal_decorate_tree"] = 0,
+	["seasonal_summon_snowman"] = 0,
 }
 
 local ABILITIES_CANT_BE_REMOVED = {

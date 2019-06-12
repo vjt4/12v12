@@ -5,17 +5,14 @@ var COSMETIC_ABILITIES = {
 	"seasonal_summon_dragon": true,
 	"seasonal_summon_cny_tree": true,
 	"seasonal_firecrackers": true,
-	"frostivus2018_throw_snowball": true,
-	"frostivus2018_summon_snowman": true,
-	"frostivus2018_decorate_tree": true,
-	"frostivus2018_festive_firework": true,
 	"seasonal_ti9_shovel": true,
 	"seasonal_ti9_instruments": true,
 	"seasonal_ti9_monkey": true,
 	"seasonal_summon_ti9_balloon": true,
 	"seasonal_throw_snowball": true,
 	"seasonal_festive_firework": true,
-	"seasonal_decorate_tree": true
+	"seasonal_decorate_tree": true,
+	"seasonal_summon_snowman": true
 }
 
 var hud = $.GetContextPanel().GetParent().GetParent().GetParent()

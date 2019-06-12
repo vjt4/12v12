@@ -6,17 +6,14 @@ var cosmeticAbilities = {
 	"seasonal_summon_dragon": true,
 	"seasonal_summon_cny_tree": true,
 	"seasonal_firecrackers": true,
-	"frostivus2018_throw_snowball": true,
-	"frostivus2018_summon_snowman": true,
-	"frostivus2018_decorate_tree": true,
-	"frostivus2018_festive_firework": true,
 	"seasonal_ti9_shovel": true,
 	"seasonal_ti9_instruments": true,
 	"seasonal_ti9_monkey": true,
 	"seasonal_summon_ti9_balloon": true,
 	"seasonal_throw_snowball": true,
 	"seasonal_festive_firework": true,
-	"seasonal_decorate_tree": true
+	"seasonal_decorate_tree": true,
+	"seasonal_summon_snowman": true
 }
 var permanentAbilitySlots = {
 	"high_five": 4,
@@ -27,17 +24,14 @@ var abilitiesToTake = [
 	"seasonal_summon_dragon",
 	"seasonal_summon_cny_tree",
 	"seasonal_firecrackers",
-	"frostivus2018_throw_snowball",
-	"frostivus2018_summon_snowman",
-	"frostivus2018_decorate_tree",
-	"frostivus2018_festive_firework",
 	"seasonal_ti9_shovel",
 	"seasonal_ti9_instruments",
 	"seasonal_ti9_monkey",
 	"seasonal_summon_ti9_balloon",
 	"seasonal_throw_snowball",
 	"seasonal_festive_firework",
-	"seasonal_decorate_tree"
+	"seasonal_decorate_tree",
+	"seasonal_summon_snowman"
 ]
 var ABILITIES_CANT_BE_REMOVED = {
 	"high_five": true,
