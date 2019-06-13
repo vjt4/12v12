@@ -318,6 +318,12 @@ function DisplayError(playerId, message)
 end
 
 function CMegaDotaGameMode:RuneSpawnFilter(kv)
+	local r = RandomInt( 0, 5 )
+
+	if r == 5 then r = 6 end
+
+	kv.rune_type = r
+
 	return true
 end
 
