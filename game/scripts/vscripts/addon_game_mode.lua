@@ -18,6 +18,8 @@ LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_donator", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_silencer_new_int_steal", LUA_MODIFIER_MOTION_NONE)
 
+_G.newStats = newStats or {}
+
 if CMegaDotaGameMode == nil then
 	_G.CMegaDotaGameMode = class({}) -- put CMegaDotaGameMode in the global scope
 	--refer to: http://stackoverflow.com/questions/6586145/lua-require-with-global-local
@@ -220,9 +222,28 @@ end
 ---------------------------------------------------------------------------
 function CMegaDotaGameMode:OnEntityKilled( event )
     local killedUnit = EntIndexToHScript( event.entindex_killed )
+    local killer = EntIndexToHScript( event.entindex_attacker )
     local killedTeam = killedUnit:GetTeam()
+
     --print("fired")
     if killedUnit:IsRealHero() and not killedUnit:IsReincarnating() then
+		if killer and killer:IsRealHero() and killer.GetPlayerID then
+			local player_id = killer:GetPlayerID()
+			local name = killedUnit:GetUnitName()
+
+			newStats[player_id] = newStats[player_id] or {
+				npc_dota_sentry_wards = 0,
+				npc_dota_observer_wards = 0,
+				tower_damage = 0,
+				killed_hero = {}
+			}
+
+			local kh = newStats[player_id].killed_hero
+
+			kh[name] = kh[name] and kh[name] + 1 or 1
+		end
+
+
 	    local dotaTime = GameRules:GetDOTATime(false, false)
 	    local timeToStartReduction = 0 -- 20 minutes
 	    local respawnReduction = 0.75 -- Original Reduction rate
@@ -269,6 +290,22 @@ end
 
 function CMegaDotaGameMode:OnNPCSpawned( event )
 	local spawnedUnit = EntIndexToHScript( event.entindex )
+
+	local owner = spawnedUnit:GetOwner()
+	local name = spawnedUnit:GetUnitName()
+
+	if owner and owner.GetPlayerID and ( name == "npc_dota_sentry_wards" or name == "npc_dota_observer_wards" ) then
+		local player_id = owner:GetPlayerID()
+
+		newStats[player_id] = newStats[player_id] or {
+			npc_dota_sentry_wards = 0,
+			npc_dota_observer_wards = 0,
+			tower_damage = 0,
+			killed_hero = {}
+		}
+
+		newStats[player_id][name] = newStats[player_id][name] + 1
+	end
 
 	if spawnedUnit:IsRealHero() then
 		-- Silencer Nerf
@@ -385,6 +422,55 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	DeepPrintTable(keys)
 
 	local newState = GameRules:State_Get()
+
+	if newState == DOTA_GAMERULES_STATE_POST_GAME then
+		local couriers = FindUnitsInRadius( 2, Vector( 0, 0, 0 ), nil, FIND_UNITS_EVERYWHERE, DOTA_UNIT_TARGET_TEAM_BOTH, DOTA_UNIT_TARGET_COURIER, DOTA_UNIT_TARGET_FLAG_NONE, FIND_ANY_ORDER, false )
+
+		for i = 0, 64 do
+			if PlayerResource:IsValidPlayer( i ) then
+				local networth = 0
+				local hero = PlayerResource:GetSelectedHeroEntity( i )
+
+				for _, cour in pairs( couriers ) do
+					if cour:GetTeam() == cour:GetTeam() then
+						for s = 0, 8 do
+							local item = cour:GetItemInSlot( s )
+
+							if item and item:GetOwner() == hero then
+								networth = networth + item:GetCost()
+							end
+						end
+					end
+				end
+
+				for s = 0, 8 do
+					local item = hero:GetItemInSlot( s )
+
+					if item then
+						networth = networth + item:GetCost()
+					end
+				end
+
+				networth = networth + PlayerResource:GetGold( i )
+
+				local stats = {
+					networth = networth,
+					total_damage = PlayerResource:GetRawPlayerDamage( i ),
+					total_healing = PlayerResource:GetHealing( i ),
+				}
+
+				if newStats and newStats[i] then
+					stats.tower_damage = newStats[i].tower_damage
+					stats.sentries_count = newStats[i].npc_dota_sentry_wards
+					stats.observers_count = newStats[i].npc_dota_observer_wards
+					stats.killed_hero = newStats[i].killed_hero
+				end
+
+				CustomNetTables:SetTableValue( "custom_stats", tostring( i ), stats )
+			end
+		end
+	end
+
     if newState == DOTA_GAMERULES_STATE_STRATEGY_TIME then
 		local ggp = 0
 		local bgp = 0
