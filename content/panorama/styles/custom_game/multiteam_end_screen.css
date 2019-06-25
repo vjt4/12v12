@@ -1,5 +1,19 @@
 @define BACKGROUND_COLOR: #000000;
 
+.HeroIcon {
+	width: 24px;
+	height: 24px;
+}
+
+.AspectRatio4x3 #KilledCount {
+	horizontal-align: right;
+	text-align: center;
+	padding: 0px 0px 0px 0px;
+	font-size: 10px;
+	background-color: #121A20;
+	vertical-align: bottom;
+}
+
 #KilledCount {
 	horizontal-align: right;
 	text-align: center;
@@ -7,6 +21,11 @@
 	font-size: 12px;
 	background-color: #121A20;
 	vertical-align: bottom;
+}
+
+.AspectRatio4x3 .HeroIcon {
+	width: 20px;
+	height: 20px;
 }
 
 .KilledHeroNone {

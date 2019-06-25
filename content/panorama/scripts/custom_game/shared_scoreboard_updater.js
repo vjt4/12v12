@@ -109,6 +109,7 @@ var newStatsInEndScreen = [
 							if ( teamId != Players.GetTeam( pId ) ) {
 								var icon = $.CreatePanel( "Image", container, "" )
 								icon.SetImage( "file://{images}/heroes/icons/" + hero + ".png" )
+								icon.AddClass( "HeroIcon" )
 
 								if ( table && table.killed_hero && table.killed_hero[hero] ) {
 									var count = $.CreatePanel( "Label", icon, "KilledCount" )
@@ -123,7 +124,7 @@ var newStatsInEndScreen = [
 			}
 		},
 		styles: {
-			"width": "400px"
+			"width": "310px"
 		}
 	},
 ]
