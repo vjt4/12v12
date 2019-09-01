@@ -37,13 +37,27 @@ var ABILITIES_CANT_BE_REMOVED = {
 	"high_five": true,
 	"seasonal_ti9_banner": true,
 }
+var abillity_name_to_webm = {
+	"seasonal_summon_cny_balloon":"40XJ9",
+	"seasonal_summon_dragon":"Ry9Mv",
+	"seasonal_summon_cny_tree":"rVY9D",
+	"seasonal_firecrackers":"Lxe64",
+	"seasonal_ti9_shovel":"b1dNv",
+	"seasonal_ti9_instruments":"5d1Rr",
+	"seasonal_ti9_monkey":"XEjX7",
+	"seasonal_summon_ti9_balloon":"BAEq9",
+	"seasonal_throw_snowball":"8mBLL",
+	"seasonal_festive_firework":"voBa5",
+	"seasonal_decorate_tree":"Px17L",
+	"seasonal_summon_snowman":"na38r"
+}
 var showcaseAbilitiesSlot = 6
 
 var slots = []
 
 var currentUnit = null
 var currentAbilitiesCount = 0
-var animation = null
+var animation = {}
 
 function ToggleCosmeticMenu() {
 	$.GetContextPanel().ToggleClass( "Open" )
@@ -215,6 +229,10 @@ function CreateAbilityToTake( row, abilityName ) {
 	var image = $.CreatePanel( "Image", row, "ImagePreview" )
 	image.SetImage( IMAGES[abilityName] || "file://{images}/spellicons/consumables/" + abilityName + ".png")
 
+	animation[abilityName] = $.CreatePanel( "Panel", $( "#AnimationContainer" ), "" )
+	animation[abilityName].BLoadLayoutFromString( '<root><Panel><MoviePanel src="http://s1.webmshare.com/'+abillity_name_to_webm[abilityName]+'.webm" repeat="true" autoplay="onload" /></Panel></root>', false, false )
+	animation[abilityName].visible = false
+
 	image.SetPanelEvent( "onactivate", function() {
 		if ( Entities.IsControllableByPlayer( currentUnit, Players.GetLocalPlayer() ) ) {
 			GameEvents.SendCustomGameEventToServer( "cosmetic_abilities_take", { unit: currentUnit, ability: abilityName } )
@@ -224,17 +242,13 @@ function CreateAbilityToTake( row, abilityName ) {
 	image.SetPanelEvent( "onmouseover", function() {
 		$.DispatchEvent( "DOTAShowAbilityTooltip", image, abilityName )
 
-		if ( animation ) animation.DeleteAsync( 0 )
-
-		animation = $.CreatePanel( "Panel", $( "#AnimationContainer" ), "" )
-		animation.BLoadLayoutFromString( '<root><Panel><MoviePanel src="http://s1.webmshare.com/0oEPK.webm" repeat="true" autoplay="onload" /></Panel></root>', false, false )
+		animation[abilityName].visible = true
 	} )
 
 	image.SetPanelEvent( "onmouseout", function() {
 		$.DispatchEvent( "DOTAHideAbilityTooltip", image )
 
-		animation.DeleteAsync( 0 )
-		animation = null
+		animation[abilityName].visible = false
 	} )
 }
 
