@@ -223,12 +223,19 @@ end
 function CMegaDotaGameMode:OnEntityKilled( event )
     local killedUnit = EntIndexToHScript( event.entindex_killed )
     local killer = EntIndexToHScript( event.entindex_attacker )
-    local killedTeam = killedUnit:GetTeam()
+	local killedTeam = killedUnit:GetTeam()
 
     --print("fired")
     if killedUnit:IsRealHero() and not killedUnit:IsReincarnating() then
+		local player_id = -1
 		if killer and killer:IsRealHero() and killer.GetPlayerID then
-			local player_id = killer:GetPlayerID()
+			player_id = killer:GetPlayerID()
+		else 
+			if killer:GetPlayerOwnerID() ~= -1 then
+				player_id = killer:GetPlayerOwnerID()
+			end
+		end
+		if player_id ~= -1 then
 			local name = killedUnit:GetUnitName()
 
 			newStats[player_id] = newStats[player_id] or {
