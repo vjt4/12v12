@@ -131,7 +131,7 @@ var newStatsInEndScreen = [
 
 function CreateStandartValue( parent, value, style ) {
 	var label = $.CreatePanel( "Label", parent, "" )
-	label.text = value
+	label.text = value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
 	label.AddClass( "NewStatLabel" )
 	label.AddClass( style || "" )
 }
