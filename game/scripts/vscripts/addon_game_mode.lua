@@ -77,7 +77,7 @@ function CMegaDotaGameMode:InitGameMode()
 			end
 		end
 
-		SendWebApiRequest("before-match", { mapName = GetMapName(), players = players }, function(data)
+		SendWebApiRequest("match/before", { mapName = GetMapName(), players = players }, function(data)
 			local publicStats = {}
 			for _,player in ipairs(data.players) do
 				local playerId = GetPlayerIdBySteamId(player.steamId)
