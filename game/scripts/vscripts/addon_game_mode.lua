@@ -8,7 +8,6 @@ local XP_SCALE_FACTOR_FADEIN_SECONDS = (60 * 60) -- 60 minutes
 
 require( 'timers' )
 require("util")
-require("statcollection/init")
 require("patreons")
 require("utility_functions")
 
@@ -167,7 +166,7 @@ function CMegaDotaGameMode:InitGameMode()
 							fountain = Entities:FindByName( nil, "ent_dota_fountain_good" )
 						elseif team == DOTA_TEAM_BADGUYS then
 							multiplier = -650
-							fountain = Entities:FindByName( nil, "ent_dota_fountain_bad" )		
+							fountain = Entities:FindByName( nil, "ent_dota_fountain_bad" )
 						end
 
 						local fountain_pos = fountain:GetAbsOrigin()
@@ -232,7 +231,7 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 		local player_id = -1
 		if killer and killer:IsRealHero() and killer.GetPlayerID then
 			player_id = killer:GetPlayerID()
-		else 
+		else
 			if killer:GetPlayerOwnerID() ~= -1 then
 				player_id = killer:GetPlayerOwnerID()
 			end
@@ -534,7 +533,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
             end
         end
 	elseif newState == DOTA_GAMERULES_STATE_PRE_GAME then
-        
+
         local toAdd = {
             luna_moon_glaive_fountain = 4,
             ursa_fury_swipes_fountain = 1,
@@ -557,7 +556,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
             end
 
         end
- 
+
 		local courier_spawn = {}
 		courier_spawn[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant")
 		courier_spawn[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire")
