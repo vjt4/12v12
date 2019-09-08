@@ -143,8 +143,6 @@ function CMegaDotaGameMode:InitGameMode()
 		false,
 		false
 	}
-	CustomGameEventManager:RegisterListener("GetKicks", Dynamic_Wrap(CMegaDotaGameMode, 'GetKicks'))
-	CustomGameEventManager:RegisterListener("OnTimerClick", Dynamic_Wrap(CMegaDotaGameMode, 'OnTimerClick'))
 
 	Timers:CreateTimer( 0.6, function()
 		for i = 0, GameRules:NumDroppedItems() - 1 do
@@ -372,7 +370,7 @@ function CMegaDotaGameMode:RuneSpawnFilter(kv)
 	return true
 end
 
-CustomGameEventManager:RegisterListener("set_disable_help", function(_, data)
+RegisterCustomEventListener("set_disable_help", function(data)
 	local to = data.to;
 	if PlayerResource:IsValidPlayerID(to) then
 		local playerId = data.PlayerID;
@@ -700,9 +698,9 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 	return true
 end
 
-function CMegaDotaGameMode:GetKicks( data )
+RegisterCustomEventListener("GetKicks", function(data)
     CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.id), "setkicks", {kicks = _G.kicks})
-end
+end)
 
 function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	local target = nil
@@ -770,7 +768,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 end
 
 msgtimer = {}
-function CMegaDotaGameMode:OnTimerClick(keys)
+RegisterCustomEventListener("OnTimerClick", function(keys)
 	print(GameRules:GetGameTime())
 	if msgtimer[keys.id] ~= nil then
 		if GameRules:GetGameTime() - msgtimer[keys.id] > 3 then
@@ -781,4 +779,4 @@ function CMegaDotaGameMode:OnTimerClick(keys)
 		Say(PlayerResource:GetPlayer(keys.id), keys.time, true)
 		msgtimer[keys.id] = GameRules:GetGameTime()
 	end
-end
+end)
