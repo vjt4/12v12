@@ -768,15 +768,24 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 end
 
 msgtimer = {}
-RegisterCustomEventListener("OnTimerClick", function(keys)
-	print(GameRules:GetGameTime())
-	if msgtimer[keys.id] ~= nil then
-		if GameRules:GetGameTime() - msgtimer[keys.id] > 3 then
-			Say(PlayerResource:GetPlayer(keys.id), keys.time, true)
-			msgtimer[keys.id] = GameRules:GetGameTime()
+function CMegaDotaGameMode:OnTimerClick(keys)
+	if msgtimer[keys.PlayerID] ~= nil then
+		if GameRules:GetGameTime() - msgtimer[keys.PlayerID] > 3 then
+			local time = math.floor(GameRules:GetDOTATime(false,true))
+			local min = math.floor(time/60)
+			local sec = time-min*60
+			if min < 10 then min = "0"..min end
+			if sec < 10 then sec = "0"..sec end
+			Say(PlayerResource:GetPlayer(keys.PlayerID), min..":"..sec, true)
+			msgtimer[keys.PlayerID] = GameRules:GetGameTime()
 		end
 	else
-		Say(PlayerResource:GetPlayer(keys.id), keys.time, true)
-		msgtimer[keys.id] = GameRules:GetGameTime()
+		local time = math.floor(GameRules:GetDOTATime(false,true))
+		local min = math.floor(time/60)
+		local sec = time-min*60
+		if min < 10 then min = "0"..min end
+		if sec < 10 then sec = "0"..sec end
+		Say(PlayerResource:GetPlayer(keys.PlayerID), min..":"..sec, true)
+		msgtimer[keys.PlayerID] = GameRules:GetGameTime()
 	end
-end)
+end
