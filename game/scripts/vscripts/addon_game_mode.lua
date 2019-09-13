@@ -769,23 +769,15 @@ end
 
 msgtimer = {}
 function CMegaDotaGameMode:OnTimerClick(keys)
-	if msgtimer[keys.PlayerID] ~= nil then
-		if GameRules:GetGameTime() - msgtimer[keys.PlayerID] > 3 then
-			local time = math.floor(GameRules:GetDOTATime(false,true))
-			local min = math.floor(time/60)
-			local sec = time-min*60
-			if min < 10 then min = "0"..min end
-			if sec < 10 then sec = "0"..sec end
-			Say(PlayerResource:GetPlayer(keys.PlayerID), min..":"..sec, true)
-			msgtimer[keys.PlayerID] = GameRules:GetGameTime()
-		end
-	else
-		local time = math.floor(GameRules:GetDOTATime(false,true))
-		local min = math.floor(time/60)
-		local sec = time-min*60
-		if min < 10 then min = "0"..min end
-		if sec < 10 then sec = "0"..sec end
-		Say(PlayerResource:GetPlayer(keys.PlayerID), min..":"..sec, true)
-		msgtimer[keys.PlayerID] = GameRules:GetGameTime()
+	if msgtimer[keys.PlayerID] and GameRules:GetGameTime() - msgtimer[keys.PlayerID] < 3 then
+		return
 	end
+    msgtimer[keys.PlayerID] = GameRules:GetGameTime()
+
+	local time = math.abs(math.floor(GameRules:GetDOTATime(false, true)))
+    local min = math.floor(time / 60)
+    local sec = time - min * 60
+    if min < 10 then min = "0" .. min end
+    if sec < 10 then sec = "0" .. sec end
+    Say(PlayerResource:GetPlayer(keys.PlayerID), min .. ":" .. sec, true)
 end
