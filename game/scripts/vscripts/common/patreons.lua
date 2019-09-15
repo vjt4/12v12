@@ -1,14 +1,6 @@
 Patreons = Patreons or {}
 Patreons.playerSettings = Patreons.playerSettings or {}
-for i=0,23 do
-	if Patreons.playerSettings[i] == nil then
-		Patreons.playerSettings[i] = {level = 0}
-	else
-		if Patreons.playerSettings[i].level == nil then
-			Patreons.playerSettings[i] = {level = 0}
-		end
-	end
-end
+Patreons.openPaymentWindows = Patreons.openPaymentWindows or {}
 
 local colorNames = {
 	White = Vector(255, 255, 255),
@@ -36,7 +28,8 @@ local colorNames = {
 }
 
 function Patreons:GetPlayerSettings(playerId)
-	return Patreons.playerSettings[playerId]
+	-- TODO: Handle defaults more consistently
+	return Patreons.playerSettings[playerId] or { level = 0 }
 end
 
 function Patreons:GetPlayerEmblemColor(playerId)
@@ -93,3 +86,73 @@ RegisterCustomEventListener("patreon_toggle_emblem", function(args)
 	playerBonuses.emblemEnabled = args.enabled == 1
 	Patreons:SetPlayerSettings(playerId, playerBonuses)
 end)
+
+local function onPaymentWindowOpenStatusChange(args)
+	local playerId = args.PlayerID
+	if args.visible == 1 then
+		Patreons.openPaymentWindows[playerId] = true
+		MatchEvents.RequestDelay = 5
+	else
+		Patreons.openPaymentWindows[playerId] = nil
+		if not next(Patreons.openPaymentWindows) then
+			MatchEvents.RequestDelay = MatchEvents.DEFAULT_REQUEST_DELAY
+		end
+	end
+end
+
+RegisterCustomEventListener("patreon:payments:window", onPaymentWindowOpenStatusChange)
+RegisterGameEventListener("player_disconnect", function(args)
+	args.visible = 0
+	onPaymentWindowOpenStatusChange(args)
+end)
+
+RegisterCustomEventListener("patreon:payments:create", function(args)
+	local playerId = args.PlayerID
+	local steamId = tostring(PlayerResource:GetSteamID(playerId))
+	WebApi:Send(
+		"payment/create",
+		{ steamId = steamId, paymentKind = args.paymentKind, provider = args.provider },
+		function(response)
+			local player = PlayerResource:GetPlayer(playerId)
+			if not player then return end
+
+			CustomGameEventManager:Send_ServerToPlayer(player, "patreon:payments:create", {
+				id = args.id,
+				url = response.url,
+			})
+		end,
+		function(error)
+			local player = PlayerResource:GetPlayer(playerId)
+			if not player then return end
+
+			CustomGameEventManager:Send_ServerToPlayer(player, "patreon:payments:create", {
+				id = args.id,
+				error = error,
+			})
+		end
+	)
+end)
+
+MatchEvents.ResponseHandlers.paymentUpdate = function(response)
+	local steamId = response.steamId
+	local playerId = GetPlayerIdBySteamId(steamId)
+	if playerId == -1 then return end
+
+	local player = PlayerResource:GetPlayer(playerId)
+	if player then
+		CustomGameEventManager:Send_ServerToPlayer(player, "patreon:payments:update", response)
+	end
+
+	if not response.error then
+		local patreonSettings = table.clone(Patreons:GetPlayerSettings(playerId))
+		local isUpgrade = patreonSettings.level > 0 and response.level > patreonSettings.level
+
+		patreonSettings.level = response.level
+		patreonSettings.endDate = response.endDate
+		Patreons:SetPlayerSettings(playerId, patreonSettings)
+
+		if not isUpgrade then
+			Patreons:GiveOnSpawnBonus(playerId)
+		end
+	end
+end

@@ -3,21 +3,44 @@
 	"Language" "english"
 	"Tokens"
 	{
+		// Common start
 		"patreon_bonus_button_text"						"Free Boots"
-    	"patreon_bonus_button_tooltip"					"Support DOTA 12v12 to get this feature"
+		"patreon_bonus_button_tooltip"					"Support us to get this feature"
 
-        "patreon_perks"									"Patreon Perks"
-        "emblem_supporter"								"Supporter Emblem"
-        "emblem_supporter_description"					"In-game particle effect that follows your player, available in multiple colours."
-        "emblem_enable"									"Enable Emblem:"
-        "emblem_disable"								"Disable Emblem:"
-        "color_choose"									"Choose Colour:"
-        "boots_free"									"Free Boots"
-        "boots_free_description"						"Start the game with free boots!"
-        "boots_enable"									"Enable Boots"
-        "boots_disable"									"Disable Boots"
-        "random_unlimited"								"Unlimited Random"
-        "random_unlimited_description"					"Unlock unlimited use of smart random button!"
-        "patron_become"					"Become a Patron"
+		"smart_random_button"							"SMART RANDOM"
+		"smart_random_tooltip_ready"					"Randomly pick from one of your most used heroes"
+		"smart_random_tooltip_cooldown"					"You can use Smart Random only once per 24 hours. Support us to remove the cooldown!"
+
+		"player_stats_title"							"Your statistics for {s:map_name}"
+		"player_stats_wins_loses"						"Wins/Loses: "
+		"player_stats_average_kda"						"Average KDA: "
+
+		"patreon_perks"									"Supporter Perks"
+		"emblem_supporter"								"Supporter Emblem"
+		"emblem_supporter_description"					"In-game particle effect that follows your player, available in multiple colours."
+		"emblem_enable"									"Enable Emblem"
+		"color_choose"									"Choose Colour:"
+		"boots_free"									"Free Boots"
+		"boots_free_description"						"Start the game with free boots!"
+		"boots_enable"									"Enable Boots"
+		"random_unlimited"								"Unlimited Random"
+		"random_unlimited_description"					"Unlock unlimited use of smart random button!"
+		"patreon_support_patreon"						"Support on Patreon"
+		"patreon_support_payment"						"Support with WeChat Pay or Alipay"
+		"patreon_new_methods_announcement"				"Now you can support us with"
+		"patreon_support_tier_1"						"Basic (¥50)"
+		"patreon_support_tier_1_tooltip"				"- Our Thanks and Appreciation<br>
+- Free Boots! Start every match with free Boots of Speed.<br>
+- Unlimited Use of Smart Random<br>
+- Frosthaven and New Bloom 2019 Consumables Bundles! Gain access to 8 cosmetic  in-game  items, such as Fireworks, Snowman and Year of the Pig Ballon<br>
+- Immunity to Kick Troll Item"
+		"patreon_support_tier_2"						"Advanced (¥200)"
+		"patreon_support_tier_2_tooltip"				"- Our Thanks and Appreciation<br>
+- Free Boots! Start every match with free Boots of Speed.<br>
+- Unlimited Use of Smart Random<br>
+- Frosthaven and New Bloom 2019 Consumables Bundles! Gain access to 8 cosmetic  in-game  items, such as Fireworks, Snowman and Year of the Pig Ballon<br>
+- Immunity to Kick Troll Item<br>
+- Kick Trolls from the game! Have access to an item that can be used to kick allied players that are trolling (WARNING: This perk will be removed from supporters that are found to be abusing it)"
+		// Common end
 	}
 }

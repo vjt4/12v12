@@ -1,5 +1,5 @@
-var PlayerPanels = [];
-var TeamPanels = [];
+var PlayerPanels = {};
+var TeamPanels = {};
 var darknessEndTime = -Number.MAX_VALUE;
 
 var teamColors = {};
@@ -87,7 +87,7 @@ function Snippet_DotaTeamBar(team) {
 }
 
 function Snippet_DotaTeamBar_Update(panel) {
-	var team = panel.team
+	var team = panel.team;
 	panel.SetHasClass("EnemyTeam", team != Players.GetTeam(Game.GetLocalPlayerID()));
 	var teamDetails = Game.GetTeamDetails(team);
 	panel.SetDialogVariableInt("team_score", teamDetails.team_score);
@@ -114,9 +114,8 @@ function Update() {
 	$.Each(Game.GetAllPlayerIDs(), function(pid) {
 		Snippet_TopBarPlayerSlot_Update(Snippet_TopBarPlayerSlot(pid));
 	})
-	for (var i in TeamPanels) {
-		Snippet_DotaTeamBar_Update(TeamPanels[i]);
-	}
+
+	Object.values(TeamPanels).forEach(Snippet_DotaTeamBar_Update);
 
 	context.SetHasClass("AltPressed", GameUI.IsAltDown())
 }

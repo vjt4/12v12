@@ -1,29 +1,5 @@
 var DOTA_TEAM_SPECTATOR = 1;
 
-function GetDotaHud() {
-	var p = $.GetContextPanel();
-	while (p !== null && p.id !== 'Hud') {
-		p = p.GetParent();
-	}
-	if (p === null) {
-		throw new HudNotFoundException('Could not find Hud root as parent of panel with id: ' + $.GetContextPanel().id);
-	} else {
-		return p;
-	}
-}
-
-function SubscribeToNetTableKey(tableName, key, callback) {
-    var immediateValue = CustomNetTables.GetTableValue(tableName, key) || {};
-    if (immediateValue != null) callback(immediateValue);
-    CustomNetTables.SubscribeNetTableListener(tableName, function (_tableName, currentKey, value) {
-        if (currentKey === key && value != null) callback(value);
-    });
-}
-
-function FindDotaHudElement(id) {
-	return GetDotaHud().FindChildTraverse(id);
-}
-
 function GetHEXPlayerColor(playerId) {
 	var playerColor = Players.GetPlayerColor(playerId).toString(16);
 	return playerColor == null ? '#000000' : ('#' + playerColor.substring(6, 8) + playerColor.substring(4, 6) + playerColor.substring(2, 4) + playerColor.substring(0, 2));

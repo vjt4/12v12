@@ -6,15 +6,12 @@ local XP_SCALE_FACTOR_INITIAL = 2
 local XP_SCALE_FACTOR_FINAL = 2
 local XP_SCALE_FACTOR_FADEIN_SECONDS = (60 * 60) -- 60 minutes
 
-require( 'timers' )
+require("common/init")
 require("util")
-require("patreons")
-require("utility_functions")
 
-require( "cosmetic_abilities" )
+WebApi.customGame = "Dota12v12"
 
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
-LinkLuaModifier("modifier_donator", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_silencer_new_int_steal", LUA_MODIFIER_MOTION_NONE)
 
 _G.newStats = newStats or {}
@@ -64,66 +61,6 @@ function CMegaDotaGameMode:InitGameMode()
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
 	self.couriers = {}
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 5 )
-
-	local firstPlayerLoaded
-	ListenToGameEvent("player_connect_full", function()
-		if firstPlayerLoaded then return end
-		firstPlayerLoaded = true
-
-		local players = {}
-		for i = 0, 23 do
-			if PlayerResource:IsValidPlayerID(i) then
-				table.insert(players, tostring(PlayerResource:GetSteamID(i)))
-			end
-		end
-
-		SendWebApiRequest("match/before", { mapName = GetMapName(), players = players }, function(data)
-			local publicStats = {}
-			for _,player in ipairs(data.players) do
-				local playerId = GetPlayerIdBySteamId(player.steamId)
-				if player.patreon["emblemColor"] == nil then
-					local colorNames = {
-						"White",
-						"Red",
-						"Green",
-						"Blue",
-						"Cyan",
-						"Yellow",
-						"Pink",
-						"Maroon",
-						"Brown",
-						"Olive",
-						"Teal",
-						"Navy",
-						"Black",
-						"Orange",
-						"Lime",
-						"Purple",
-						"Magenta",
-						"Grey",
-						"Apricot",
-						"Beige",
-						"Mint",
-						"Lavender",
-					}
-					player.patreon["emblemColor"] = colorNames[RandomInt(1, #colorNames)]
-				end
-				Patreons:SetPlayerSettings(playerId, player.patreon)
-
-				publicStats[playerId] = {
-					streak = player.streak,
-					bestStreak = player.bestStreak,
-					averageKills = player.averageKills,
-					averageDeaths = player.averageDeaths,
-					averageAssists = player.averageAssists,
-					wins = player.wins,
-					loses = player.loses,
-				}
-			end
-
-			CustomNetTables:SetTableValue("game_state", "player_stats", publicStats)
-		end)
-	end, nil)
 
 	ListenToGameEvent("dota_player_used_ability", function(event)
 		local hero = PlayerResource:GetSelectedHeroEntity(event.PlayerID)
@@ -339,25 +276,12 @@ function CMegaDotaGameMode:OnNPCSpawned( event )
 end
 
 function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
-	if filterTable.name_const == "modifier_tiny_toss" then
-		local parent = EntIndexToHScript(filterTable.entindex_parent_const)
-		local caster = EntIndexToHScript(filterTable.entindex_caster_const)
-		local ability = EntIndexToHScript(filterTable.entindex_ability_const)
- 		if PlayerResource:IsDisableHelpSetForPlayerID(parent:GetPlayerOwnerID(), caster:GetPlayerOwnerID()) then
-			ability:EndCooldown()
-			ability:RefundManaCost()
-			DisplayError(caster:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
-			return false
-		end
+	local disableHelpResult = DisableHelp.ModifierGainedFilter(filterTable)
+	if disableHelpResult == false then
+		return false
 	end
- 	return true
-end
 
-function DisplayError(playerId, message)
-	local player = PlayerResource:GetPlayer(playerId)
-	if player then
-		CustomGameEventManager:Send_ServerToPlayer(player, "display_custom_error", { message = message })
-	end
+	return true
 end
 
 function CMegaDotaGameMode:RuneSpawnFilter(kv)
@@ -369,18 +293,6 @@ function CMegaDotaGameMode:RuneSpawnFilter(kv)
 
 	return true
 end
-
-RegisterCustomEventListener("set_disable_help", function(data)
-	local to = data.to;
-	if PlayerResource:IsValidPlayerID(to) then
-		local playerId = data.PlayerID;
-		local disable = data.disable == 1
-		PlayerResource:SetUnitShareMaskForPlayer(playerId, to, 4, disable)
- 		local disableHelp = CustomNetTables:GetTableValue("disable_help", tostring(playerId)) or {}
-		disableHelp[tostring(to)] = disable
-		CustomNetTables:SetTableValue("disable_help", tostring(playerId), disableHelp)
-	end
-end)
 
 function CMegaDotaGameMode:OnThink()
 	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
@@ -424,15 +336,12 @@ function CMegaDotaGameMode:FilterModifyExperience( filterTable )
 end
 
 function CMegaDotaGameMode:OnGameRulesStateChange(keys)
-	print("[BAREBONES] GameRules State Changed")
-	DeepPrintTable(keys)
-
 	local newState = GameRules:State_Get()
 
 	if newState == DOTA_GAMERULES_STATE_POST_GAME then
 		local couriers = FindUnitsInRadius( 2, Vector( 0, 0, 0 ), nil, FIND_UNITS_EVERYWHERE, DOTA_UNIT_TARGET_TEAM_BOTH, DOTA_UNIT_TARGET_COURIER, DOTA_UNIT_TARGET_FLAG_NONE, FIND_ANY_ORDER, false )
 
-		for i = 0, 64 do
+		for i = 0, 23 do
 			if PlayerResource:IsValidPlayer( i ) then
 				local networth = 0
 				local hero = PlayerResource:GetSelectedHeroEntity( i )
@@ -475,9 +384,27 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 				CustomNetTables:SetTableValue( "custom_stats", tostring( i ), stats )
 			end
 		end
+
+		local winner
+		local forts = Entities:FindAllByClassname("npc_dota_fort")
+		for _, fort in ipairs(forts) do
+			if fort:GetHealth() > 0 then
+				local team = fort:GetTeam()
+				if winner then
+					winner = nil
+					break
+				end
+
+				winner = team
+			end
+		end
+
+		if winner then
+			WebApi:AfterMatch(winner)
+		end
 	end
 
-    if newState == DOTA_GAMERULES_STATE_STRATEGY_TIME then
+	if newState == DOTA_GAMERULES_STATE_STRATEGY_TIME then
 		local ggp = 0
 		local bgp = 0
 		local ggcolor = {
@@ -530,8 +457,9 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
                 end
             end
         end
-	elseif newState == DOTA_GAMERULES_STATE_PRE_GAME then
+	end
 
+	if newState == DOTA_GAMERULES_STATE_PRE_GAME then
         local toAdd = {
             luna_moon_glaive_fountain = 4,
             ursa_fury_swipes_fountain = 1,
@@ -703,36 +631,27 @@ RegisterCustomEventListener("GetKicks", function(data)
 end)
 
 function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
-	local target = nil
-	local order_type = filterTable.order_type
+	-- DeepPrintTable({ order = filterTable })
+	local orderType = filterTable.order_type
 	local playerId = filterTable.issuer_player_id_const
-	local ability = EntIndexToHScript(filterTable.entindex_ability)
-	local unit = nil
-	local abilityname = nil
-	if ability and ability.GetAbilityName then
-		abilityname = ability:GetAbilityName()
+	local target = filterTable.entindex_target ~= 0 and EntIndexToHScript(filterTable.entindex_target) or nil
+	local ability = filterTable.entindex_ability ~= 0 and EntIndexToHScript(filterTable.entindex_ability) or nil
+	-- `entindex_ability` is item id in some orders without entity
+	if ability and not ability.GetAbilityName then ability = nil end
+	local abilityName = ability and ability:GetAbilityName() or nil
+	local unit
+	-- TODO: Are there orders without a unit?
+	if filterTable.units and filterTable.units["0"] then
+		unit = EntIndexToHScript(filterTable.units["0"])
 	end
 
-	if filterTable.units ~= nil then
-		if filterTable.units["0"] ~= nil then
-			unit = EntIndexToHScript(filterTable.units["0"])
-		end
-	end
-	if filterTable.entindex_target and filterTable.entindex_target ~= 0 then
-		target = EntIndexToHScript(filterTable.entindex_target)
+	local disableHelpResult = DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit)
+	if disableHelpResult == false then
+		return false
 	end
 
-	if order_type == DOTA_UNIT_ORDER_CAST_TARGET then
-		if ability and target and unit then
-			if PlayerResource:IsDisableHelpSetForPlayerID(target:GetPlayerOwnerID(), unit:GetPlayerOwnerID()) and (ability:GetName() == "oracle_fates_edict" or ability:GetName() == "oracle_purifying_flames" or ability:GetName() == "wisp_tether" or ability:GetName() == "earth_spirit_boulder_smash" or ability:GetName() == "earth_spirit_geomagnetic_grip" or ability:GetName() == "earth_spirit_petrify" or ability:GetName() == "troll_warlord_battle_trance") then
-				DisplayError(unit:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
-				return false
-			end
-		end
-	end
-
-	if order_type == DOTA_UNIT_ORDER_CAST_POSITION then
-		if abilityname == "item_ward_dispenser" or abilityname == "item_ward_sentry" or abilityname == "item_ward_observer" then
+	if orderType == DOTA_UNIT_ORDER_CAST_POSITION then
+		if abilityName == "item_ward_dispenser" or abilityName == "item_ward_sentry" or abilityName == "item_ward_observer" then
 			local list = Entities:FindAllByClassname("trigger_multiple")
 			local orderVector = Vector(filterTable.position_x, filterTable.position_y, 0)
 			local fs = {
@@ -755,7 +674,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 
 	if unit then
 		if unit:IsCourier() then
-			if (order_type == DOTA_UNIT_ORDER_DROP_ITEM or order_type == DOTA_UNIT_ORDER_GIVE_ITEM) and ability and ability:IsItem() then
+			if (orderType == DOTA_UNIT_ORDER_DROP_ITEM or orderType == DOTA_UNIT_ORDER_GIVE_ITEM) and ability and ability:IsItem() then
 				local purchaser = ability:GetPurchaser()
 				if purchaser and purchaser:GetPlayerID() ~= playerId then
 					--CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#hud_error_courier_cant_order_item" })
@@ -764,6 +683,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 			end
 		end
 	end
+
 	return true
 end
 
@@ -772,12 +692,12 @@ function CMegaDotaGameMode:OnTimerClick(keys)
 	if msgtimer[keys.PlayerID] and GameRules:GetGameTime() - msgtimer[keys.PlayerID] < 3 then
 		return
 	end
-    msgtimer[keys.PlayerID] = GameRules:GetGameTime()
+	msgtimer[keys.PlayerID] = GameRules:GetGameTime()
 
 	local time = math.abs(math.floor(GameRules:GetDOTATime(false, true)))
-    local min = math.floor(time / 60)
-    local sec = time - min * 60
-    if min < 10 then min = "0" .. min end
-    if sec < 10 then sec = "0" .. sec end
-    Say(PlayerResource:GetPlayer(keys.PlayerID), min .. ":" .. sec, true)
+	local min = math.floor(time / 60)
+	local sec = time - min * 60
+	if min < 10 then min = "0" .. min end
+	if sec < 10 then sec = "0" .. sec end
+	Say(PlayerResource:GetPlayer(keys.PlayerID), min .. ":" .. sec, true)
 end
