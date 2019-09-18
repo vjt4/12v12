@@ -50,8 +50,7 @@ function updatePatreonButton() {
 	$('#PatreonButtonPanel').visible = hasPatreonStatus;
 	$('#PatreonButton').visible = !minimizePatreonButton;
 	$('#PatreonButtonSmallerImage').visible = minimizePatreonButton;
-	// TODO: Different from overthrow, 12v12 doesn't have chat wheel yet
-	$('#VOIcon').visible = false;
+	$('#VOIcon').visible = Game.GetDOTATime(false, false) <= 120;
 	$('#NewMethodsAnnouncement').visible = showNewPaymentMethods && !isPatron && $.Language() !== 'russian';
 	$('#SupportButtonPaymentWindow').visible = showNewPaymentMethods;
 }
@@ -89,7 +88,7 @@ function updatePaymentWindow() {
 	}
 
 	$('#PaymentWindowBody').RemoveAndDeleteChildren()
-	$('#PaymentWindowBody').BCreateChildren('<HTML acceptsinput="' + Game.IsInToolsMode() + '" />');
+	$('#PaymentWindowBody').BCreateChildren('<HTML acceptsinput="true" />');
 	var htmlPanel = $('#PaymentWindowBody').GetChild(0);
 
 	setPaymentWindowStatus('loading');
