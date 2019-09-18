@@ -44,7 +44,8 @@ function updatePatreonButton() {
 	$('#PatreonButtonPanel').visible = hasPatreonStatus;
 	$('#PatreonButton').visible = !minimizePatreonButton;
 	$('#PatreonButtonSmallerImage').visible = minimizePatreonButton;
-	$('#VOIcon').visible = Game.GetDOTATime(false, false) <= 120;
+	// TODO: Different from overthrow, 12v12 doesn't have chat wheel yet
+	$('#VOIcon').visible = false;
 	$('#NewMethodsAnnouncement').visible = !isPatron && $.Language() !== 'russian';
 }
 
