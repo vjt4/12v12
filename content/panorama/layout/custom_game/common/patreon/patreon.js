@@ -37,6 +37,12 @@ function SelectColor(colorName) {
     }
 }
 
+var shouldHideNewMethodsAnnouncement = false;
+function hideNewMethodsAnnouncement() {
+	shouldHideNewMethodsAnnouncement = true;
+	updatePatreonButton();
+}
+
 function updatePatreonButton() {
 	// TODO: Either remove full button, or revert this change
 	var minimizePatreonButton = true;
@@ -44,9 +50,9 @@ function updatePatreonButton() {
 	$('#PatreonButtonPanel').visible = hasPatreonStatus;
 	$('#PatreonButton').visible = !minimizePatreonButton;
 	$('#PatreonButtonSmallerImage').visible = minimizePatreonButton;
-	// TODO: Different from overthrow, 12v12 doesn't have chat wheel yet
-	$('#VOIcon').visible = false;
-	$('#NewMethodsAnnouncement').visible = !isPatron && $.Language() !== 'russian';
+	// Show icon only when chat wheel is loaded as it's not a common module yet
+	$('#VOIcon').visible = GameUI.CustomUIConfig().chatWheelLoaded && Game.GetDOTATime(false, false) <= 120;
+	$('#NewMethodsAnnouncement').visible = !shouldHideNewMethodsAnnouncement && !isPatron && $.Language() !== 'russian';
 }
 
 function setPaymentWindowVisible(visible) {
