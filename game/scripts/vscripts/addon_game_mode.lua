@@ -688,7 +688,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 end
 
 msgtimer = {}
-function CMegaDotaGameMode:OnTimerClick(keys)
+RegisterCustomEventListener("OnTimerClick", function(keys)
 	if msgtimer[keys.PlayerID] and GameRules:GetGameTime() - msgtimer[keys.PlayerID] < 3 then
 		return
 	end
@@ -700,4 +700,4 @@ function CMegaDotaGameMode:OnTimerClick(keys)
 	if min < 10 then min = "0" .. min end
 	if sec < 10 then sec = "0" .. sec end
 	Say(PlayerResource:GetPlayer(keys.PlayerID), min .. ":" .. sec, true)
-end
+end)
