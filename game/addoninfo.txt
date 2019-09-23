@@ -1,51 +1,11 @@
 "AddonInfo"
 {
-	maps			"dota dota_summer dota_spring dota_autumn dota_snow dota_desert dota_journey dota_reef dota_cravern dota_coloseum"
+	maps			"dota"
 	"IsPlayable"	"1"
 	"PenaltiesEnabled"			"1"
 	"EnablePickRules"    "1"
 	"CheckAFKPlayers"	"1"
 	"dota"
-	{
-					"MaxPlayers"                    "24"
-	}
-	"dota_autumn"
-	{
-					"MaxPlayers"                    "24"
-	}
-	"dota_journey"
-	{
-					"MaxPlayers"                    "24"
-	}
-	"dota_summer"
-	{
-					"MaxPlayers"                    "24"
-	}
-	"dota_spring"
-	{
-					"MaxPlayers"                    "24"
-	}
-	"dota_snow"
-	{
-					"MaxPlayers"                    "24"
-	}
-	"dota_reef"
-	{
-					"MaxPlayers"                    "24"
-	}
-	"dota_journey"
-	{
-					"MaxPlayers"                    "24"
-	}
-	"dota_desert"
-	{
-					"MaxPlayers"                    "24"
-	}
-	"dota_cravern"
-	{
-					"MaxPlayers"                    "24"
-	}
-	"dota_coloseum"
 	{
 					"MaxPlayers"                    "24"
 	}
