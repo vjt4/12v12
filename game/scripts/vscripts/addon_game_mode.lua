@@ -6,15 +6,38 @@ local XP_SCALE_FACTOR_INITIAL = 2
 local XP_SCALE_FACTOR_FINAL = 2
 local XP_SCALE_FACTOR_FADEIN_SECONDS = (60 * 60) -- 60 minutes
 
+
+-- Anti feed system
+local TROLL_FEED_DISTANCE_FROM_FOUNTAIN_TRIGGER = 6000 -- Distance from allince Fountain
+local TROLL_FEED_BUFF_BASIC_TIME = (60 * 10)   -- 10 minutes
+local TROLL_FEED_TOTAL_RESPAWN_TIME_MULTIPLE = 2.5 -- x2.5 respawn time. If you respawn 100sec, after debuff you respawn 250sec
+local TROLL_FEED_INCREASE_BUFF_AFTER_DEATH = 60 -- 1 minute
+local TROLL_FEED_RATIO_KD_TO_TRIGGER_MIN = -5 -- (Kill-Death)
+local TROLL_FEED_NEED_TOKEN_TO_BUFF = 3
+local TROLL_FEED_TOKEN_TIME_DIES_WITHIN = (60 * 1.5) -- 1.5 minutes
+local TROLL_FEED_TOKEN_DURATION = (60 * 5) -- 5 minutes
+local TROLL_FEED_MIN_RESPAWN_TIME = 60 -- 1 minute
+local TROLL_FEED_SYSTEM_ASSISTS_TO_KILL_MULTI = 0.5 -- 10 assists = 5 "kills"
+
+
 require("common/init")
 require("util")
-
 WebApi.customGame = "Dota12v12"
 
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_silencer_new_int_steal", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_troll_feed_token", 'anti_feed_system/modifier_troll_feed_token', LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_troll_feed_token_couter", 'anti_feed_system/modifier_troll_feed_token_couter', LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_troll_debuff_stop_feed", 'anti_feed_system/modifier_troll_debuff_stop_feed', LUA_MODIFIER_MOTION_NONE)
 
 _G.newStats = newStats or {}
+
+_G.lastDeathTimes = {}
+_G.lastHeroKillers = {}
+_G.lastHerosPlaceLastDeath = {}
+_G.tableRadiantHeroes = {}
+_G.tableDireHeroes = {}
+_G.newRespawnTimes = {}
 
 if CMegaDotaGameMode == nil then
 	_G.CMegaDotaGameMode = class({}) -- put CMegaDotaGameMode in the global scope
@@ -42,6 +65,8 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetModifierGainedFilter( Dynamic_Wrap( CMegaDotaGameMode, "ModifierGainedFilter" ), self )
 	GameRules:GetGameModeEntity():SetRuneSpawnFilter( Dynamic_Wrap( CMegaDotaGameMode, "RuneSpawnFilter" ), self )
 	GameRules:GetGameModeEntity():SetExecuteOrderFilter(Dynamic_Wrap(CMegaDotaGameMode, 'ExecuteOrderFilter'), self)
+	GameRules:GetGameModeEntity():SetDamageFilter( Dynamic_Wrap( CMegaDotaGameMode, "DamageFilter" ), self )
+
 
 	GameRules:GetGameModeEntity():SetTowerBackdoorProtectionEnabled( true )
 	GameRules:GetGameModeEntity():SetPauseEnabled(IsInToolsMode())
@@ -56,6 +81,8 @@ function CMegaDotaGameMode:InitGameMode()
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(CMegaDotaGameMode, 'OnGameRulesStateChange'), self)
 	ListenToGameEvent( "npc_spawned", Dynamic_Wrap( CMegaDotaGameMode, "OnNPCSpawned" ), self )
 	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CMegaDotaGameMode, 'OnEntityKilled' ), self )
+	ListenToGameEvent("dota_player_pick_hero", Dynamic_Wrap(CMegaDotaGameMode, "OnHeroPicked"), self)
+
 
 	self.m_CurrentGoldScaleFactor = GOLD_SCALE_FACTOR_INITIAL
 	self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL
@@ -153,16 +180,99 @@ function otherTeam(team)
     return -1
 end
 
+function UnitInSafeZone(unit , unitPosition)
+	local teamNumber = unit:GetTeamNumber()
+	local fountains = Entities:FindAllByClassname('ent_dota_fountain')
+	local allyFountainPosition
+	for i, focusFountain in pairs(fountains) do
+		if focusFountain:GetTeamNumber() == teamNumber then
+			allyFountainPosition = focusFountain:GetAbsOrigin()
+		end
+	end
+	return ((allyFountainPosition - unitPosition):Length2D()) <= TROLL_FEED_DISTANCE_FROM_FOUNTAIN_TRIGGER
+end
+
+function GetHeroKD(unit)
+	return (unit:GetKills() + (unit:GetAssists() * TROLL_FEED_SYSTEM_ASSISTS_TO_KILL_MULTI) - unit:GetDeaths())
+end
+
+function ItWorstKD(unit) -- use minimun TROLL_FEED_RATIO_KD_TO_TRIGGER_MIN
+	local unitTeam = unit:GetTeamNumber()
+	local focusTableHeroes
+
+	if unitTeam == DOTA_TEAM_GOODGUYS then
+		focusTableHeroes = _G.tableRadiantHeroes
+	elseif unitTeam == DOTA_TEAM_BADGUYS then
+		focusTableHeroes = _G.tableDireHeroes
+	end
+
+	for i, focusHero in pairs(focusTableHeroes) do
+		local unitKD = GetHeroKD(unit)
+		if unitKD > TROLL_FEED_RATIO_KD_TO_TRIGGER_MIN then
+			return false
+		elseif GetHeroKD(focusHero) <= unitKD and unit ~= focusHero then
+			return false
+		end
+	end
+	return true
+end
+
+function CMegaDotaGameMode:OnHeroPicked(event)
+	local hero = EntIndexToHScript(event.heroindex)
+	if not hero then return end
+	
+	if hero:GetTeamNumber() == DOTA_TEAM_GOODGUYS then
+		table.insert(_G.tableRadiantHeroes, hero)
+	end
+
+	if hero:GetTeamNumber() == DOTA_TEAM_BADGUYS then
+		table.insert(_G.tableDireHeroes, hero)
+	end
+end
+---------------------------------------------------------------------------
+-- Filter: DamageFilter
+---------------------------------------------------------------------------
+function CMegaDotaGameMode:DamageFilter(event)
+	local entindex_victim_const = event.entindex_victim_const
+	local entindex_attacker_const = event.entindex_attacker_const
+	local death_unit
+	local killer
+
+	if (entindex_victim_const) then death_unit = EntIndexToHScript(entindex_victim_const) end
+	if (entindex_attacker_const) then killer = EntIndexToHScript(entindex_attacker_const) end
+
+	if death_unit and death_unit:HasModifier("modifier_troll_debuff_stop_feed") and (death_unit:GetHealth() <= event.damage) and (killer ~= death_unit) and (killer:GetTeamNumber()~=DOTA_TEAM_NEUTRALS) then
+		if ItWorstKD(death_unit) and (not (UnitInSafeZone(death_unit, _G.lastHerosPlaceLastDeath[death_unit]))) then
+			local newTime = death_unit:FindModifierByName("modifier_troll_debuff_stop_feed"):GetRemainingTime() + TROLL_FEED_INCREASE_BUFF_AFTER_DEATH
+			--death_unit:RemoveModifierByName("modifier_troll_debuff_stop_feed")
+			local normalRespawnTime =  death_unit:GetRespawnTime()
+			local addRespawnTime = normalRespawnTime * (TROLL_FEED_TOTAL_RESPAWN_TIME_MULTIPLE - 1)
+
+			if addRespawnTime + normalRespawnTime < TROLL_FEED_MIN_RESPAWN_TIME then
+				addRespawnTime = TROLL_FEED_MIN_RESPAWN_TIME - normalRespawnTime
+			end
+			death_unit:AddNewModifier(death_unit, nil, "modifier_troll_debuff_stop_feed", { duration = newTime, addRespawnTime = addRespawnTime })
+		end
+		death_unit:Kill(nil, death_unit)
+	end
+
+	return true
+end
+
 ---------------------------------------------------------------------------
 -- Event: OnEntityKilled
 ---------------------------------------------------------------------------
 function CMegaDotaGameMode:OnEntityKilled( event )
-    local killedUnit = EntIndexToHScript( event.entindex_killed )
-    local killer = EntIndexToHScript( event.entindex_attacker )
-	local killedTeam = killedUnit:GetTeam()
-
-    --print("fired")
-    if killedUnit:IsRealHero() and not killedUnit:IsReincarnating() then
+	local entindex_killed = event.entindex_killed
+    local entindex_attacker = event.entindex_attacker
+	local killedUnit
+    local killer
+	
+	if (entindex_killed) then killedUnit = EntIndexToHScript(entindex_killed) end
+    if (entindex_attacker) then killer = EntIndexToHScript(entindex_attacker) end
+	
+	--print("fired")
+    if killedUnit and killedUnit:IsRealHero() and not killedUnit:IsReincarnating() then
 		local player_id = -1
 		if killer and killer:IsRealHero() and killer.GetPlayerID then
 			player_id = killer:GetPlayerID()
@@ -226,13 +336,49 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 	        timeLeft = 1
 	    end
 
-	    killedUnit:SetTimeUntilRespawn(timeLeft)
+		if killedUnit and (not killedUnit:HasModifier("modifier_troll_debuff_stop_feed")) and (not ItWorstKD(killedUnit)) then
+			killedUnit:SetTimeUntilRespawn(timeLeft)
+		end
     end
+
+	if killedUnit and killedUnit:IsRealHero() and (PlayerResource:GetSelectedHeroEntity(killedUnit:GetPlayerID())) then
+		_G.lastHeroKillers[killedUnit] = killer
+		_G.lastHerosPlaceLastDeath[killedUnit] = killedUnit:GetOrigin()
+		if (killer ~= killedUnit) then
+			_G.lastDeathTimes[killedUnit] = GameRules:GetGameTime()
+		end
+	end
 
 end
 
-function CMegaDotaGameMode:OnNPCSpawned( event )
-	local spawnedUnit = EntIndexToHScript( event.entindex )
+function CMegaDotaGameMode:OnNPCSpawned(event)
+	local spawnedUnit = EntIndexToHScript(event.entindex)
+	local tokenTrollCouter = "modifier_troll_feed_token_couter"
+
+	-- Assignment of tokens during quick death, maximum 3
+	if (_G.lastDeathTimes[spawnedUnit] ~= nil) and (spawnedUnit:GetDeaths() > 1) and ((GameRules:GetGameTime() - _G.lastDeathTimes[spawnedUnit]) < TROLL_FEED_TOKEN_TIME_DIES_WITHIN) and not spawnedUnit:HasModifier("modifier_troll_debuff_stop_feed") and (_G.lastHeroKillers[spawnedUnit]~=spawnedUnit) and (not (UnitInSafeZone(spawnedUnit, _G.lastHerosPlaceLastDeath[spawnedUnit]))) and (_G.lastHeroKillers[spawnedUnit]:GetTeamNumber()~=DOTA_TEAM_NEUTRALS) then
+		local maxToken = TROLL_FEED_NEED_TOKEN_TO_BUFF
+		local currentStackTokenCouter = spawnedUnit:GetModifierStackCount(tokenTrollCouter, spawnedUnit)
+		local needToken = currentStackTokenCouter + 1
+		if needToken > maxToken then
+			needToken = maxToken
+		end
+		spawnedUnit:AddNewModifier(spawnedUnit, nil, tokenTrollCouter, { duration = TROLL_FEED_TOKEN_DURATION })
+		spawnedUnit:AddNewModifier(spawnedUnit, nil, "modifier_troll_feed_token", { duration = TROLL_FEED_TOKEN_DURATION })
+		spawnedUnit:SetModifierStackCount(tokenTrollCouter, spawnedUnit, needToken)
+	end
+
+	-- Issuing a debuff if 3 quick deaths have accumulated and the hero has the worst KD in the team
+	if spawnedUnit:GetModifierStackCount(tokenTrollCouter, spawnedUnit) == 3 and ItWorstKD(spawnedUnit) then
+		spawnedUnit:RemoveModifierByName(tokenTrollCouter)
+		local normalRespawnTime = spawnedUnit:GetRespawnTime()
+		local addRespawnTime = normalRespawnTime * (TROLL_FEED_TOTAL_RESPAWN_TIME_MULTIPLE - 1)
+		if addRespawnTime + normalRespawnTime < TROLL_FEED_MIN_RESPAWN_TIME then
+			addRespawnTime = TROLL_FEED_MIN_RESPAWN_TIME - normalRespawnTime
+		end
+		GameRules:SendCustomMessage("#anti_feed_system_add_debuff_message", spawnedUnit:GetPlayerID(), 0)
+		spawnedUnit:AddNewModifier(spawnedUnit, nil, "modifier_troll_debuff_stop_feed", { duration = TROLL_FEED_BUFF_BASIC_TIME, addRespawnTime = addRespawnTime })
+	end
 
 	local owner = spawnedUnit:GetOwner()
 	local name = spawnedUnit:GetUnitName()
@@ -466,7 +612,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
         }
 
         local fountains = Entities:FindAllByClassname('ent_dota_fountain')
-        -- Loop over all ents
+		-- Loop over all ents
         for k,fountain in pairs(fountains) do
             for skillName,skillLevel in pairs(toAdd) do
                 fountain:AddAbility(skillName)
