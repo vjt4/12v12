@@ -102,16 +102,6 @@ function CMegaDotaGameMode:InitGameMode()
 				duration = ability:GetSpecialValueFor("duration")
 			})
 		end
-		if event.abilityname == "item_blink" then
-			local oldpos = hero:GetAbsOrigin()
-			Timers:CreateTimer( 0.01, function()
-				local pos = hero:GetAbsOrigin()
-
-				if IsInBugZone(pos) then
-					FindClearSpaceForUnit(hero, oldpos, false)	
-				end
-			end)
-		end
 	end, nil)
 
 	_G.kicks = {
@@ -161,11 +151,6 @@ function CMegaDotaGameMode:InitGameMode()
 
 		return 0.6
 	end )
-end
-
-function IsInBugZone(pos)
-	local sum = pos.x + pos.y
-	return sum > 14150 or sum < -14350 or pos.x > 7750 or pos.x < -7750 or pos.y > 7500 or pos.y < -7300
 end
 
 function GetActivePlayerCountForTeam(team)
@@ -488,20 +473,6 @@ function CMegaDotaGameMode:OnThink()
 		self.m_CurrentXpScaleFactor = XP_SCALE_FACTOR_INITIAL + (xpFracTime * ( XP_SCALE_FACTOR_FINAL - XP_SCALE_FACTOR_INITIAL ) )
 --		print( "Gold scale = " .. self.m_CurrentGoldScaleFactor )
 --		print( "XP scale = " .. self.m_CurrentXpScaleFactor )
-
-		for i = 0, 23 do
-			if PlayerResource:IsValidPlayer( i ) then
-				local hero = PlayerResource:GetSelectedHeroEntity( i )
-				if hero and hero:IsAlive() then
-					local pos = hero:GetAbsOrigin()
-					
-					if IsInBugZone(pos) then
-						hero:ForceKill(false)
-						-- Kill this unit immediately.
-					end
-				end
-			end
-		end
 	end
 	return 5
 end
@@ -658,7 +629,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	if newState == DOTA_GAMERULES_STATE_PRE_GAME then
         local toAdd = {
             luna_moon_glaive_fountain = 4,
-			ursa_fury_swipes_fountain = 1,
+            ursa_fury_swipes_fountain = 1,
         }
 
         local fountains = Entities:FindAllByClassname('ent_dota_fountain')
