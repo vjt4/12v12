@@ -16,6 +16,7 @@
 		"item"		"item_courier"
 		"item"		"item_bottle"
 		"item"		"item_banhammer"
+		"item"		"item_patreon_courier"
 	}
 
 	"attributes"

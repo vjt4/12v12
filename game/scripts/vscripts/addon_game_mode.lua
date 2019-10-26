@@ -6,6 +6,7 @@ local XP_SCALE_FACTOR_INITIAL = 2
 local XP_SCALE_FACTOR_FINAL = 2
 local XP_SCALE_FACTOR_FADEIN_SECONDS = (60 * 60) -- 60 minutes
 
+local game_start = true
 
 -- Anti feed system
 local TROLL_FEED_DISTANCE_FROM_FOUNTAIN_TRIGGER = 6000 -- Distance from allince Fountain
@@ -19,18 +20,20 @@ local TROLL_FEED_TOKEN_DURATION = (60 * 5) -- 5 minutes
 local TROLL_FEED_MIN_RESPAWN_TIME = 60 -- 1 minute
 local TROLL_FEED_SYSTEM_ASSISTS_TO_KILL_MULTI = 0.5 -- 10 assists = 5 "kills"
 
-
 require("common/init")
 require("util")
 WebApi.customGame = "Dota12v12"
 
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_patreon_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_silencer_new_int_steal", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_feed_token", 'anti_feed_system/modifier_troll_feed_token', LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_feed_token_couter", 'anti_feed_system/modifier_troll_feed_token_couter', LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_debuff_stop_feed", 'anti_feed_system/modifier_troll_debuff_stop_feed', LUA_MODIFIER_MOTION_NONE)
 
 _G.newStats = newStats or {}
+_G.personalCouriers = {}
+_G.mainTeamCouriers = {}
 
 _G.lastDeathTimes = {}
 _G.lastHeroKillers = {}
@@ -82,6 +85,7 @@ function CMegaDotaGameMode:InitGameMode()
 	ListenToGameEvent( "npc_spawned", Dynamic_Wrap( CMegaDotaGameMode, "OnNPCSpawned" ), self )
 	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CMegaDotaGameMode, 'OnEntityKilled' ), self )
 	ListenToGameEvent("dota_player_pick_hero", Dynamic_Wrap(CMegaDotaGameMode, "OnHeroPicked"), self)
+
 
 
 	self.m_CurrentGoldScaleFactor = GOLD_SCALE_FACTOR_INITIAL
@@ -413,6 +417,7 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 
 	if spawnedUnit:IsRealHero() then
 		-- Silencer Nerf
+		local playerId = spawnedUnit:GetPlayerID()
 		Timers:CreateTimer(1, function()
 			if spawnedUnit:HasModifier("modifier_silencer_int_steal") then
 				spawnedUnit:RemoveModifierByName('modifier_silencer_int_steal')
@@ -427,11 +432,27 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 		if not spawnedUnit.firstTimeSpawned then
 			spawnedUnit.firstTimeSpawned = true
 			spawnedUnit:SetContextThink("HeroFirstSpawn", function()
-				local playerId = spawnedUnit:GetPlayerID()
+
 				if spawnedUnit == PlayerResource:GetSelectedHeroEntity(playerId) then
 					Patreons:GiveOnSpawnBonus(playerId)
 				end
 			end, 2/30)
+		end
+
+		local psets = Patreons:GetPlayerSettings(playerId)
+
+		if psets.level > 1 and _G.personalCouriers[playerId] == nil then
+			local courier_spawn = {
+				[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant"),
+				[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire"),
+			}
+			local team = spawnedUnit:GetTeamNumber()
+			local cr = CreateUnitByName("npc_dota_courier", courier_spawn[team]:GetAbsOrigin() + RandomVector(RandomFloat(100, 100)), true, nil, nil, team)
+			cr:AddNewModifier(cr, nil, "modifier_patreon_courier", {})
+			Timers:CreateTimer(.1, function()
+				cr:SetControllableByPlayer(spawnedUnit:GetPlayerID(), true)
+				_G.personalCouriers[playerId] = cr;
+			end)
 		end
 	end
 end
@@ -658,15 +679,20 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 
         end
 
-		local courier_spawn = {}
-		courier_spawn[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant")
-		courier_spawn[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire")
+		if game_start then
+			local courier_spawn = {}
+			courier_spawn[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant")
+			courier_spawn[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire")
 
-		for team = 2, 3 do
-			self.couriers[team] = CreateUnitByName("npc_dota_courier", courier_spawn[team]:GetAbsOrigin(), true, nil, nil, team)
-			self.couriers[team]:AddNewModifier(self.couriers[team], nil, "modifier_core_courier", {})
+			for team = 2, 3 do
+				self.couriers[team] = CreateUnitByName("npc_dota_courier", courier_spawn[team]:GetAbsOrigin(), true, nil, nil, team)
+				if _G.mainTeamCouriers[team] == nil then
+					_G.mainTeamCouriers[team] = self.couriers[team]
+				end
+				self.couriers[team]:AddNewModifier(self.couriers[team], nil, "modifier_core_courier", {})
+			end
+			game_start = false
 		end
-
 --		Timers:CreateTimer(30, function()
 --			for i=0,PlayerResource:GetPlayerCount() do
 --				local hero = PlayerResource:GetSelectedHeroEntity(i)
@@ -716,6 +742,16 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				"item_patreonbundle_1",
 				"item_patreonbundle_2"
 			}
+			if itemName == "item_patreon_courier" then
+				if _G.personalCouriers[plyID] then
+					CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#alreadyhaveprivatecourier" })
+				else
+					CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#nopatreonerror2" })
+				end
+				UTIL_Remove(hItem)
+				return false
+			end
+
 			local pitem = false
 			for i=1,#pitems do
 				if itemName == pitems[i] then
@@ -731,6 +767,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 					return false
 				end
 			end
+
 			if itemName == "item_banhammer" then
 				local psets = Patreons:GetPlayerSettings(plyID)
 				if psets.level < 2 then
@@ -749,7 +786,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			local pitems = {
 				"item_patreonbundle_1",
 				"item_patreonbundle_2",
-				"item_banhammer"
+				"item_banhammer",
 			}
 			for i=1,#pitems do
 				if itemName == pitems[i] then
@@ -757,6 +794,17 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 					if prsh ~= nil then
 						if prsh:IsRealHero() then
 							local prshID = prsh:GetPlayerID()
+
+							if itemName == "item_patreon_courier" then
+								if _G.personalCouriers[prshID] then
+									CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(prshID), "display_custom_error", { message = "#alreadyhaveprivatecourier" })
+								else
+									CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(prshID), "display_custom_error", { message = "#nopatreonerror2" })
+								end
+								UTIL_Remove(hItem)
+								return false
+							end
+
 							if not prshID then
 								UTIL_Remove(hItem)
 								return false
@@ -806,7 +854,6 @@ RegisterCustomEventListener("GetKicks", function(data)
 end)
 
 function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
-	-- DeepPrintTable({ order = filterTable })
 	local orderType = filterTable.order_type
 	local playerId = filterTable.issuer_player_id_const
 	local target = filterTable.entindex_target ~= 0 and EntIndexToHScript(filterTable.entindex_target) or nil
@@ -823,6 +870,37 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	local disableHelpResult = DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit)
 	if disableHelpResult == false then
 		return false
+	end
+
+	if _G.personalCouriers[playerId] then
+		local privateCourier = _G.personalCouriers[playerId]
+
+		if orderType == DOTA_UNIT_ORDER_GIVE_ITEM and target:IsCourier() and target ~= privateCourier and privateCourier:IsAlive() and (not privateCourier:IsStunned())then
+			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#cannotgiveiteminthiscourier" })
+			return false
+		end
+
+		for _, unitEntityIndex in pairs(filterTable.units) do
+			unit = EntIndexToHScript(unitEntityIndex)
+			if unit:IsCourier() and unit ~= privateCourier and privateCourier:IsAlive() and (not privateCourier:IsStunned())then
+
+				for i, x in pairs(filterTable.units) do
+					if filterTable.units[i] == unitEntityIndex then
+						filterTable.units[i] = privateCourier:GetEntityIndex()
+					end
+				end
+
+				for i = 0, 20 do
+					if filterTable.entindex_ability and privateCourier:GetAbilityByIndex(i) and ability and privateCourier:GetAbilityByIndex(i):GetName() == ability:GetName() then
+						filterTable.entindex_ability = privateCourier:GetAbilityByIndex(i):GetEntityIndex()
+					end
+				end
+
+				local newFocus = {privateCourier:GetEntityIndex()}
+
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "selection_courier_update", { newCourier = newFocus, removeCourier = { unitEntityIndex } })
+			end
+		end
 	end
 
 	if orderType == DOTA_UNIT_ORDER_CAST_POSITION then
@@ -861,6 +939,64 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 
 	return true
 end
+
+RegisterCustomEventListener("courier_custom_select", function(data)
+	local playerID = data.PlayerID
+	if not playerID then return end
+	local player = PlayerResource:GetPlayer(playerID)
+	local team = player:GetTeamNumber()
+	local currentCourier = false
+
+	if _G.personalCouriers[playerID] and _G.personalCouriers[playerID]:IsAlive() then
+		currentCourier = { _G.personalCouriers[playerID]:GetEntityIndex() }
+	elseif _G.mainTeamCouriers[team]:IsAlive() then
+		currentCourier = { _G.mainTeamCouriers[team]:GetEntityIndex() }
+	end
+
+	if not currentCourier then return end
+	CustomGameEventManager:Send_ServerToPlayer(player, "selection_new", { entities = currentCourier })
+end)
+
+function unitMoveToPoint(unit, point)
+	ExecuteOrderFromTable({
+		UnitIndex = unit:entindex(),
+		OrderType = DOTA_UNIT_ORDER_MOVE_TO_POSITION,
+		Position = point
+	})
+end
+
+RegisterCustomEventListener("courier_custom_select_deliever_items", function(data)
+	local playerID = data.PlayerID
+	if not playerID then return end
+	local player = PlayerResource:GetPlayer(playerID)
+	local team = player:GetTeamNumber()
+	local currentCourier = false
+
+	if _G.personalCouriers[playerID] and _G.personalCouriers[playerID]:IsAlive() then
+		currentCourier = _G.personalCouriers[playerID]
+	elseif _G.mainTeamCouriers[team]:IsAlive() then
+		currentCourier = _G.mainTeamCouriers[team]
+	end
+
+	if not currentCourier then return end
+	if currentCourier:IsStunned() then return end
+
+	local stashHasItems = false
+
+	for i = 9, 14 do
+		local item = player:GetAssignedHero():GetItemInSlot(i)
+		if item ~= nil then
+			stashHasItems = true
+		end
+	end
+
+	if stashHasItems then
+		currentCourier:CastAbilityNoTarget(currentCourier:GetAbilityByIndex(7), playerID)
+	else
+		unitMoveToPoint(currentCourier, player:GetAssignedHero():GetAbsOrigin())
+		currentCourier:CastAbilityNoTarget(currentCourier:GetAbilityByIndex(4), playerID)
+	end
+end)
 
 msgtimer = {}
 RegisterCustomEventListener("OnTimerClick", function(keys)
