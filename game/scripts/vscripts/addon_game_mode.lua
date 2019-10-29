@@ -114,6 +114,10 @@ function CMegaDotaGameMode:InitGameMode()
 		end
 	end, nil)
 
+	_G.raxBonuses = {}
+	_G.raxBonuses[DOTA_TEAM_GOODGUYS] = 0
+	_G.raxBonuses[DOTA_TEAM_BADGUYS] = 0
+
 	_G.kicks = {
 		false,
 		false,
@@ -286,9 +290,42 @@ function CMegaDotaGameMode:OnEntityKilled( event )
     local entindex_attacker = event.entindex_attacker
 	local killedUnit
     local killer
+	local name
 	
-	if (entindex_killed) then killedUnit = EntIndexToHScript(entindex_killed) end
-    if (entindex_attacker) then killer = EntIndexToHScript(entindex_attacker) end
+	if (entindex_killed) then
+		killedUnit = EntIndexToHScript(entindex_killed)
+		name = killedUnit:GetUnitName()
+	end
+	if (entindex_attacker) then killer = EntIndexToHScript(entindex_attacker) end
+	
+	local raxRespawnTimeWorth = {
+		npc_dota_goodguys_range_rax_top = 1,
+		npc_dota_goodguys_melee_rax_top = 2,
+		npc_dota_goodguys_range_rax_mid = 1,
+		npc_dota_goodguys_melee_rax_mid = 2,
+		npc_dota_goodguys_range_rax_bot = 1,
+		npc_dota_goodguys_melee_rax_bot = 2,
+		npc_dota_badguys_range_rax_top = 1,
+		npc_dota_badguys_melee_rax_top = 2,
+		npc_dota_badguys_range_rax_mid = 1,
+		npc_dota_badguys_melee_rax_mid = 2,
+		npc_dota_badguys_range_rax_bot = 1,
+		npc_dota_badguys_melee_rax_bot = 2,
+	}
+	if raxRespawnTimeWorth[name] ~= nil then
+		local opposingTeam = killedUnit:GetOpposingTeamNumber()
+		raxBonuses[opposingTeam] = raxBonuses[opposingTeam] + raxRespawnTimeWorth[name]
+		SendOverheadEventMessage( nil, OVERHEAD_ALERT_MANA_LOSS, killedUnit, raxRespawnTimeWorth[name], nil )
+		GameRules:SendCustomMessage("#destroyed_" .. string.sub(name,10,#name - 4),-1,0)
+		if raxBonuses[opposingTeam] == 9 then
+			raxBonuses[opposingTeam] = 11
+			if opposingTeam == DOTA_TEAM_GOODGUYS then
+				GameRules:SendCustomMessage("#destroyed_badguys_all_rax",-1,0)
+			else
+				GameRules:SendCustomMessage("#destroyed_goodguys_all_rax",-1,0)
+			end
+		end
+	end
 	
 	--print("fired")
     if killedUnit and killedUnit:IsRealHero() and not killedUnit:IsReincarnating() then
@@ -301,7 +338,6 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 			end
 		end
 		if player_id ~= -1 then
-			local name = killedUnit:GetUnitName()
 
 			newStats[player_id] = newStats[player_id] or {
 				npc_dota_sentry_wards = 0,
@@ -370,6 +406,7 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 
 end
 
+LinkLuaModifier("modifier_rax_bonus", LUA_MODIFIER_MOTION_NONE)
 function CMegaDotaGameMode:OnNPCSpawned(event)
 	local spawnedUnit = EntIndexToHScript(event.entindex)
 	local tokenTrollCouter = "modifier_troll_feed_token_couter"
@@ -416,6 +453,7 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 	end
 
 	if spawnedUnit:IsRealHero() then
+		spawnedUnit:AddNewModifier(spawnedUnit, nil, "modifier_rax_bonus", {})
 		-- Silencer Nerf
 		local playerId = spawnedUnit:GetPlayerID()
 		Timers:CreateTimer(1, function()
@@ -494,7 +532,7 @@ function CMegaDotaGameMode:OnThink()
 				local hero = PlayerResource:GetSelectedHeroEntity( i )
 				if hero and hero:IsAlive() then
 					local pos = hero:GetAbsOrigin()
-					
+
 					if IsInBugZone(pos) then
 						hero:ForceKill(false)
 						-- Kill this unit immediately.
@@ -658,7 +696,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	if newState == DOTA_GAMERULES_STATE_PRE_GAME then
         local toAdd = {
             luna_moon_glaive_fountain = 4,
-			ursa_fury_swipes_fountain = 1,
+            ursa_fury_swipes_fountain = 1,
         }
 
         local fountains = Entities:FindAllByClassname('ent_dota_fountain')
