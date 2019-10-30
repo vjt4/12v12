@@ -47,7 +47,12 @@ if CMegaDotaGameMode == nil then
 	--refer to: http://stackoverflow.com/questions/6586145/lua-require-with-global-local
 end
 
+function Precahe( context )
+	Cosmetics:Precache( context )
+end
+
 function Activate()
+	Cosmetics:Init()
 	CMegaDotaGameMode:InitGameMode()
 end
 

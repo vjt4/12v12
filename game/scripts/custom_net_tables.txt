@@ -5,6 +5,7 @@
 		"disable_help",
 		"game_state",
 
-		"custom_stats"
+		"custom_stats",
+		"cosmetics"
 	]
 }
