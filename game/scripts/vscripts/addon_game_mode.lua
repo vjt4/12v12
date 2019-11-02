@@ -47,7 +47,14 @@ if CMegaDotaGameMode == nil then
 	--refer to: http://stackoverflow.com/questions/6586145/lua-require-with-global-local
 end
 
-function Precahe( context )
+function Precache( context )
+	PrecacheResource( "soundfile", "soundevents/custom_soundboard_soundevents.vsndevts", context )
+	
+	local heroeskv = LoadKeyValues("scripts/heroes.txt")
+	for hero, _ in pairs(heroeskv) do
+		PrecacheResource( "soundfile", "soundevents/voscripts/game_sounds_vo_"..string.sub(hero,15)..".vsndevts", context )
+	end
+
 	Cosmetics:Precache( context )
 end
 
@@ -90,8 +97,6 @@ function CMegaDotaGameMode:InitGameMode()
 	ListenToGameEvent( "npc_spawned", Dynamic_Wrap( CMegaDotaGameMode, "OnNPCSpawned" ), self )
 	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CMegaDotaGameMode, 'OnEntityKilled' ), self )
 	ListenToGameEvent("dota_player_pick_hero", Dynamic_Wrap(CMegaDotaGameMode, "OnHeroPicked"), self)
-
-
 	ListenToGameEvent( "player_chat", Dynamic_Wrap( CMegaDotaGameMode, "OnPlayerChat" ), self )
 
 	self.m_CurrentGoldScaleFactor = GOLD_SCALE_FACTOR_INITIAL
