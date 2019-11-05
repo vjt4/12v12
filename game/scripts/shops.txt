@@ -16,7 +16,8 @@
 		"item"		"item_courier"
 		"item"		"item_bottle"
 		"item"		"item_banhammer"
-		"item"		"item_patreon_courier"
+		"item"		"item_disable_help_custom"
+		"item"		"item_mute_custom"
 	}
 
 	"attributes"
@@ -38,6 +39,7 @@
 		"item"		"item_ogre_axe"
 		"item"		"item_blade_of_alacrity"
 		"item"		"item_staff_of_wizardry"
+		"item"		"item_patreon_courier"
 		"item"		"item_river_painter7"	
 		"item"		"item_river_painter6"	
 		"item"		"item_river_painter5"	
