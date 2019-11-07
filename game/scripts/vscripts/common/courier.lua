@@ -19,14 +19,14 @@ function EditFilterToCourier(filterTable, playerId, ability)
 
 	local privateCourier = _G.personalCouriers[playerId]
 
-	if orderType == DOTA_UNIT_ORDER_GIVE_ITEM and target:IsCourier() and target ~= privateCourier and privateCourier:IsAlive() and (not privateCourier:IsStunned())then
+	if orderType == DOTA_UNIT_ORDER_GIVE_ITEM and target:IsCourier() and target ~= privateCourier and privateCourier:IsAlive() and (not privateCourier:IsStunned()) then
 		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#cannotgiveiteminthiscourier" })
 		return false
 	end
 
 	for _, unitEntityIndex in pairs(filterTable.units) do
 		unit = EntIndexToHScript(unitEntityIndex)
-		if unit:IsCourier() and unit ~= privateCourier and privateCourier:IsAlive() and (not privateCourier:IsStunned())then
+		if unit:IsCourier() and unit ~= privateCourier and privateCourier:IsAlive() and (not privateCourier:IsStunned()) then
 
 			for i, x in pairs(filterTable.units) do
 				if filterTable.units[i] == unitEntityIndex then
@@ -40,7 +40,7 @@ function EditFilterToCourier(filterTable, playerId, ability)
 				end
 			end
 
-			local newFocus = {privateCourier:GetEntityIndex()}
+			local newFocus = { privateCourier:GetEntityIndex() }
 
 			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "selection_courier_update", { newCourier = newFocus, removeCourier = { unitEntityIndex } })
 		end
@@ -57,21 +57,32 @@ function BlockToBuyCourier(playerId, hItem)
 	UTIL_Remove(hItem)
 end
 
+function SearchCorrectCourier(playerID, team)
+	local currentCourier
+	local psets = Patreons:GetPlayerSettings(playerID)
+
+	if psets.level > 1 and _G.personalCouriers[playerID] and _G.personalCouriers[playerID]:IsAlive() and (not _G.personalCouriers[playerID]:IsStunned()) then
+		currentCourier = _G.personalCouriers[playerID]
+	elseif _G.mainTeamCouriers[team] and _G.mainTeamCouriers[team]:IsAlive() and (not _G.mainTeamCouriers[team]:IsStunned()) then
+		currentCourier = _G.mainTeamCouriers[team]
+	else
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#allcouriersdie" })
+	end
+
+	return currentCourier
+end
+
 RegisterCustomEventListener("courier_custom_select", function(data)
 	local playerID = data.PlayerID
 	if not playerID then return end
+
 	local player = PlayerResource:GetPlayer(playerID)
 	local team = player:GetTeamNumber()
-	local currentCourier = false
-
-	if _G.personalCouriers[playerID] and _G.personalCouriers[playerID]:IsAlive() then
-		currentCourier = { _G.personalCouriers[playerID]:GetEntityIndex() }
-	elseif _G.mainTeamCouriers[team]:IsAlive() then
-		currentCourier = { _G.mainTeamCouriers[team]:GetEntityIndex() }
-	end
+	local currentCourier = SearchCorrectCourier(playerID, team)
 
 	if not currentCourier then return end
-	CustomGameEventManager:Send_ServerToPlayer(player, "selection_new", { entities = currentCourier })
+
+	CustomGameEventManager:Send_ServerToPlayer(player, "selection_new", { entities = { currentCourier:GetEntityIndex() } })
 end)
 
 function unitMoveToPoint(unit, point)
@@ -87,16 +98,9 @@ RegisterCustomEventListener("courier_custom_select_deliever_items", function(dat
 	if not playerID then return end
 	local player = PlayerResource:GetPlayer(playerID)
 	local team = player:GetTeamNumber()
-	local currentCourier = false
-
-	if _G.personalCouriers[playerID] and _G.personalCouriers[playerID]:IsAlive() then
-		currentCourier = _G.personalCouriers[playerID]
-	elseif _G.mainTeamCouriers[team]:IsAlive() then
-		currentCourier = _G.mainTeamCouriers[team]
-	end
+	local currentCourier = SearchCorrectCourier(playerID, team)
 
 	if not currentCourier then return end
-	if currentCourier:IsStunned() then return end
 
 	local stashHasItems = false
 
