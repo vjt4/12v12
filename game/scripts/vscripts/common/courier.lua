@@ -6,7 +6,7 @@ function CreatePrivateCourier(playerId, owner, pointToSpawn)
 	local cr = CreateUnitByName("npc_dota_courier", courier_spawn, true, nil, nil, team)
 	cr:AddNewModifier(cr, nil, "modifier_patreon_courier", {})
 	Timers:CreateTimer(.1, function()
-		cr:SetControllableByPlayer(owner:GetPlayerID(), true)
+		cr:SetControllableByPlayer(playerId, true)
 		_G.personalCouriers[playerId] = cr;
 	end)
 end
