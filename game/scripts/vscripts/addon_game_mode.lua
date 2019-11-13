@@ -22,6 +22,8 @@ local TROLL_FEED_SYSTEM_ASSISTS_TO_KILL_MULTI = 0.5 -- 10 assists = 5 "kills"
 
 require("common/init")
 require("util")
+require("personal_items_cooldown")
+
 WebApi.customGame = "Dota12v12"
 
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
@@ -899,6 +901,13 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				end
 			end
 		end
+
+		if (filterTable["item_parent_entindex_const"] > 0) and hItem:GetPurchaser() and not hItem:GetPurchaser():CheckPersonalCooldown(itemName) then
+			hItem:GetPurchaser():ModifyGold(hItem:GetCost(), false, 0)
+			UTIL_Remove(hItem)
+			return false
+		end
+
 		if _G.fastItemsWithCooldown[itemName] then
 			local buyer = hItem:GetPurchaser()
 			local plyID = buyer:GetPlayerID()

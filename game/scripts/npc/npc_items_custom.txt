@@ -413,4 +413,13 @@
 			}
 		}
 	}
+
+	"item_tome_of_knowledge"
+	{
+		"AbilityCooldown"				"300.0"
+		"ItemStockMax"					"5"
+		"ItemStockTime"					"600.0"
+		"ItemInitialStockTime"			"690.0"
+		"BonusDelayedStockCount"		"4"
+	}
 }
