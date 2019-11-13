@@ -393,3 +393,15 @@
 {
 	visibility: collapse;
 }
+
+#IsLeave
+{
+	width: 36px;
+	height: 7px;
+	margin-top: 6px;
+	margin-left: 9px;
+    background-image: url("file://{images}/custom_game/leave.png");
+    visibility: collapse;
+}
+
+

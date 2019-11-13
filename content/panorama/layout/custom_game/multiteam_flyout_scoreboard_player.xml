@@ -26,6 +26,22 @@
 			}
 		}
 
+		function ChangeLeaveStatus(msg)
+		{
+			var playerId = $.GetContextPanel().GetAttributeInt( "player_id", -1 );
+			if (playerId == msg["playerId"]){
+				if (msg["leave"]){
+					$("#PlayerName").style.color = "#d60f0f";
+					$("#PlayerName").style.paddingLeft = "38px";
+					$("#IsLeave").style.visibility = "visible";
+				}else{
+					$("#PlayerName").style.color = "white";
+					$("#PlayerName").style.paddingLeft = "0px";
+					$("#IsLeave").style.visibility = "collapse";
+				}
+			}
+		}
+    
 		function RefreshMuteAndDisableHelpList()
 		{
 			var playerId = $.GetContextPanel().GetAttributeInt( "player_id", -1 );
@@ -36,7 +52,7 @@
 				$("#DisableHelpButton").checked = true;
 			}
 		}
-
+    
 		RefreshMuteAndDisableHelpList();
 
 		function ToggleMuteItem( event_data )
@@ -49,9 +65,11 @@
 				$.GetContextPanel().SetHasClass( "player_muted", newIsMuted );
 			}
 		}
-
+    
+    GameEvents.Subscribe("change_leave_status", ChangeLeaveStatus);
 		GameEvents.Subscribe("set_disable_help_refresh", RefreshMuteAndDisableHelpList);
 		GameEvents.Subscribe("set_mute_refresh", ToggleMuteItem);
+    
 	</script>
 	<Panel class="PlayerRow">
 		<Panel id="PlayerRowContainer">
@@ -59,6 +77,7 @@
 				<Image id="HeroIcon" heroimagestyle="landscape" scaling="stretch-to-fit-preserve-aspect" />
 			</Panel>
 			<Panel id="PlayerDetailsContainer" class="ScoreCol_PlayerDetails ScoreboardPanel">
+				<Label id="IsLeave"/>
 				<Panel id="PlayerAndHeroName">
 					<Label id="PlayerName" text="AAAAA" />
 					<Label id="HeroNameAndDescription" text="#custom_scoreboard_hero_name_and_desc" />
