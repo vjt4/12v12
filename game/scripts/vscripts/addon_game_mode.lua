@@ -68,6 +68,8 @@ function Precache( context )
 	for hero, _ in pairs(heroeskv) do
 		PrecacheResource( "soundfile", "soundevents/voscripts/game_sounds_vo_"..string.sub(hero,15)..".vsndevts", context )
 	end
+
+	Cosmetics:Precache( context )
 end
 
 function Activate()
