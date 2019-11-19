@@ -1008,9 +1008,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 		return false
 	end
 
-	if _G.personalCouriers[playerId] then
-		filterTable = EditFilterToCourier(filterTable, playerId, ability)
-	end
+	filterTable = EditFilterToCourier(filterTable)
 
 	if orderType == DOTA_UNIT_ORDER_CAST_POSITION then
 		if abilityName == "item_ward_dispenser" or abilityName == "item_ward_sentry" or abilityName == "item_ward_observer" then
