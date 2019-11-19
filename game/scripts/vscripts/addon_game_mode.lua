@@ -969,7 +969,7 @@ function CMegaDotaGameMode:OnConnectFull(data)
 end
 
 function CMegaDotaGameMode:OnPlayerDisconnect(data)
-	CustomGameEventManager:Send_ServerToAllClients( "change_leave_status", {leave = true, playerId = data.userid-1} )
+	CustomGameEventManager:Send_ServerToAllClients( "change_leave_status", {leave = true, playerId = data.PlayerID} )
 end
 
 function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
