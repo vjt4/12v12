@@ -32,13 +32,13 @@ end
 --------------------------------------------------------------------------------
 function modifier_troll_debuff_stop_feed:DeclareFunctions()
     local funcs = {
-        MODIFIER_PROPERTY_RESPAWNTIME,
+        MODIFIER_PROPERTY_RESPAWNTIME_STACKING,
     }
     return funcs
 end
 
 --------------------------------------------------------------------------------
-function modifier_troll_debuff_stop_feed:GetModifierConstantRespawnTime()
+function modifier_troll_debuff_stop_feed:GetModifierStackingRespawnTime()
     return self.addRespawnTime
 end
 
