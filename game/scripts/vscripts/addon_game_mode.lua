@@ -594,8 +594,12 @@ function CMegaDotaGameMode:OnThink()
 					local pos = hero:GetAbsOrigin()
 
 					if IsInBugZone(pos) then
-						hero:ForceKill(false)
+						-- hero:ForceKill(false)
 						-- Kill this unit immediately.
+
+						local naprv = Vector(pos[1]/math.sqrt(pos[1]*pos[1]+pos[2]*pos[2]+pos[3]*pos[3]),pos[2]/math.sqrt(pos[1]*pos[1]+pos[2]*pos[2]+pos[3]*pos[3]),0)
+						pos[3] = 0
+						FindClearSpaceForUnit(hero, pos-naprv*1100, false)
 					end
 				end
 			end
