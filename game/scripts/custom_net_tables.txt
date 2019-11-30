@@ -6,6 +6,8 @@
 		"game_state",
 
 		"custom_stats",
-		"cosmetics"
+		"cosmetics",
+
+		"trolls_with_voite"
 	]
 }
