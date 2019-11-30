@@ -19,6 +19,12 @@ function EditFilterToCourier(filterTable)
 	local playerId = filterTable.issuer_player_id_const
 
 	if playerId < 0 then return filterTable end
+	local hasCourierInUnitsTable = false
+	for _, unitEntityIndex in pairs(filterTable.units) do
+		unit = EntIndexToHScript(unitEntityIndex)
+		if unit:IsCourier() then hasCourierInUnitsTable = true end
+	end
+	if not hasCourierInUnitsTable then return filterTable end
 
 	local currentCourier = SearchCorrectCourier(playerId, PlayerResource:GetPlayer(playerId):GetAssignedHero():GetTeamNumber())
 
@@ -29,7 +35,7 @@ function EditFilterToCourier(filterTable)
 
 	for _, unitEntityIndex in pairs(filterTable.units) do
 		unit = EntIndexToHScript(unitEntityIndex)
-		if unit:IsCourier() and unit ~= currentCourier and currentCourier:IsAlive() and (not currentCourier:IsStunned()) then
+		if unit:IsCourier() and currentCourier and unit ~= currentCourier and currentCourier:IsAlive() and (not currentCourier:IsStunned()) then
 
 			for i, x in pairs(filterTable.units) do
 				if filterTable.units[i] == unitEntityIndex then

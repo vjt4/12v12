@@ -521,43 +521,6 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 			local team = spawnedUnit:GetTeamNumber()
 			CreatePrivateCourier(playerId, spawnedUnit, courier_spawn[team]:GetAbsOrigin())
 		end
-		local timeToBaseGPM = 0.7
-		local baseGoldPerTick = 1
-
-		local timeAdditionalGPM = 60
-		local goldPerLevelGpmInMinute = 2
-
-		Timers:CreateTimer("base_gpm_custom_timer", {
-			useGameTime = true,
-			endTime = 0,
-			callback = function()
-				if _G.gameIsStart then
-					for _, hero in pairs(_G.tableRadiantHeroes) do
-						hero:ModifyGold(baseGoldPerTick, false, 0)
-					end
-					for _, hero in pairs(_G.tableDireHeroes) do
-						hero:ModifyGold(baseGoldPerTick, false, 0)
-					end
-				end
-				return timeToBaseGPM
-			end
-		})
-		Timers:CreateTimer("additional_gpm_custom_timer", {
-			useGameTime = true,
-			endTime = 0,
-			callback = function()
-				if _G.gameIsStart then
-					for _, hero in pairs(_G.tableRadiantHeroes) do
-						hero:ModifyGold(hero:GetLevel() * goldPerLevelGpmInMinute, false, 0)
-					end
-					for _, hero in pairs(_G.tableDireHeroes) do
-						hero:ModifyGold(hero:GetLevel() * goldPerLevelGpmInMinute, false, 0)
-					end
-				end
-				return timeAdditionalGPM
-			end
-		})
-
 	end
 end
 
@@ -803,6 +766,44 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 				self.couriers[team]:AddNewModifier(self.couriers[team], nil, "modifier_core_courier", {})
 			end
 			game_start = false
+
+			local timeToBaseGPM = 0.7
+			local baseGoldPerTick = 1
+
+			local timeAdditionalGPM = 60
+			local goldPerLevelGpmInMinute = 2
+
+			Timers:CreateTimer("base_gpm_custom_timer", {
+				useGameTime = true,
+				endTime = 0,
+				callback = function()
+					if _G.gameIsStart then
+						for _, hero in pairs(_G.tableRadiantHeroes) do
+							hero:ModifyGold(baseGoldPerTick, false, 0)
+						end
+						for _, hero in pairs(_G.tableDireHeroes) do
+							hero:ModifyGold(baseGoldPerTick, false, 0)
+						end
+					end
+					return timeToBaseGPM
+				end
+			})
+
+			Timers:CreateTimer("additional_gpm_custom_timer", {
+				useGameTime = true,
+				endTime = 0,
+				callback = function()
+					if _G.gameIsStart then
+						for _, hero in pairs(_G.tableRadiantHeroes) do
+							hero:ModifyGold(hero:GetLevel() * goldPerLevelGpmInMinute, false, 0)
+						end
+						for _, hero in pairs(_G.tableDireHeroes) do
+							hero:ModifyGold(hero:GetLevel() * goldPerLevelGpmInMinute, false, 0)
+						end
+					end
+					return timeAdditionalGPM
+				end
+			})
 		end
 --		Timers:CreateTimer(30, function()
 --			for i=0,PlayerResource:GetPlayerCount() do
