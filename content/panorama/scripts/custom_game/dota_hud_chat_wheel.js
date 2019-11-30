@@ -267,9 +267,13 @@ for ( var i = 0; i < heronames2.length; i++ )
 var nowselect = 0;
 
 function StartWheel() {
-    $("#Wheel").visible = true;
-    $("#Bubble").visible = true;
-    $("#PhrasesContainer").visible = true;
+	var isTroll = CustomNetTables.GetTableValue("trolls_with_voite", Players.GetLocalPlayer());
+
+	if (!isTroll){
+	    $("#Wheel").visible = true;
+        $("#Bubble").visible = true;
+        $("#PhrasesContainer").visible = true;
+	}
 }
 
 function StopWheel() {

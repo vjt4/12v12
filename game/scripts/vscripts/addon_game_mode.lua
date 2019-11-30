@@ -40,7 +40,9 @@ _G.newStats = newStats or {}
 _G.personalCouriers = {}
 _G.mainTeamCouriers = {}
 _G.gameIsStart = false
-_G.trollList = {}
+
+_G.playersVoices = {} -- в addon_game_mode
+_G.trollList = {} -- в addon_game_mode
 
 _G.lastDeathTimes = {}
 _G.lastHeroKillers = {}
@@ -60,6 +62,7 @@ _G.fastItemsWithCooldown = {
 }
 _G.fastItemsWithoutCooldown =
 {
+	["item_voiting_troll"] = true,
 	--["item_banhammer"] = true, When teleporting, you can not change the size of the stack in the store.
 }
 
@@ -84,7 +87,10 @@ function Activate()
 	CMegaDotaGameMode:InitGameMode()
 end
 
+_G.ItemKVs = {}
+
 function CMegaDotaGameMode:InitGameMode()
+	_G.ItemKVs = LoadKeyValues("scripts/npc/npc_block_items_for_troll.txt")
 	print( "10v10 Mode Loaded!" )
 
 	-- Adjust team limits
@@ -441,6 +447,8 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 end
 
 LinkLuaModifier("modifier_rax_bonus", LUA_MODIFIER_MOTION_NONE)
+
+
 function CMegaDotaGameMode:OnNPCSpawned(event)
 	local spawnedUnit = EntIndexToHScript(event.entindex)
 	local tokenTrollCouter = "modifier_troll_feed_token_couter"
@@ -992,12 +1000,6 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			end
 		end
 
-		if (filterTable["item_parent_entindex_const"] > 0) and hItem:GetPurchaser() and not hItem:GetPurchaser():CheckPersonalCooldown(itemName) then
-			hItem:GetPurchaser():ModifyGold(hItem:GetCost(), false, 0)
-			UTIL_Remove(hItem)
-			return false
-		end
-
 		if  hItem:GetPurchaser() and (itemName == "item_relic")then
 			local buyer = hItem:GetPurchaser()
 			local plyID = buyer:GetPlayerID()
@@ -1059,6 +1061,12 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				return false
 			end
 		end
+
+		if (filterTable["item_parent_entindex_const"] > 0) and hItem:GetPurchaser() and not hItem:GetPurchaser():CheckPersonalCooldown(itemName) then
+			hItem:GetPurchaser():ModifyGold(hItem:GetCost(), false, 0)
+			UTIL_Remove(hItem)
+			return false
+		end
 	end
 
 	return true
@@ -1076,7 +1084,17 @@ function CMegaDotaGameMode:OnPlayerDisconnect(data)
 	CustomGameEventManager:Send_ServerToAllClients( "change_leave_status", {leave = true, playerId = data.PlayerID} )
 end
 
+function GetBlockItemByID(id)
+	for k,v in pairs(_G.ItemKVs) do
+		if tonumber(v["ID"]) == id then
+			v["name"] = k
+			return v
+		end
+	end
+end
+
 function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
+
 	local orderType = filterTable.order_type
 	local playerId = filterTable.issuer_player_id_const
 	local target = filterTable.entindex_target ~= 0 and EntIndexToHScript(filterTable.entindex_target) or nil
@@ -1094,6 +1112,15 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 		["item_disable_help_custom"] = true,
 		["item_mute_custom"] = true,
 	}
+	if orderType == DOTA_UNIT_ORDER_PURCHASE_ITEM then
+		if _G.trollList[playerId] then
+			local item = GetBlockItemByID(filterTable["entindex_ability"])
+			if item ~= nil then
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#you_cannot_buy_it" })
+				return false
+			end
+		end
+	end
 
 	if orderType == DOTA_UNIT_ORDER_DROP_ITEM or orderType == DOTA_UNIT_ORDER_EJECT_ITEM_FROM_STASH then
 		if ability:GetAbilityName() == "item_relic" then
@@ -1114,6 +1141,24 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 		end
 	end
 
+	if orderType == DOTA_UNIT_ORDER_PICKUP_ITEM then
+		if _G.trollList[playerId] then
+			local pickedItem = target:GetContainedItem()
+			if not pickedItem then return true end
+			local itemName = pickedItem:GetAbilityName()
+			local blockedItemToPickUpTroll = {
+				["item_gem"] = true,
+				["item_aegis"] = true,
+				["item_refresher_shard"] = true,
+				["item_cheese"] = true,
+				["item_ultimate_scepter_2"] = true,
+			}
+			if blockedItemToPickUpTroll[itemName] then
+				return false
+			end
+		end
+	end
+
 	if orderType == DOTA_UNIT_ORDER_DROP_ITEM or orderType == DOTA_UNIT_ORDER_EJECT_ITEM_FROM_STASH then
 		if ability and itemsToBeDestroy[ability:GetAbilityName()] then
 			ability:Destroy()
@@ -1130,9 +1175,11 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	if disableHelpResult == false then
 		return false
 	end
+
 	if filterTable then
 		filterTable = EditFilterToCourier(filterTable)
 	end
+
 	if orderType == DOTA_UNIT_ORDER_CAST_POSITION then
 		if abilityName == "item_ward_dispenser" or abilityName == "item_ward_sentry" or abilityName == "item_ward_observer" then
 			local list = Entities:FindAllByClassname("trigger_multiple")

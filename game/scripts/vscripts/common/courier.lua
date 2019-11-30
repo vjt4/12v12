@@ -19,6 +19,8 @@ function EditFilterToCourier(filterTable)
 	local playerId = filterTable.issuer_player_id_const
 
 	if playerId < 0 then return filterTable end
+	if not PlayerResource:GetPlayer(playerId):GetAssignedHero() then return filterTable end
+
 	local hasCourierInUnitsTable = false
 	for _, unitEntityIndex in pairs(filterTable.units) do
 		unit = EntIndexToHScript(unitEntityIndex)
@@ -35,23 +37,30 @@ function EditFilterToCourier(filterTable)
 
 	for _, unitEntityIndex in pairs(filterTable.units) do
 		unit = EntIndexToHScript(unitEntityIndex)
-		if unit:IsCourier() and currentCourier and unit ~= currentCourier and currentCourier:IsAlive() and (not currentCourier:IsStunned()) then
 
+		if unit:IsCourier() then
 			for i, x in pairs(filterTable.units) do
 				if filterTable.units[i] == unitEntityIndex then
-					filterTable.units[i] = currentCourier:GetEntityIndex()
+					if _G.trollList[playerId] then
+						CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "selection_remove", { entities = { unit:GetEntityIndex() } })
+						CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#you_cannot_control_courier" })
+						filterTable.units[i] = currentCourier
+					elseif currentCourier then
+						filterTable.units[i] = currentCourier:GetEntityIndex()
+					end
 				end
 			end
 
-			for i = 0, 20 do
-				if filterTable.entindex_ability and currentCourier:GetAbilityByIndex(i) and ability and currentCourier:GetAbilityByIndex(i):GetName() == ability:GetName() then
-					filterTable.entindex_ability = currentCourier:GetAbilityByIndex(i):GetEntityIndex()
+			if (not _G.trollList[playerId]) and currentCourier and unit ~= currentCourier and currentCourier:IsAlive() and (not currentCourier:IsStunned()) then
+				for i = 0, 20 do
+					if filterTable.entindex_ability and currentCourier:GetAbilityByIndex(i) and ability and currentCourier:GetAbilityByIndex(i):GetName() == ability:GetName() then
+						filterTable.entindex_ability = currentCourier:GetAbilityByIndex(i):GetEntityIndex()
+					end
 				end
+
+				local newFocus = { currentCourier:GetEntityIndex() }
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "selection_courier_update", { newCourier = newFocus, removeCourier = { unitEntityIndex } })
 			end
-
-			local newFocus = { currentCourier:GetEntityIndex() }
-
-			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "selection_courier_update", { newCourier = newFocus, removeCourier = { unitEntityIndex } })
 		end
 	end
 
@@ -70,7 +79,9 @@ end
 function SearchCorrectCourier(playerID, team)
 	local currentCourier
 	local psets = Patreons:GetPlayerSettings(playerID)
-
+	if _G.trollList[playerID] then
+		return {}
+	end
 	if psets.level > 1 and _G.personalCouriers[playerID] and _G.personalCouriers[playerID]:IsAlive() and (not _G.personalCouriers[playerID]:IsStunned()) then
 		currentCourier = _G.personalCouriers[playerID]
 	elseif _G.mainTeamCouriers[team] and _G.mainTeamCouriers[team]:IsAlive() and (not _G.mainTeamCouriers[team]:IsStunned()) then
@@ -90,9 +101,11 @@ RegisterCustomEventListener("courier_custom_select", function(data)
 	local team = player:GetTeamNumber()
 	local currentCourier = SearchCorrectCourier(playerID, team)
 
-	if not currentCourier then return end
-
-	CustomGameEventManager:Send_ServerToPlayer(player, "selection_new", { entities = { currentCourier:GetEntityIndex() } })
+	if currentCourier and (not _G.trollList[playerID]) then
+		CustomGameEventManager:Send_ServerToPlayer(player, "selection_new", { entities = { currentCourier:GetEntityIndex() } })
+	elseif _G.trollList[playerID] then
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#you_cannot_control_courier" })
+	end
 end)
 
 function unitMoveToPoint(unit, point)
@@ -110,21 +123,22 @@ RegisterCustomEventListener("courier_custom_select_deliever_items", function(dat
 	local team = player:GetTeamNumber()
 	local currentCourier = SearchCorrectCourier(playerID, team)
 
-	if not currentCourier then return end
-
-	local stashHasItems = false
-
-	for i = 9, 14 do
-		local item = player:GetAssignedHero():GetItemInSlot(i)
-		if item ~= nil then
-			stashHasItems = true
+	if currentCourier and (not _G.trollList[playerID]) then
+		local stashHasItems = false
+		for i = 9, 14 do
+			local item = player:GetAssignedHero():GetItemInSlot(i)
+			if item ~= nil then
+				stashHasItems = true
+			end
 		end
-	end
 
-	if stashHasItems then
-		currentCourier:CastAbilityNoTarget(currentCourier:GetAbilityByIndex(7), playerID)
-	else
-		unitMoveToPoint(currentCourier, player:GetAssignedHero():GetAbsOrigin())
-		currentCourier:CastAbilityNoTarget(currentCourier:GetAbilityByIndex(4), playerID)
+		if stashHasItems then
+			currentCourier:CastAbilityNoTarget(currentCourier:GetAbilityByIndex(7), playerID)
+		else
+			unitMoveToPoint(currentCourier, player:GetAssignedHero():GetAbsOrigin())
+			currentCourier:CastAbilityNoTarget(currentCourier:GetAbilityByIndex(4), playerID)
+		end
+	elseif _G.trollList[playerID] then
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#you_cannot_control_courier" })
 	end
 end)
