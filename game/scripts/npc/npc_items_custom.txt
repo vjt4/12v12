@@ -475,7 +475,7 @@
     }                 
     "item_recipe_ironwood_tree" 
     {
-            "ItemCost"                      "500"
+            "ItemCost"                      "420"
             "ItemPurchasable"               "1"
     }     
     "item_royal_jelly"
