@@ -21,25 +21,25 @@ modifier_patreon_courier = {
 
 function modifier_patreon_courier:GetModifierMoveSpeed_Max()
 	if self:GetCaster():HasFlyMovementCapability() then
-		return 1600
+		return 2200
 	else
-		return 1600
+		return 2200
 	end
 end
 
 function modifier_patreon_courier:GetModifierMoveSpeed_Limit()
 	if self:GetCaster():HasFlyMovementCapability() then
-		return 1600
+		return 2200
 	else
-		return 1600
+		return 2200
 	end
 end
 
 function modifier_patreon_courier:GetModifierMoveSpeed_Absolute()
 	if self:GetCaster():HasFlyMovementCapability() then
-		return 1600
+		return 2200
 	else
-		return 1600
+		return 2200
 	end
 end
 
