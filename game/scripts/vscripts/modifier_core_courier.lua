@@ -28,7 +28,7 @@ function modifier_core_courier:GetModifierMoveSpeed_Max()
 	if self:GetCaster():HasFlyMovementCapability() then
 		return 1600
 	else
-		return 800
+		return 1600
 	end
 end
 
@@ -36,7 +36,7 @@ function modifier_core_courier:GetModifierMoveSpeed_Limit()
 	if self:GetCaster():HasFlyMovementCapability() then
 		return 1600
 	else
-		return 800
+		return 1600
 	end
 end
 
@@ -44,7 +44,7 @@ function modifier_core_courier:GetModifierMoveSpeed_Absolute()
 	if self:GetCaster():HasFlyMovementCapability() then
 		return 1600
 	else
-		return 800
+		return 1600
 	end
 end
 
