@@ -25,6 +25,7 @@ local NET_WORSE_FOR_RAPIER_MIN = 20000
 
 require("common/init")
 require("util")
+require("gpm_lib")
 require("personal_items_cooldown")
 
 WebApi.customGame = "Dota12v12"
@@ -39,7 +40,6 @@ LinkLuaModifier("modifier_troll_debuff_stop_feed", 'anti_feed_system/modifier_tr
 _G.newStats = newStats or {}
 _G.personalCouriers = {}
 _G.mainTeamCouriers = {}
-_G.gameIsStart = false
 _G.trollList = {}
 
 _G.lastDeathTimes = {}
@@ -748,12 +748,8 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
                 fountain:AddItem(item)
             end
 
-        end
-
+		end
 		if game_start then
-			Timers:CreateTimer(90, function()
-				_G.gameIsStart = true
-			end)
 			local courier_spawn = {}
 			courier_spawn[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant")
 			courier_spawn[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire")
@@ -765,37 +761,6 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 				end
 				self.couriers[team]:AddNewModifier(self.couriers[team], nil, "modifier_core_courier", {})
 			end
-			game_start = false
-
-			local timeToBaseGPM = 0.275
-			local baseGoldPerTick = 1
-
-			local timeAdditionalGPM = 60
-			local goldPerLevelGpmInMinute = 2
-
-			Timers:CreateTimer(function()
-				local all_heroes = HeroList:GetAllHeroes()
-				if _G.gameIsStart then
-					--print("START GAME GPM")
-					--for i,x in pairs(all_heroes) do print(i,x) end
-					for _, hero in pairs(all_heroes) do
-						--print("HERO: ", hero, " NAME: ", hero:GetName(), " GOLD: ", baseGoldPerTick)
-						hero:ModifyGold(baseGoldPerTick, false, 0)
-					end
-				end
-				return timeToBaseGPM
-			end
-			)
-			Timers:CreateTimer(function()
-				local all_heroes = HeroList:GetAllHeroes()
-				if _G.gameIsStart then
-					for _, hero in pairs(all_heroes) do
-						hero:ModifyGold(hero:GetLevel() * goldPerLevelGpmInMinute, false, 0)
-					end
-				end
-				return timeAdditionalGPM
-			end
-			)
 		end
 --		Timers:CreateTimer(30, function()
 --			for i=0,PlayerResource:GetPlayerCount() do
@@ -817,6 +782,16 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 --				end
 --			end
 --		end)
+	end
+
+	if newState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+		if game_start then
+			game_start = false
+			Timers:CreateTimer(0.1, function()
+				GPM_Init()
+				return nil
+			end)
+		end
 	end
 end
 
