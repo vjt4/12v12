@@ -773,37 +773,29 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 			local timeAdditionalGPM = 60
 			local goldPerLevelGpmInMinute = 2
 
-			Timers:CreateTimer("base_gpm_custom_timer", {
-				useGameTime = true,
-				endTime = 0,
-				callback = function()
-					if _G.gameIsStart then
-						for _, hero in pairs(_G.tableRadiantHeroes) do
-							hero:ModifyGold(baseGoldPerTick, false, 0)
-						end
-						for _, hero in pairs(_G.tableDireHeroes) do
-							hero:ModifyGold(baseGoldPerTick, false, 0)
-						end
+			Timers:CreateTimer(function()
+				local all_heroes = HeroList:GetAllHeroes()
+				if _G.gameIsStart then
+					--print("START GAME GPM")
+					--for i,x in pairs(all_heroes) do print(i,x) end
+					for _, hero in pairs(all_heroes) do
+						--print("HERO: ", hero, " NAME: ", hero:GetName(), " GOLD: ", baseGoldPerTick)
+						hero:ModifyGold(baseGoldPerTick, false, 0)
 					end
-					return timeToBaseGPM
 				end
-			})
-
-			Timers:CreateTimer("additional_gpm_custom_timer", {
-				useGameTime = true,
-				endTime = 0,
-				callback = function()
-					if _G.gameIsStart then
-						for _, hero in pairs(_G.tableRadiantHeroes) do
-							hero:ModifyGold(hero:GetLevel() * goldPerLevelGpmInMinute, false, 0)
-						end
-						for _, hero in pairs(_G.tableDireHeroes) do
-							hero:ModifyGold(hero:GetLevel() * goldPerLevelGpmInMinute, false, 0)
-						end
+				return timeToBaseGPM
+			end
+			)
+			Timers:CreateTimer(function()
+				local all_heroes = HeroList:GetAllHeroes()
+				if _G.gameIsStart then
+					for _, hero in pairs(all_heroes) do
+						hero:ModifyGold(hero:GetLevel() * goldPerLevelGpmInMinute, false, 0)
 					end
-					return timeAdditionalGPM
 				end
-			})
+				return timeAdditionalGPM
+			end
+			)
 		end
 --		Timers:CreateTimer(30, function()
 --			for i=0,PlayerResource:GetPlayerCount() do
