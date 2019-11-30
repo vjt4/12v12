@@ -20,6 +20,9 @@ local TROLL_FEED_TOKEN_DURATION = (60 * 5) -- 5 minutes
 local TROLL_FEED_MIN_RESPAWN_TIME = 60 -- 1 minute
 local TROLL_FEED_SYSTEM_ASSISTS_TO_KILL_MULTI = 0.5 -- 10 assists = 5 "kills"
 
+--Requirements to Buy Divine Rapier
+local NET_WORSE_FOR_RAPIER_MIN = 20000
+
 require("common/init")
 require("util")
 require("personal_items_cooldown")
@@ -37,6 +40,7 @@ _G.newStats = newStats or {}
 _G.personalCouriers = {}
 _G.mainTeamCouriers = {}
 _G.gameIsStart = false
+_G.trollList = {}
 
 _G.lastDeathTimes = {}
 _G.lastHeroKillers = {}
@@ -47,6 +51,8 @@ _G.newRespawnTimes = {}
 
 _G.itemsIsBuy = {}
 _G.lastTimeBuyItemWithCooldown = {}
+
+_G.playersNetWorthes = {}
 
 _G.fastItemsWithCooldown = {
 	["item_disable_help_custom"] = 10,
@@ -830,6 +836,50 @@ function DoesHeroHasFreeSlot(unit)
 	return false
 end
 
+function SearchAndCheckRapiers(buyer, unit, plyID, maxSlots, timerKey)
+	local fullRapierCost = 6000
+	for i = 0, maxSlots do
+		local item = unit:GetItemInSlot(i)
+		if item and item:GetAbilityName() == "item_rapier" and (item:GetPurchaser() == buyer) and ((item.defend == nil) or (item.defend == false)) then
+			if _G.playersNetWorthes[plyID] == nil then
+				_G.playersNetWorthes[plyID] = PlayerResource:GetTotalGoldSpent(plyID) + PlayerResource:GetGold(plyID)
+			end
+			if _G.trollList[plyID] then
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#you_cannot_buy_it" })
+				UTIL_Remove(item)
+				_G.playersNetWorthes[plyID] = (PlayerResource:GetTotalGoldSpent(plyID) + PlayerResource:GetGold(plyID))
+				buyer:ModifyGold(fullRapierCost, false, 0)
+				Timers:CreateTimer(0.03, function()
+					Timers:RemoveTimer(timerKey)
+				end)
+			elseif _G.playersNetWorthes[plyID] and (_G.playersNetWorthes[plyID] < NET_WORSE_FOR_RAPIER_MIN) then
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#rapier_small_networth" })
+				UTIL_Remove(item)
+				_G.playersNetWorthes[plyID] = (PlayerResource:GetTotalGoldSpent(plyID) + PlayerResource:GetGold(plyID) - fullRapierCost)
+				buyer:ModifyGold(fullRapierCost, false, 0)
+				Timers:CreateTimer(0.03, function()
+					Timers:RemoveTimer(timerKey)
+				end)
+			else
+				if GetHeroKD(buyer) > 0 then
+					Timers:CreateTimer(0.03, function()
+						item.defend = true
+						Timers:RemoveTimer(timerKey)
+					end)
+				elseif (GetHeroKD(buyer) <= 0) then
+					CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#rapier_littleKD" })
+					UTIL_Remove(item)
+					_G.playersNetWorthes[plyID] = (PlayerResource:GetTotalGoldSpent(plyID) + PlayerResource:GetGold(plyID))
+					buyer:ModifyGold(fullRapierCost, false, 0)
+					Timers:CreateTimer(0.03, function()
+						Timers:RemoveTimer(timerKey)
+					end)
+				end
+			end
+		end
+	end
+end
+
 function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 	if filterTable["item_entindex_const"] == nil then
 		return true
@@ -955,6 +1005,22 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			return false
 		end
 
+		if  hItem:GetPurchaser() and (itemName == "item_relic")then
+			local buyer = hItem:GetPurchaser()
+			local plyID = buyer:GetPlayerID()
+			local itemEntIndex = hItem:GetEntityIndex()
+			local timerKey = "seacrh_rapier_on_player"..itemEntIndex
+			Timers:CreateTimer(timerKey, {
+				useGameTime = false,
+				endTime = 0.4,
+				callback = function()
+					SearchAndCheckRapiers(buyer, buyer, plyID, 20, timerKey)
+					SearchAndCheckRapiers(buyer, SearchCorrectCourier(plyID, buyer:GetTeamNumber()), plyID, 10,timerKey)
+					return 0.45
+				end
+			})
+		end
+
 		if _G.fastItemsWithCooldown[itemName] then
 			local buyer = hItem:GetPurchaser()
 			local plyID = buyer:GetPlayerID()
@@ -1037,6 +1103,25 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	}
 
 	if orderType == DOTA_UNIT_ORDER_DROP_ITEM or orderType == DOTA_UNIT_ORDER_EJECT_ITEM_FROM_STASH then
+		if ability:GetAbilityName() == "item_relic" then
+			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#cannotpullit" })
+			return false
+		end
+	end
+
+	if  orderType == DOTA_UNIT_ORDER_SELL_ITEM  then
+		if ability:GetAbilityName() == "item_relic" then
+			Timers:RemoveTimer("seacrh_rapier_on_player"..filterTable.entindex_ability)
+		end
+	end
+
+	if orderType == DOTA_UNIT_ORDER_GIVE_ITEM then
+		if target:GetClassname() == "ent_dota_shop" and ability:GetAbilityName() == "item_relic" then
+			Timers:RemoveTimer("seacrh_rapier_on_player"..ability:GetEntityIndex())
+		end
+	end
+
+	if orderType == DOTA_UNIT_ORDER_DROP_ITEM or orderType == DOTA_UNIT_ORDER_EJECT_ITEM_FROM_STASH then
 		if ability and itemsToBeDestroy[ability:GetAbilityName()] then
 			ability:Destroy()
 		end
@@ -1052,9 +1137,9 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	if disableHelpResult == false then
 		return false
 	end
-
-	filterTable = EditFilterToCourier(filterTable)
-
+	if filterTable then
+		filterTable = EditFilterToCourier(filterTable)
+	end
 	if orderType == DOTA_UNIT_ORDER_CAST_POSITION then
 		if abilityName == "item_ward_dispenser" or abilityName == "item_ward_sentry" or abilityName == "item_ward_observer" then
 			local list = Entities:FindAllByClassname("trigger_multiple")
