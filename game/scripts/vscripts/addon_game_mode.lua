@@ -767,7 +767,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 			end
 			game_start = false
 
-			local timeToBaseGPM = 0.7
+			local timeToBaseGPM = 0.275
 			local baseGoldPerTick = 1
 
 			local timeAdditionalGPM = 60
