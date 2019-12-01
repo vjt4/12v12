@@ -470,8 +470,8 @@
     }             
     "item_iron_talon"
     {
-            "ItemCost"                      "1"
-            "ItemPurchasable"               "1"
+            "ItemCost"                      "0"
+            "ItemPurchasable"               "0"
     }                 
     "item_recipe_ironwood_tree" 
     {
