@@ -125,7 +125,7 @@ RegisterCustomEventListener("courier_custom_select_deliever_items", function(dat
 
 	if currentCourier and (not _G.trollList[playerID]) then
 		local stashHasItems = false
-		for i = 9, 14 do
+		for i = 10, 15 do
 			local item = player:GetAssignedHero():GetItemInSlot(i)
 			if item ~= nil then
 				stashHasItems = true

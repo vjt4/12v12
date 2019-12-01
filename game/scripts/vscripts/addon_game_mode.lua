@@ -1037,7 +1037,8 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			end
 		end
 
-		if (filterTable["item_parent_entindex_const"] > 0) and hItem:GetPurchaser() and not hItem:GetPurchaser():CheckPersonalCooldown(itemName) then
+		if (filterTable["item_parent_entindex_const"] > 0) and hItem:GetPurchaser() and not hItem:GetPurchaser():CheckPersonalCooldown(itemName) and (hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear")) then
+			--print(hItem,": ", itemName, " HERO NAME: ", hInventoryParent)
 			hItem:GetPurchaser():ModifyGold(hItem:GetCost(), false, 0)
 			UTIL_Remove(hItem)
 			return false
