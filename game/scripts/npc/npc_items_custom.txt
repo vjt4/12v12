@@ -470,8 +470,8 @@
     }             
     "item_iron_talon"
     {
-            "ItemCost"                      "0"
-            "ItemPurchasable"               "0"
+            "ItemCost"                      "1"
+            "ItemPurchasable"               "1"
     }                 
     "item_recipe_ironwood_tree" 
     {
@@ -562,7 +562,7 @@
     }                 
     "item_recipe_vambrace"  
     {
-            "ItemCost"                      "0"
+            "ItemCost"                      "1"
             "ItemPurchasable"               "0"
     }         
     "item_clumsy_net"
@@ -743,7 +743,7 @@
     }         
     "item_recipe_trident"
     {
-            "ItemCost"                      "0"
+            "ItemCost"                      "1"
             "ItemPurchasable"               "0"
     }             
     "item_demonicon"
@@ -753,7 +753,7 @@
     }                 
     "item_recipe_fallen_sky"
     {
-            "ItemCost"                      "0"
+            "ItemCost"                      "1"
             "ItemPurchasable"               "0"
     }         
     "item_pirate_hat"
