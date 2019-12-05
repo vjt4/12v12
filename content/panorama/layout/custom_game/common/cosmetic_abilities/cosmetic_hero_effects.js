@@ -100,11 +100,17 @@ function CreateHeroEffect( parent, heroEffectName, heroEffectIndex ) {
 	} )
 
 	hero_effect.SetPanelEvent( "onmouseover", function() {
+		var preview = $( "#PreviewImage" )
 
+		preview.SetImage( "file://{resources}/layout/custom_game/common/cosmetic_abilities/preview/effects/" + heroEffectIndex + ".png" )
+		preview.SetHasClass( "Visible", true )
 	} )
 
 	hero_effect.SetPanelEvent( "onmouseout", function() {
+		var preview = $( "#PreviewImage" )
 
+		preview.SetImage( "file://{resources}/layout/custom_game/common/cosmetic_abilities/preview/effects/" + heroEffectIndex + ".png" )
+		preview.SetHasClass( "Visible", false )
 	} )
 
 	$.CreatePanel( "Label", hero_effect, "" ).text = $.Localize( heroEffectName )
