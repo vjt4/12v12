@@ -353,13 +353,13 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 		npc_dota_badguys_melee_rax_bot = 2,
 	}
 	if raxRespawnTimeWorth[name] ~= nil then
-		local opposingTeam = killedUnit:GetOpposingTeamNumber()
-		raxBonuses[opposingTeam] = raxBonuses[opposingTeam] + raxRespawnTimeWorth[name]
-		SendOverheadEventMessage( nil, OVERHEAD_ALERT_MANA_LOSS, killedUnit, raxRespawnTimeWorth[name], nil )
+		local team = killedUnit:GetTeam()
+		raxBonuses[team] = raxBonuses[team] + raxRespawnTimeWorth[name]
+		SendOverheadEventMessage( nil, OVERHEAD_ALERT_MANA_ADD, killedUnit, raxRespawnTimeWorth[name], nil )
 		GameRules:SendCustomMessage("#destroyed_" .. string.sub(name,10,#name - 4),-1,0)
-		if raxBonuses[opposingTeam] == 9 then
-			raxBonuses[opposingTeam] = 11
-			if opposingTeam == DOTA_TEAM_GOODGUYS then
+		if raxBonuses[team] == 9 then
+			raxBonuses[team] = 11
+			if team == DOTA_TEAM_BADGUYS then
 				GameRules:SendCustomMessage("#destroyed_badguys_all_rax",-1,0)
 			else
 				GameRules:SendCustomMessage("#destroyed_goodguys_all_rax",-1,0)
@@ -427,7 +427,7 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 	    timeLeft = timeLeft + addedTime
 	    --print(timeLeft)
 		
-		timeLeft = timeLeft - (raxBonuses[killedUnit:GetTeam()] * (1-respawnReduction))
+		timeLeft = timeLeft + (raxBonuses[killedUnit:GetTeam()] * (1-respawnReduction))
 
 	    if timeLeft < 1 then
 	        timeLeft = 1
