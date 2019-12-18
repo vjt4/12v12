@@ -427,7 +427,7 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 	    timeLeft = timeLeft + addedTime
 	    --print(timeLeft)
 		
-		timeLeft = timeLeft + (raxBonuses[killedUnit:GetTeam()] * (1-respawnReduction))
+		timeLeft = timeLeft + ((raxBonuses[killedUnit:GetTeam()] - raxBonuses[killedUnit:GetOpposingTeamNumber()]) * (1-respawnReduction))
 
 	    if timeLeft < 1 then
 	        timeLeft = 1
