@@ -394,7 +394,7 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 
 	    local dotaTime = GameRules:GetDOTATime(false, false)
 	    --local timeToStartReduction = 0 -- 20 minutes
-	    local respawnReduction = 0.45 -- Original Reduction rate
+	    local respawnReduction = 0.65 -- Original Reduction rate
 
 	    -- Reducation Rate slowly increases after a certain time, eventually getting to original levels, this is to prevent games lasting too long
 	    --if dotaTime > timeToStartReduction then
