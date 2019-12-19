@@ -795,15 +795,6 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	end
 end
 
-function DoesHeroHasFreeSlot(unit)
-	for i=0,15 do
-		if unit:GetItemInSlot(i) == nil then
-			return true
-		end
-	end
-	return false
-end
-
 function SearchAndCheckRapiers(buyer, unit, plyID, maxSlots, timerKey)
 	local fullRapierCost = 6000
 	for i = 0, maxSlots do
@@ -989,19 +980,15 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		if purchaser then
 			local prshID = purchaser:GetPlayerID()
 			local psets = Patreons:GetPlayerSettings(prshID)
+			local correctInventory = (hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear"))
 
-			if hItem:IsFastBuying() or psets.level > 0 then
-				if psets.level > 0 then GameRules:SetUseUniversalShopMode(true) else GameRules:SetUseUniversalShopMode(false) end
-				if hItem:TransferToBuyer() == false then
-					Timers:CreateTimer(2, function()
-						GameRules:SetUseUniversalShopMode(false)
-						return nil
-					end)
+			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and (hItem:IsFastBuying() or psets.level > 0) then
+				if hItem:TransferToBuyer(hInventoryParent) == false then
 					return false
 				end
 			end
 
-			if (filterTable["item_parent_entindex_const"] > 0) and hItem and (not purchaser:CheckPersonalCooldown(itemName)) and (hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear")) then
+			if (filterTable["item_parent_entindex_const"] > 0) and hItem and (not purchaser:CheckPersonalCooldown(itemName)) and correctInventory then
 				purchaser:ModifyGold(itemCost, false, 0)
 				UTIL_Remove(hItem)
 				return false
