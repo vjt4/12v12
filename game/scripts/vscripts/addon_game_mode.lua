@@ -26,7 +26,6 @@ local NET_WORSE_FOR_RAPIER_MIN = 20000
 require("common/init")
 require("util")
 require("gpm_lib")
-require("personal_items_cooldown")
 
 WebApi.customGame = "Dota12v12"
 
@@ -56,15 +55,6 @@ _G.lastTimeBuyItemWithCooldown = {}
 
 _G.playersNetWorthes = {}
 
-_G.fastItemsWithCooldown = {
-	["item_disable_help_custom"] = 10,
-	["item_mute_custom"] = 10,
-}
-_G.fastItemsWithoutCooldown =
-{
-	["item_voiting_troll"] = true,
-	--["item_banhammer"] = true, When teleporting, you can not change the size of the stack in the store.
-}
 
 if CMegaDotaGameMode == nil then
 	_G.CMegaDotaGameMode = class({}) -- put CMegaDotaGameMode in the global scope
@@ -521,16 +511,16 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 			end, 2/30)
 		end
 
-		local psets = Patreons:GetPlayerSettings(playerId)
+		--local psets = Patreons:GetPlayerSettings(playerId)
 
-		if psets.level > 1 and _G.personalCouriers[playerId] == nil then
-			local courier_spawn = {
-				[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant"),
-				[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire"),
-			}
-			local team = spawnedUnit:GetTeamNumber()
-			CreatePrivateCourier(playerId, spawnedUnit, courier_spawn[team]:GetAbsOrigin())
-		end
+		--if psets.level > 1 and _G.personalCouriers[playerId] == nil then
+		--	local courier_spawn = {
+		--		[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant"),
+		--		[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire"),
+		--	}
+		--	local team = spawnedUnit:GetTeamNumber()
+		--	CreatePrivateCourier(playerId, spawnedUnit, courier_spawn[team]:GetAbsOrigin())
+		--end
 	end
 end
 
@@ -993,57 +983,29 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			})
 		end
 
-		if _G.fastItemsWithCooldown[itemName] then
-			local buyer = hItem:GetPurchaser()
-			local plyID = buyer:GetPlayerID()
-			local buyerEntIndex = buyer:GetEntityIndex()
-			local unique_key = itemName .. "_" .. buyerEntIndex
-			if ((_G.lastTimeBuyItemWithCooldown[unique_key] == nil) or ((GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key]) >= _G.fastItemsWithCooldown[itemName])) then
+		local purchaser = hItem:GetPurchaser()
+		local itemCost = hItem:GetCost()
 
-				_G.itemsIsBuy[unique_key] = not _G.itemsIsBuy[unique_key]
+		if purchaser then
+			local prshID = purchaser:GetPlayerID()
+			local psets = Patreons:GetPlayerSettings(prshID)
 
-				if DoesHeroHasFreeSlot(buyer) and _G.itemsIsBuy[unique_key] == true then
-					UTIL_Remove(hItem)
-					buyer:AddItemByName(itemName)
-					_G.lastTimeBuyItemWithCooldown[unique_key] = GameRules:GetGameTime()
-					return false
-				elseif not DoesHeroHasFreeSlot(buyer) then
-					UTIL_Remove(hItem)
-					CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
+			if hItem:IsFastBuying() or psets.level > 0 then
+				if psets.level > 0 then GameRules:SetUseUniversalShopMode(true) else GameRules:SetUseUniversalShopMode(false) end
+				if hItem:TransferToBuyer() == false then
+					Timers:CreateTimer(2, function()
+						GameRules:SetUseUniversalShopMode(false)
+						return nil
+					end)
 					return false
 				end
-			else
+			end
+
+			if (filterTable["item_parent_entindex_const"] > 0) and hItem and (not purchaser:CheckPersonalCooldown(itemName)) and (hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear")) then
+				purchaser:ModifyGold(itemCost, false, 0)
 				UTIL_Remove(hItem)
-				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#fast_buy_items" })
 				return false
 			end
-		end
-
-		if _G.fastItemsWithoutCooldown[itemName] then
-			local buyer = hItem:GetPurchaser()
-			local buyerEntIndex = buyer:GetEntityIndex()
-			local unique_key = itemName .. "_" .. buyerEntIndex
-			local plyID = buyer:GetPlayerID()
-
-			_G.itemsIsBuy[unique_key] = not _G.itemsIsBuy[unique_key]
-
-			if DoesHeroHasFreeSlot(buyer) and _G.itemsIsBuy[unique_key] == true then
-				UTIL_Remove(hItem)
-				buyer:AddItemByName(itemName)
-				_G.lastTimeBuyItemWithCooldown[unique_key] = GameRules:GetGameTime()
-				return false
-			elseif not DoesHeroHasFreeSlot(buyer) then
-				UTIL_Remove(hItem)
-				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
-				return false
-			end
-		end
-
-		if (filterTable["item_parent_entindex_const"] > 0) and hItem:GetPurchaser() and not hItem:GetPurchaser():CheckPersonalCooldown(itemName) and (hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear")) then
-			--print(hItem,": ", itemName, " HERO NAME: ", hInventoryParent)
-			hItem:GetPurchaser():ModifyGold(hItem:GetCost(), false, 0)
-			UTIL_Remove(hItem)
-			return false
 		end
 	end
 
