@@ -26,7 +26,7 @@ function CDOTA_Item:IsFastBuying()
 end
 
 function DoesHeroHasFreeSlot(unit)
-	for i = 0, 9 do
+	for i = 0, 15 do
 		if unit:GetItemInSlot(i) == nil then
 			return i
 		end
@@ -37,10 +37,8 @@ end
 function CDOTA_BaseNPC:GetItemByNameFromStash(itemName)
 	for i = 9, 16 do
 		local currentItem = self:GetItemInSlot(i)
-		print(currentItem)
 		if currentItem then
 			local currentName = currentItem:GetName()
-			print(currentName)
 			if currentName == itemName then
 				return {
 					["item"] = currentItem,
@@ -62,13 +60,18 @@ function CDOTA_Item:TransferToBuyer(unit)
 		return
 	end
 	if not DoesHeroHasFreeSlot(buyer) and not stackedItems[itemName] then
-		return
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(buyer:GetPlayerID()), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
+		return false
 	end
 
 	_G.itemsIsBuy[unique_key] = not _G.itemsIsBuy[unique_key]
 
 	if _G.itemsIsBuy[unique_key] == true then
-		if stackedItems[itemName] then
+		if not stackedItems[itemName] then
+			UTIL_Remove(self)
+			buyer:AddItemByName(itemName)
+			return false
+		else
 			Timers:CreateTimer(0.04, function()
 				local item = buyer:GetItemByNameFromStash(itemName)
 				if item and item["item"] == self then
@@ -76,10 +79,6 @@ function CDOTA_Item:TransferToBuyer(unit)
 					buyer:AddItemByName(itemName)
 				end
 			end)
-		else
-			UTIL_Remove(self)
-			buyer:AddItemByName(itemName)
-			return false
 		end
 	end
 end
