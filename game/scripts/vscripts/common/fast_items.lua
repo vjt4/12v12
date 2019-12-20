@@ -10,7 +10,7 @@ local fastItems = {
 --[[
 	You need pul all item that have stock value (for example, wards, smoke, kick troll item, gem etc.)
 --]]
-local stackedItems = {
+_G.stackedItems = {
 	["item_ward_observer"] = true,
 	["item_ward_sentry"] = true,
 	["item_smoke_of_deceit"] = true,
@@ -59,7 +59,7 @@ function CDOTA_Item:TransferToBuyer(unit)
 	if unit:IsIllusion() or unit:IsCourier() then
 		return
 	end
-	if not DoesHeroHasFreeSlot(buyer) and not stackedItems[itemName] then
+	if not DoesHeroHasFreeSlot(buyer) and not _G.stackedItems[itemName] then
 		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(buyer:GetPlayerID()), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
 		return false
 	end
@@ -67,7 +67,7 @@ function CDOTA_Item:TransferToBuyer(unit)
 	_G.itemsIsBuy[unique_key] = not _G.itemsIsBuy[unique_key]
 
 	if _G.itemsIsBuy[unique_key] == true then
-		if not stackedItems[itemName] then
+		if not _G.stackedItems[itemName] then
 			UTIL_Remove(self)
 			buyer:AddItemByName(itemName)
 			return false
@@ -78,6 +78,8 @@ function CDOTA_Item:TransferToBuyer(unit)
 					UTIL_Remove(self)
 					buyer:AddItemByName(itemName)
 				end
+				local unique_key_cd = itemName .. "_" .. buyerEntIndex
+				_G.lastTimeBuyItemWithCooldown[unique_key_cd] = GameRules:GetGameTime()
 			end)
 		end
 	end
