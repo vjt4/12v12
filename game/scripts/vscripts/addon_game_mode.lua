@@ -106,6 +106,8 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:LockCustomGameSetupTeamAssignment(true)
 	GameRules:SetCustomGameSetupAutoLaunchDelay(1)
 	GameRules:GetGameModeEntity():SetKillableTombstones( true )
+	GameRules:GetGameModeEntity():SetFreeCourierModeEnabled(true)
+	
 	if IsInToolsMode() then
 		GameRules:GetGameModeEntity():SetDraftingBanningTimeOverride(0)
 	end
@@ -754,13 +756,13 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 			courier_spawn[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant")
 			courier_spawn[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire")
 
-			for team = 2, 3 do
-				self.couriers[team] = CreateUnitByName("npc_dota_courier", courier_spawn[team]:GetAbsOrigin(), true, nil, nil, team)
-				if _G.mainTeamCouriers[team] == nil then
-					_G.mainTeamCouriers[team] = self.couriers[team]
-				end
-				self.couriers[team]:AddNewModifier(self.couriers[team], nil, "modifier_core_courier", {})
-			end
+			--for team = 2, 3 do
+			--	self.couriers[team] = CreateUnitByName("npc_dota_courier", courier_spawn[team]:GetAbsOrigin(), true, nil, nil, team)
+			--	if _G.mainTeamCouriers[team] == nil then
+			--		_G.mainTeamCouriers[team] = self.couriers[team]
+			--	end
+			--	self.couriers[team]:AddNewModifier(self.couriers[team], nil, "modifier_core_courier", {})
+			--end
 		end
 --		Timers:CreateTimer(30, function()
 --			for i=0,PlayerResource:GetPlayerCount() do
@@ -968,7 +970,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				endTime = 0.4,
 				callback = function()
 					SearchAndCheckRapiers(buyer, buyer, plyID, 20, timerKey)
-					SearchAndCheckRapiers(buyer, SearchCorrectCourier(plyID, buyer:GetTeamNumber()), plyID, 10,timerKey)
+					--SearchAndCheckRapiers(buyer, SearchCorrectCourier(plyID, buyer:GetTeamNumber()), plyID, 10,timerKey)
 					return 0.45
 				end
 			})
@@ -1103,9 +1105,9 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 		return false
 	end
 
-	if filterTable then
-		filterTable = EditFilterToCourier(filterTable)
-	end
+	--if filterTable then
+	--	filterTable = EditFilterToCourier(filterTable)
+	--end
 
 	if orderType == DOTA_UNIT_ORDER_CAST_POSITION then
 		if abilityName == "item_ward_dispenser" or abilityName == "item_ward_sentry" or abilityName == "item_ward_observer" then
