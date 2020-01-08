@@ -982,7 +982,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		if purchaser then
 			local prshID = purchaser:GetPlayerID()
 			local psets = Patreons:GetPlayerSettings(prshID)
-			local correctInventory = (hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear"))
+			local correctInventory = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
 
 			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and (hItem:IsFastBuying() or psets.level > 0) then
 				if hItem:TransferToBuyer(hInventoryParent) == false then
