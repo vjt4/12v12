@@ -88,6 +88,7 @@ function CMegaDotaGameMode:InitGameMode()
 	local neutral_items = LoadKeyValues("scripts/npc/neutral_items.txt")
 
 	_G.neutralItems = {}
+	_G.droppedNeutralItems = {}
 
 	for _, data in pairs( neutral_items ) do
 		for item, turn in pairs( data.items ) do
@@ -100,8 +101,6 @@ function CMegaDotaGameMode:InitGameMode()
 	RegisterCustomEventListener( "neutral_item_drop", function( data )
 		local item = EntIndexToHScript( data.item )
 		local caster = item:GetCaster()
-
-		print( item:GetCaster(), item:GetOwner() )
 
 		if caster and caster.GetPlayerID and caster:GetPlayerID() == data.PlayerID then
 			local team = caster:GetTeam()
@@ -122,6 +121,40 @@ function CMegaDotaGameMode:InitGameMode()
 			pos_item.z = fountain_pos.z
 
 			caster:DropItemAtPositionImmediate( item, pos_item )
+
+			_G.droppedNeutralItems[data.item] = true
+
+			for i = 0, 24 do
+				if i ~= data.PlayerID then
+					CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( i ), "neutral_item_dropped", { item = data.item } )
+				end
+			end
+		end
+	end )
+
+	RegisterCustomEventListener( "neutral_item_take", function( data )
+		local item = EntIndexToHScript( data.item )
+		local hero = PlayerResource:GetSelectedHeroEntity( data.PlayerID )
+
+		if not item or not hero or not _G.droppedNeutralItems[data.item] then
+			return
+		end
+
+		for i = 0, 8 do
+			local slot = hero:GetItemInSlot( i )
+
+			if not slot then
+				local container = item:GetContainer()
+				UTIL_Remove( container )
+
+				hero:AddItem( item )
+
+				_G.droppedNeutralItems[data.item] = nil
+
+				CustomGameEventManager:Send_ServerToAllClients( "neutral_item_taked", { item = data.item } )
+
+				break
+			end
 		end
 	end )
 

@@ -17,6 +17,15 @@
 				</Panel>
 			</Panel>
 		</snippet>
+
+		<snippet name="TakeItem">
+			<Panel class="NewItem">
+				<DOTAItemImage id="ItemImage" /> 
+				<Panel class="Buttons">
+					<TextButton id="ButtonTake" text="#neutral_item_take" />
+				</Panel>
+			</Panel>
+		</snippet>
 	</snippets>
 
 	<Panel class="Hud">

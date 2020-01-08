@@ -27,7 +27,8 @@
 }
 
 #ButtonKeep,
-#ButtonDrop {
+#ButtonDrop,
+#ButtonTake {
 	margin: 3px;
 	background-image: url("s2r://panorama/images/hud/reborn/shop_launcher_button_psd.vtex");
 	background-size: 100%;
@@ -36,7 +37,8 @@
 }
 
 #ButtonKeep Label,
-#ButtonDrop Label {
+#ButtonDrop Label,
+#ButtonTake Label {
 	color: white;
 	font-size: 18px;
 	font-family: Radiance;

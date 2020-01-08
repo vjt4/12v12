@@ -18,6 +18,7 @@
 
 		"neutral_item_keep"											"保持"
 		"neutral_item_drop"											"落基"
+		"neutral_item_keep"											"采取"
 
 		"cosemtics_header_abilities"								"技能"
 		"cosemtics_header_effects"									"效果"
