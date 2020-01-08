@@ -70,16 +70,16 @@
 				</Panel>
 				<Panel class="Divider"/>
 			</Panel>
-			<Panel class="FreeBoots">
-				<Label id="FreeBootsTitle" class="FreeBootsTitle" text="#boots_free"/>
-				<Label id="FreeBootsLabel" class="FreeBootsLabel" text="#boots_free_description"/>
-				<MoviePanel id="FreeBootsImage" src="s2r://panorama/videos/boots.webm" repeat="true" autoplay="onload" />
-				<ToggleButton id="FreeBootsEnableDisable" class="FreeBootsEnableDisableLabel" text="#boots_enable" onactivate="BootsEnableToggle()" />
-				<Panel class="PatreonFeatureLock" onactivate="">
-					<Image src="file://{images}/control_icons/lock_medium.png" />
-				</Panel>
-				<Panel class="Divider2"/>
-			</Panel>
+			<!--<Panel class="FreeBoots">-->
+				<!--<Label id="FreeBootsTitle" class="FreeBootsTitle" text="#boots_free"/>-->
+				<!--<Label id="FreeBootsLabel" class="FreeBootsLabel" text="#boots_free_description"/>-->
+				<!--<MoviePanel id="FreeBootsImage" src="s2r://panorama/videos/boots.webm" repeat="true" autoplay="onload" />-->
+				<!--<ToggleButton id="FreeBootsEnableDisable" class="FreeBootsEnableDisableLabel" text="#boots_enable" onactivate="BootsEnableToggle()" />-->
+				<!--<Panel class="PatreonFeatureLock" onactivate="">-->
+					<!--<Image src="file://{images}/control_icons/lock_medium.png" />-->
+				<!--</Panel>-->
+				<!--<Panel class="Divider2"/>-->
+			<!--</Panel>-->
 			<Panel class="RandomButton">
 				<Label id="RandomButtonTitle" class="RandomButtonTitle" text="#random_unlimited"/>
 				<Label id="RandomButtonLabel" class="RandomButtonLabel" text="#random_unlimited_description"/>

@@ -15,12 +15,12 @@ function ToggleEmblem() {
     }
 }
 
-function BootsEnableToggle() {
-	if (isPatron) {
-		var isEnabled = !!$('#FreeBootsEnableDisable').checked;
-        GameEvents.SendCustomGameEventToServer('patreon_toggle_boots', { enabled: isEnabled });
-    }
-}
+//function BootsEnableToggle() {
+//	if (isPatron) {
+//		var isEnabled = !!$('#FreeBootsEnableDisable').checked;
+//        GameEvents.SendCustomGameEventToServer('patreon_toggle_boots', { enabled: isEnabled });
+//    }
+//}
 
 function OnColourPressed(text) {
     if (isPatron) {
