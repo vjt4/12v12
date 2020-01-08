@@ -1,0 +1,141 @@
+﻿"lang"
+{
+	"Language"	"tchinese"
+	"Tokens"
+	{
+		"cavern_game_info_tombstone_header"	"墓碑"
+		"[english]cavern_game_info_tombstone_header"	"Tombstones"
+		"cavern_game_info_tombstone"	"墓碑可用于复活队友或淘汰敌人。"
+		"[english]cavern_game_info_tombstone"	"Tombstones can be used to revive teammates or eliminate enemies."
+		"DOTA_Tooltip_ability_item_tombstone"	"复活队友"
+		"[english]DOTA_Tooltip_ability_item_tombstone"	"Resurrect Teammate"
+		"DOTA_Tooltip_ForEnemy_ability_item_tombstone"	"消灭玩家"
+		"[english]DOTA_Tooltip_ForEnemy_ability_item_tombstone"	"Eliminate Player"
+		"DOTA_Chat_Tombstone_Pinged"	"有队友在这里阵亡。"
+		"[english]DOTA_Chat_Tombstone_Pinged"	"Fallen teammate here."
+		"DOTA_Tooltip_ability_item_tombstone_radiant"							"天辉"
+		"DOTA_Tooltip_ability_item_tombstone_dire"								"夜魇"
+
+		"neutral_item_keep"											"保持"
+		"neutral_item_drop"											"落基"
+
+		"cosemtics_header_abilities"								"技能"
+		"cosemtics_header_effects"									"效果"
+		"cosemtics_header_kill_effects"								"击杀效果"
+		"cosemtics_header_pets"										"宠物"
+
+		"cosmetics_save_settings"									"保存设置"
+
+		"cosemtics_effects_header_hero"								"英雄"
+		"cosemtics_effects_header_pet"								"宠物"
+		"cosemtics_effects_header_courier"							"信使"
+		"cosemtics_effects_header_wards"							"守卫"
+
+		"cosmetics_kill_effect_firework"							"烟火"
+		"cosmetics_kill_effect_tombstone"							"墓碑"
+		"cosmetics_kill_effect_incineration"						"焚化"
+		"cosmetics_kill_effect_halloween"							"万圣节"
+		
+		//TODO: translate "Use" and error
+		"DOTA_Tooltip_ability_item_patreon_1"						"猪年气球"
+		"DOTA_Tooltip_ability_item_patreon_1_Description"			"<h1>使用</h1>吹出一个可爱又有弹性的芳晓气球。"
+		"DOTA_Tooltip_ability_item_patreon_1_Lore"					"他最爱吃白日梦。"
+		"DOTA_Tooltip_ability_item_patreon_2"						"舞狮"
+		"DOTA_Tooltip_ability_item_patreon_2_Description"			"<h1>使用</h1>召唤一头快乐活泼的狮子，陪伴你和你的盟友。"
+		"DOTA_Tooltip_ability_item_patreon_2_Lore"					"做好这些动作需要大量的练习。"
+		"DOTA_Tooltip_ability_item_patreon_3"						"树木装饰"
+		"DOTA_Tooltip_ability_item_patreon_3_Description"			"<h1>使用</h1>给任意树木加上一丝欢快的节日气氛。"
+		"DOTA_Tooltip_ability_item_patreon_3_Lore"					"节日的装束, 即使是战场上最血腥的斗士也会喜欢。"
+		"DOTA_Tooltip_ability_item_patreon_4"						"鞭炮"
+		"DOTA_Tooltip_ability_item_patreon_4_Description"			"<h1>使用</h1>扔串鞭炮。真的，快扔！"
+		"DOTA_Tooltip_ability_item_patreon_4_Lore"					"没有比爆炸更喜庆的了！"
+		"DOTA_Tooltip_ability_item_patreon_5"						"投掷雪球"
+		"DOTA_Tooltip_ability_item_patreon_5_Description"			"<h1>使用</h1>向一名友军或敌人投掷雪球。"
+		"DOTA_Tooltip_ability_item_patreon_5_Lore"					"纯手工打造，温度完美。"
+		"DOTA_Tooltip_ability_item_patreon_6"						"召唤雪人"
+		"DOTA_Tooltip_ability_item_patreon_6_Description"			"<h1>使用</h1>召唤一个欢乐的雪人。"
+		"DOTA_Tooltip_ability_item_patreon_6_Lore"					"只要可以，他会一直做你的朋友。"
+		"DOTA_Tooltip_ability_item_patreon_7"						"装饰树木"
+		"DOTA_Tooltip_ability_item_patreon_7_Description"			"<h1>使用</h1>给任意树木加上一丝欢快的节日气氛。"
+		"DOTA_Tooltip_ability_item_patreon_7_Lore"					"节日的装束, 即使是战场上最血腥的斗士也会喜欢。"
+		"DOTA_Tooltip_ability_item_patreon_8"						"节日烟花"
+		"DOTA_Tooltip_ability_item_patreon_8_Description"			"<h1>使用</h1>将烟花射向半空。"
+		"DOTA_Tooltip_ability_item_patreon_8_Lore"					"没有比爆炸更喜庆的了！"
+		"DOTA_Tooltip_ability_item_patreonbundle_1"						"2019年芳晓佳节消耗品捆绑包"
+		"DOTA_Tooltip_ability_item_patreonbundle_1_Description"			"<h1>使用</h1>包含一整套芳晓佳节消耗品，可用于普通Dota比赛。"
+		"DOTA_Tooltip_ability_item_patreonbundle_2"						"凌霜圣地消耗品捆绑包"
+		"DOTA_Tooltip_ability_item_patreonbundle_2_Description"			"<h1>使用</h1>包含一整套可以用于普通Dota和凌霜圣地特殊活动的消耗品。"
+		
+		"nopatreonerror"											"仅适用于Patreon支持者"
+		"nopatreonerror2"											"此项目仅适用于高级支持者（25美元）"
+		"notyettime"												"在头5分钟内尚无法剔除不良玩家"
+
+		"block_spawn_error"												"无法阻止你的团队的中立阵营"
+
+		"dropped_wards_return_error"									"被丢弃在地面的哨岗守卫会被传送回泉水。"
+
+		"new_stat_gpm"												"每分钟黄金"
+		"new_stat_total_damage"										"总伤害"
+		"new_stat_total_healing"									"总回血"
+		"new_stat_tower_damage"										"建筑伤害"
+		"new_stat_networth"											"总资产"
+		"new_stat_wards"											"哨岗守卫/侦察守卫"
+		"new_stat_killed_heroes"									"击杀敌人"
+
+		"DOTA_Tooltip_ability_item_banhammer"						"踢不良玩家"
+		"DOTA_Tooltip_ability_item_banhammer_Description"			"<h1>使用</h1>将破坏他人游戏体验的玩家踢出本局游戏。 该物品只可用于对付真正破坏他人游戏的玩家。该物品仅供高级赞助商（25 $ Tier）。 如果发现赞助商滥用权力，该赞助商将永久失去使用该物品的权利。玩家将无法使用不良玩家踢除工具来移除对本模式进行资金资助的玩家。"
+		"DOTA_Tooltip_ability_item_banhammer_Lore"					"拥有权利也是一项重大责任。"
+		
+		"DOTA_Tooltip_modifier_silencer_new_int_steal"					"所窃取智力"
+		"DOTA_Tooltip_modifier_silencer_new_int_steal_Description"		"沉默术士在完成击杀或者辅助击杀后会偷取目标智力."
+		"DOTA_Tooltip_ability_special_bonus_unique_silencer_2"			"+1 智力窃取"
+
+		"DOTA_Tooltip_modifier_troll_feed_token_couter"					"不良玩家恶意送人头计数代币"
+		"DOTA_Tooltip_modifier_troll_debuff_stop_feed"					"送人头惩罚"
+		"DOTA_Tooltip_modifier_troll_debuff_stop_feed_Description"		"你已被系统判定为恶意送人头。作为惩罚，你会获得时长10分钟的减益效果，且在10分钟内你的每次死亡都会使该减益效果延长1分钟。减益效果生效内，系统将判定你的死亡为友方被反补，并且你的重生时间将被延长至2.5倍。若2.5倍的重生时间少于60秒，则重生时间按60秒计算。"
+		"anti_feed_system_add_debuff_message"		                    "%s1 一名玩家被判定为恶意送人头。该玩家在随后十分钟内重生时间会被延长2.5倍，并且其死亡会被记作反补。."
+
+		"destroyed_goodguys_melee_rax"									"夜魇方重生时间减少2秒"
+		"destroyed_goodguys_range_rax"									"夜魇方重生时间减少1秒"
+		"destroyed_goodguys_all_rax"									"天辉方所有兵营已被摧毁。夜魇方重生时间减少2秒"
+		"destroyed_badguys_melee_rax"									"天辉方重生时间减少2秒"
+		"destroyed_badguys_range_rax"									"天辉方重生时间减少1秒"
+		"destroyed_badguys_all_rax"										"夜魇方所有兵营已被摧毁。天辉方重生时间减少2秒"
+
+		"cannotgiveiteminthiscourier"			                        "你不可以移动该信使携带的物品。"
+		"alreadyhaveprivatecourier"			                            "你已经拥有一个私人信使。"
+		"DOTA_Tooltip_ability_item_patreon_courier"			            "个人信使"
+        "DOTA_Tooltip_ability_item_patreon_courier_Description"			"<h1>启用个人信使</h1>启用一个可以运载物品往返于基地的信使。只有你个人可以使用信使。只有高等级支持者（$25）可以购买该物品。"
+
+        "DOTA_Tooltip_ability_item_disable_help_custom"					"禁止辅助"
+		"DOTA_Tooltip_ability_item_disable_help_custom_Description"		"<h1>使用: 禁止辅助</h1> 禁止辅助“ 施放于队友身上，使该队友无法使用其技能来骚扰你。你也可以选择在积分榜中勾选复选框来启用该功能。"
+		"DOTA_Tooltip_ability_item_disable_help_custom_Lore"			"有损友若此，何须仇敌？"
+
+		"DOTA_Tooltip_ability_item_mute_custom"					        "屏蔽玩家"
+		"DOTA_Tooltip_ability_item_mute_custom_Description"				"<h1>使用: 屏蔽玩家</h1> 屏蔽玩家” 施放于你先屏蔽的玩家身上。你也可以选择在积分榜中点击音量按钮来屏蔽玩家。"
+		"DOTA_Tooltip_ability_item_mute_custom_Lore"							"沉默是金"
+
+		"fast_buy_items"					                            "快速购买"
+
+		"allcouriersdie"					                            "所有信使已死亡"
+
+		"rapier_small_networth"					                        "您的净值不足以买圣剑 (需要2万以上)"
+		"rapier_littleKD"					                            "您的击杀数必须大于死亡数才能购买圣剑"
+		"cannotpullit"					                            	"你不能将它放置在地上"
+
+		"DOTA_Tooltip_ability_item_voiting_troll"					    "坑逼投票"
+		"DOTA_Tooltip_ability_item_voiting_troll_Description"			"<h1>使用: 选出‘故意破坏游戏体验的人’</h1> 购买这项道具并对一名玩家使用算作对其投票. 得票数超过6的玩家会被选出<br><br> 将不能购买有储存限制的物品（例如眼）、圣剑、使用信使，并且会有送人头debuff.<br><br> 会员的1票=3票，高级会员拥有一票选出权。"
+		"DOTA_Tooltip_troll_vote_debuff"								"坑逼光环"
+
+		"you_cannot_buy_it"												"你不能购买它"
+		"you_cannot_control_courier"					                "你不能使用信使"
+		"already_voiting_against_troll"					                "你已经投过票了"
+		"you_can_buy_only_one_item"					               		"此种类型的物品你只能买一个"
+
+		"start_troll_voting_1"					               			"<font color='#FF1111'>[[[</font>%s1<font color='#FF1111'>]]]</font> Start voting for punishment against:"
+		"start_troll_voting_2"					               			"<font color='#FF1111'>[[[</font>%s1<font color='#FF1111'>]]]</font>"
+		"troll_voting_final"					               			"%s1 被票选为破坏游戏体验的不良玩家."
+		"cannot_voite_against_high_tier_patreons"					    "你不能投票给高级赞助者"
+		"target_has_troll_debuff_with_voiting"					   		"该玩家已被惩罚"
+	}
+}

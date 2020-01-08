@@ -12,8 +12,8 @@
 			<Panel class="NewItem">
 				<DOTAItemImage id="ItemImage" /> 
 				<Panel class="Buttons">
-					<TextButton id="ButtonKeep" text="Keep" />
-					<TextButton id="ButtonDrop" text="Drop on base" />
+					<TextButton id="ButtonKeep" text="#neutral_item_keep" />
+					<TextButton id="ButtonDrop" text="#neutral_item_drop" />
 				</Panel>
 			</Panel>
 		</snippet>

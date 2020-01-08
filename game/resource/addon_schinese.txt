@@ -16,6 +16,9 @@
 		"DOTA_Tooltip_ability_item_tombstone_radiant"							"天辉"
 		"DOTA_Tooltip_ability_item_tombstone_dire"								"夜魇"
 
+		"neutral_item_keep"											"保持"
+		"neutral_item_drop"											"落基"
+
 		"cosemtics_header_abilities"								"技能"
 		"cosemtics_header_effects"									"效果"
 		"cosemtics_header_kill_effects"								"击杀效果"
