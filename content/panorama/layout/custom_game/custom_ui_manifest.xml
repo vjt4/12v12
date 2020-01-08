@@ -41,5 +41,6 @@
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/top_scoreboard.xml" />
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/common/patreon/patreon.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/dota_hud_chat_wheel.xml" />
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/common/neutral_items/neutral_items.xml" />
 	</Panel>
 </root>

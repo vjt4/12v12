@@ -1,0 +1,26 @@
+<root>
+	<styles>
+		<include src="file://{resources}/layout/custom_game/common/neutral_items/neutral_items.css" />
+	</styles>
+
+	<scripts>
+		<include src="file://{resources}/layout/custom_game/common/neutral_items/neutral_items.js" />
+	</scripts>
+
+	<snippets>
+		<snippet name="NewItem">
+			<Panel class="NewItem">
+				<DOTAItemImage id="ItemImage" /> 
+				<Panel class="Buttons">
+					<TextButton id="ButtonKeep" text="Keep" />
+					<TextButton id="ButtonDrop" text="Drop on base" />
+				</Panel>
+			</Panel>
+		</snippet>
+	</snippets>
+
+	<Panel class="Hud">
+		<Panel id="ItemsContainer">
+		</Panel>
+	</Panel>
+</root>

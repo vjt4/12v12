@@ -1,0 +1,43 @@
+.Hud {
+	margin-top: 300px;
+	horizontal-align: right;
+	vertical-align: center;
+}
+
+#ItemsContainer {
+	flow-children: down;
+}
+
+.NewItem {
+	margin: 4px;
+	flow-children: down;
+	background-image: url( "s2r://panorama/images/hud/reborn/item_purchase_bg_psd.vtex" );
+	background-size: cover;
+	padding: 4px;
+}
+
+#ItemImage {
+	horizontal-align: center;
+	margin: 4px;
+}
+
+.Buttons {
+	horizontal-align: center;
+	flow-children: right;
+}
+
+#ButtonKeep,
+#ButtonDrop {
+	margin: 3px;
+	background-image: url("s2r://panorama/images/hud/reborn/shop_launcher_button_psd.vtex");
+	background-size: 100%;
+	padding: 4px 12px 4px 12px;
+	max-height: 30px;
+}
+
+#ButtonKeep Label,
+#ButtonDrop Label {
+	color: white;
+	font-size: 18px;
+	font-family: Radiance;
+}
