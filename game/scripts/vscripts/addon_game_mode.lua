@@ -1077,6 +1077,20 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		end
 	end
 
+	if _G.droppedNeutralItems[filterTable.item_entindex_const] then
+		local id = hInventoryParent.GetPlayerID and hInventoryParent:GetPlayerID() or hInventoryParent:GetPlayerOwnerID()
+
+		_G.droppedNeutralItems[filterTable.item_entindex_const] = nil
+
+		local team = PlayerResource:GetTeam( id )
+
+		for id = 0, 24 do
+			if team == PlayerResource:GetTeam( id ) then
+				CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( id ), "neutral_item_taked", { item = filterTable.item_entindex_const, player = id } )
+			end
+		end
+	end	
+
 	if _G.neutralItems[hItem:GetAbilityName()] and not _G.pickedUpNeutralItems[filterTable.item_entindex_const] then
 		local id = hInventoryParent.GetPlayerID and hInventoryParent:GetPlayerID() or hInventoryParent:GetPlayerOwnerID()
 
@@ -1086,7 +1100,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 
 		CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( id ), "neutral_item_picked_up", { item = filterTable.item_entindex_const })
 		_G.pickedUpNeutralItems[filterTable.item_entindex_const] = true
-	end						
+	end				
 
 	return true
 end
