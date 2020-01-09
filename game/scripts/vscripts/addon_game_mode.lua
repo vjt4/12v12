@@ -1077,6 +1077,10 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		end
 	end
 
+	if hInventoryParent:IsIllusion() or hInventoryParent:IsClone() then
+		return true
+	end
+
 	if _G.droppedNeutralItems[filterTable.item_entindex_const] then
 		local id = hInventoryParent.GetPlayerID and hInventoryParent:GetPlayerID() or hInventoryParent:GetPlayerOwnerID()
 
