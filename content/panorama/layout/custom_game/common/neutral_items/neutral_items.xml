@@ -10,20 +10,33 @@
 	<snippets>
 		<snippet name="NewItem">
 			<Panel class="NewItem">
-				<DOTAItemImage id="ItemImage" /> 
-				<Panel class="Buttons">
-					<TextButton id="ButtonKeep" text="#neutral_item_keep" />
-					<TextButton id="ButtonDrop" text="#neutral_item_drop" />
+				<Panel class="Main">
+					<DOTAItemImage id="ItemImage" /> 
+					<Panel class="Buttons">
+						<TextButton id="ButtonKeep" class="Button" text="#neutral_item_keep" />
+						<TextButton id="ButtonDrop" class="Button" text="#neutral_item_drop" />
+					</Panel>
 				</Panel>
+				<Panel id="Countdown" />
 			</Panel>
 		</snippet>
 
 		<snippet name="TakeItem">
 			<Panel class="NewItem">
-				<DOTAItemImage id="ItemImage" /> 
-				<Panel class="Buttons">
-					<TextButton id="ButtonTake" text="#neutral_item_take" />
+				<Panel class="Main">
+					<DOTAItemImage id="ItemImage" /> 
+					<TextButton id="ButtonTake" class="Button" text="#neutral_item_take" />
 				</Panel>
+				<Panel id="CloseButton" />
+				<Panel id="Countdown" />
+			</Panel>
+		</snippet>
+
+		<snippet name="WhoTakedItem">
+			<Panel class="NewItem" style="flow-children: right;">
+				<DOTAHeroImage id="HeroImage" />
+				<Label id="TakedText" text="taked" /> 
+				<DOTAItemImage id="ItemImage" />
 			</Panel>
 		</snippet>
 	</snippets>

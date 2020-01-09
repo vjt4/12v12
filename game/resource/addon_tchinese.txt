@@ -16,9 +16,35 @@
 		"DOTA_Tooltip_ability_item_tombstone_radiant"							"天辉"
 		"DOTA_Tooltip_ability_item_tombstone_dire"								"夜魇"
 
+		"random_unlimited"											"无限随机"
+		"random_unlimited_description"								"解锁无限使用智能随机按钮！"
+
+		"cosmetics_box"												"化妆品盒"
+		"cosmetics_box_description"									"使用修饰能力，为您的英雄，守卫，信使或宠物增加21种效果之一，当您杀死并选择宠物时会产生效果"
+
+		"unlimited_chat_wheel"										"无限聊天轮"
+		"unlimited_chat_wheel_description"							"无限使用聊天转盘（L）"
+
+		"instant_transfer"											"即时项目转移"
+		"instant_transfer_description"								"随时随地将物品转移给玩家"
+
+		"immune_kick_troll"											"踢巨魔免疫"
+		"immune_kick_troll_description"								"对踢巨魔免疫"
+
+		"kick_troll"												"踢巨魔"
+		"kick_troll_description"									"踢巨魔！ 有权访问拖钓的踢出盟友（警告：该特权会从发现正在滥用的支持者中移除）"
+
+		"high_tier_supporter_perk"									"仅限高级支持者（200¥）功能"
+		"available_perk"											"可用的"
+
+		"not_supporter"												"不支持您"
+		"standard_tier_supporter"									"您是标准层支持者"
+		"high_tier_supporter"										"您是高级支持者"
+		"thanks_for_supporting"										"感谢您支持我们！"
+
 		"neutral_item_keep"											"保持"
 		"neutral_item_drop"											"落基"
-		"neutral_item_keep"											"采取"
+		"neutral_item_take"											"采取"
 
 		"cosemtics_header_abilities"								"技能"
 		"cosemtics_header_effects"									"效果"

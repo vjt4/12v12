@@ -101,8 +101,9 @@ function CMegaDotaGameMode:InitGameMode()
 	RegisterCustomEventListener( "neutral_item_drop", function( data )
 		local item = EntIndexToHScript( data.item )
 		local caster = item:GetCaster()
+		local id = caster.GetPlayerID and caster:GetPlayerID() or caster:GetPlayerOwnerID()
 
-		if caster and caster.GetPlayerID and caster:GetPlayerID() == data.PlayerID then
+		if id == data.PlayerID then
 			local team = caster:GetTeam()
 			local fountain
 			local multiplier
@@ -121,11 +122,12 @@ function CMegaDotaGameMode:InitGameMode()
 			pos_item.z = fountain_pos.z
 
 			caster:DropItemAtPositionImmediate( item, pos_item )
+			item.team = team
 
 			_G.droppedNeutralItems[data.item] = true
 
 			for i = 0, 24 do
-				if i ~= data.PlayerID then
+				if i ~= data.PlayerID and PlayerResource:GetTeam( i ) == team then
 					CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( i ), "neutral_item_dropped", { item = data.item } )
 				end
 			end
@@ -136,7 +138,7 @@ function CMegaDotaGameMode:InitGameMode()
 		local item = EntIndexToHScript( data.item )
 		local hero = PlayerResource:GetSelectedHeroEntity( data.PlayerID )
 
-		if not item or not hero or not _G.droppedNeutralItems[data.item] then
+		if not item or not hero or not _G.droppedNeutralItems[data.item] and item.team ~= PlayerResource:GetTeam( data.PlayerID ) then
 			return
 		end
 
@@ -151,7 +153,13 @@ function CMegaDotaGameMode:InitGameMode()
 
 				_G.droppedNeutralItems[data.item] = nil
 
-				CustomGameEventManager:Send_ServerToAllClients( "neutral_item_taked", { item = data.item } )
+				local team = PlayerResource:GetTeam( data.PlayerID )
+
+				for id = 0, 24 do
+					if team == PlayerResource:GetTeam( id ) then
+						CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( id ), "neutral_item_taked", { item = data.item, player = data.PlayerID } )
+					end
+				end
 
 				break
 			end
@@ -926,11 +934,6 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 	local hInventoryParent = EntIndexToHScript( filterTable["inventory_parent_entindex_const"] )
 	local hItem = EntIndexToHScript( filterTable["item_entindex_const"] )
 
-	if _G.neutralItems[hItem:GetAbilityName()] and not _G.pickedUpNeutralItems[filterTable.item_entindex_const] then
-		CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( hInventoryParent:GetPlayerID() ), "neutral_item_picked_up", { item = filterTable.item_entindex_const })
-		_G.pickedUpNeutralItems[filterTable.item_entindex_const] = true
-	end
-
 	if hItem ~= nil and hInventoryParent ~= nil then
 		local itemName = hItem:GetName()
 		if hInventoryParent:IsRealHero() then
@@ -1078,6 +1081,17 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			end
 		end
 	end
+
+	if _G.neutralItems[hItem:GetAbilityName()] and not _G.pickedUpNeutralItems[filterTable.item_entindex_const] then
+		local id = hInventoryParent.GetPlayerID and hInventoryParent:GetPlayerID() or hInventoryParent:GetPlayerOwnerID()
+
+		if id == -1 then
+			return true
+		end
+
+		CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( id ), "neutral_item_picked_up", { item = filterTable.item_entindex_const })
+		_G.pickedUpNeutralItems[filterTable.item_entindex_const] = true
+	end						
 
 	return true
 end

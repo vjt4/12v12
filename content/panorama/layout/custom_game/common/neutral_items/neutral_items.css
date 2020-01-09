@@ -9,11 +9,23 @@
 }
 
 .NewItem {
+	horizontal-align: right;
 	margin: 4px;
-	flow-children: down;
 	background-image: url( "s2r://panorama/images/hud/reborn/item_purchase_bg_psd.vtex" );
 	background-size: cover;
+	transform: translatex( 500px );
+    transition-property: transform;
+    transition-duration: 0.3s;
+}
+
+.Main {
+	flow-children: down;
+	margin-bottom: 3px;
 	padding: 4px;
+}
+
+.NewItem.Slide {
+	transform: translatex( 0px );
 }
 
 #ItemImage {
@@ -26,20 +38,58 @@
 	flow-children: right;
 }
 
-#ButtonKeep,
-#ButtonDrop,
-#ButtonTake {
+.Button {
 	margin: 3px;
-	background-image: url("s2r://panorama/images/hud/reborn/shop_launcher_button_psd.vtex");
+	background-image: url( "s2r://panorama/images/hud/reborn/shop_launcher_button_psd.vtex" );
 	background-size: 100%;
 	padding: 4px 12px 4px 12px;
 	max-height: 30px;
+	width: 135px;
 }
 
-#ButtonKeep Label,
-#ButtonDrop Label,
-#ButtonTake Label {
+.Button Label {
+	horizontal-align: center;
+}
+
+#Countdown {
+	horizontal-align: right;
+	vertical-align: bottom;
+	height: 3px;
+	width: 100%;
+	background-color: white;
+    transition-property: width;
+    transition-duration: 10s;
+}
+
+#Countdown.Active {
+	width: 0%;
+}
+
+Label {
 	color: white;
 	font-size: 18px;
 	font-family: Radiance;
+}
+
+#TakedText {
+	vertical-align: center;
+}
+
+DOTAItemImage,
+DOTAHeroImage {
+	height: 64px;
+}
+
+#HeroImage {
+	margin: 4px;
+	width: 108px;
+}
+
+#CloseButton {
+	horizontal-align: right;
+	width: 16px;
+	height: 16px;
+	background-size: 100%;
+	margin: 4px;
+	background-image: url("s2r://panorama/images/control_icons/x_close_png.vtex");
 }
