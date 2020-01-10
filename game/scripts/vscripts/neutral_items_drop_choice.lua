@@ -56,6 +56,7 @@ RegisterCustomEventListener( "neutral_item_take", function( data )
 	if freeSlot then
 		local container = item:GetContainer()
 		UTIL_Remove( container )
+		item.neutralDropInBase = false
 		hero:AddItem( item )
 		NotificationToAllPlayerOnTeam(data)
 	else
