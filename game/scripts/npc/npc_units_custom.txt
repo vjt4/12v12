@@ -25,6 +25,10 @@
 		"StatusHealth"				"1"
 	}
 
+	"npc_dota_courier"
+	{
+		"MovementSpeed"				"480"		// Speed
+	}
 
 	"npc_dota_goodguys_tower1_top"
 	{
