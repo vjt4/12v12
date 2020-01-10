@@ -21,7 +21,7 @@ function DropItem(data)
 	CreateItemOnPositionSync(pos_item, item)
 	item.neutralDropInBase = true
 	for i = 0, 24 do
-		if PlayerResource:GetTeam(i) == team then
+		if data.PlayerID ~= i and PlayerResource:GetTeam(i) == team then -- remove check "data.PlayerID ~= i" ig you want test system
 			CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( i ), "neutral_item_dropped", { item = data.item } )
 		end
 	end

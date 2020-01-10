@@ -35,7 +35,7 @@
 		<snippet name="WhoTakedItem">
 			<Panel class="NewItem" style="flow-children: right;">
 				<DOTAHeroImage id="HeroImage" />
-				<Label id="TakedText" text="#neutral_item_took" /> 
+				<Image id="NeutralItemTakedPointer" src="file://{resources}/images/custom_game/pointer.png"/>
 				<DOTAItemImage id="ItemImage" />
 			</Panel>
 		</snippet>
