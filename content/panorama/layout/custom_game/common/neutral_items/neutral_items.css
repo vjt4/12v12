@@ -58,7 +58,7 @@
 	width: 100%;
 	background-color: white;
     transition-property: width;
-    transition-duration: 10s;
+    transition-duration: 15s;
 }
 
 #Countdown.Active {
