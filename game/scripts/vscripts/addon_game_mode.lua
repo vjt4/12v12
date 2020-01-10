@@ -54,9 +54,6 @@ _G.lastTimeBuyItemWithCooldown = {}
 
 _G.playersNetWorthes = {}
 
-_G.pickedUpNeutralItems = {}
-
-
 if CMegaDotaGameMode == nil then
 	_G.CMegaDotaGameMode = class({}) -- put CMegaDotaGameMode in the global scope
 	--refer to: http://stackoverflow.com/questions/6586145/lua-require-with-global-local
@@ -84,86 +81,7 @@ function CMegaDotaGameMode:InitGameMode()
 	_G.ItemKVs = LoadKeyValues("scripts/npc/npc_block_items_for_troll.txt")
 	print( "10v10 Mode Loaded!" )
 
-	local neutral_items = LoadKeyValues("scripts/npc/neutral_items.txt")
-
-	_G.neutralItems = {}
-	_G.droppedNeutralItems = {}
-
-	for _, data in pairs( neutral_items ) do
-		for item, turn in pairs( data.items ) do
-			if turn == 1 then
-				_G.neutralItems[item] = true
-			end
-		end
-	end
-
-	RegisterCustomEventListener( "neutral_item_drop", function( data )
-		local item = EntIndexToHScript( data.item )
-		local caster = item:GetCaster()
-		local id = caster.GetPlayerID and caster:GetPlayerID() or caster:GetPlayerOwnerID()
-
-		if id == data.PlayerID then
-			local team = caster:GetTeam()
-			local fountain
-			local multiplier
-
-			if team == DOTA_TEAM_GOODGUYS then
-				multiplier = -350
-				fountain = Entities:FindByName( nil, "ent_dota_fountain_good" )
-			elseif team == DOTA_TEAM_BADGUYS then
-				multiplier = -650
-				fountain = Entities:FindByName( nil, "ent_dota_fountain_bad" )
-			end
-
-			local fountain_pos = fountain:GetAbsOrigin()
-
-			local pos_item = fountain_pos:Normalized() * multiplier + RandomVector( RandomFloat( 0, 200 ) ) + fountain_pos
-			pos_item.z = fountain_pos.z
-
-			caster:DropItemAtPositionImmediate( item, pos_item )
-			item.team = team
-
-			_G.droppedNeutralItems[data.item] = true
-
-			for i = 0, 24 do
-				if i ~= data.PlayerID and PlayerResource:GetTeam( i ) == team then
-					CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( i ), "neutral_item_dropped", { item = data.item } )
-				end
-			end
-		end
-	end )
-
-	RegisterCustomEventListener( "neutral_item_take", function( data )
-		local item = EntIndexToHScript( data.item )
-		local hero = PlayerResource:GetSelectedHeroEntity( data.PlayerID )
-
-		if not item or not hero or not _G.droppedNeutralItems[data.item] and item.team ~= PlayerResource:GetTeam( data.PlayerID ) then
-			return
-		end
-
-		for i = 0, 8 do
-			local slot = hero:GetItemInSlot( i )
-
-			if not slot then
-				local container = item:GetContainer()
-				UTIL_Remove( container )
-
-				hero:AddItem( item )
-
-				_G.droppedNeutralItems[data.item] = nil
-
-				local team = PlayerResource:GetTeam( data.PlayerID )
-
-				for id = 0, 24 do
-					if team == PlayerResource:GetTeam( id ) then
-						CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( id ), "neutral_item_taked", { item = data.item, player = data.PlayerID } )
-					end
-				end
-
-				break
-			end
-		end
-	end )
+	NeutralItemsTransfer:Init()
 
 	-- Adjust team limits
 	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 12 )
@@ -1077,34 +995,13 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		end
 	end
 
-	if hInventoryParent:IsIllusion() or hInventoryParent:IsClone() then
-		return true
-	end
-
-	if _G.droppedNeutralItems[filterTable.item_entindex_const] then
-		local id = hInventoryParent.GetPlayerID and hInventoryParent:GetPlayerID() or hInventoryParent:GetPlayerOwnerID()
-
-		_G.droppedNeutralItems[filterTable.item_entindex_const] = nil
-
-		local team = PlayerResource:GetTeam( id )
-
-		for id = 0, 24 do
-			if team == PlayerResource:GetTeam( id ) then
-				CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( id ), "neutral_item_taked", { item = filterTable.item_entindex_const, player = id } )
-			end
-		end
-	end	
-
-	if _G.neutralItems[hItem:GetAbilityName()] and not _G.pickedUpNeutralItems[filterTable.item_entindex_const] then
-		local id = hInventoryParent.GetPlayerID and hInventoryParent:GetPlayerID() or hInventoryParent:GetPlayerOwnerID()
-
-		if id == -1 then
+	if hInventoryParent and hItem then
+		if hInventoryParent:IsIllusion() or hInventoryParent:IsClone() then
 			return true
 		end
 
-		CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( id ), "neutral_item_picked_up", { item = filterTable.item_entindex_const })
-		_G.pickedUpNeutralItems[filterTable.item_entindex_const] = true
-	end				
+		NeutralItemsTransfer:AddedItem( hItem, filterTable.item_entindex_const, hInventoryParent )	
+	end		
 
 	return true
 end
