@@ -26,6 +26,7 @@ local NET_WORSE_FOR_RAPIER_MIN = 20000
 require("common/init")
 require("util")
 require("neutral_items_drop_choice")
+require("gpm_lib")
 
 WebApi.customGame = "Dota12v12"
 
@@ -55,7 +56,6 @@ _G.lastTimeBuyItemWithCooldown = {}
 
 _G.playersNetWorthes = {}
 
-
 if CMegaDotaGameMode == nil then
 	_G.CMegaDotaGameMode = class({}) -- put CMegaDotaGameMode in the global scope
 	--refer to: http://stackoverflow.com/questions/6586145/lua-require-with-global-local
@@ -82,7 +82,7 @@ _G.ItemKVs = {}
 function CMegaDotaGameMode:InitGameMode()
 	_G.ItemKVs = LoadKeyValues("scripts/npc/npc_block_items_for_troll.txt")
 	print( "10v10 Mode Loaded!" )
-
+  
 	local neutral_items = LoadKeyValues("scripts/npc/neutral_items.txt")
 
 	_G.neutralItems = {}
@@ -370,7 +370,7 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 			end
 		end
 	end
-	
+	if killedUnit:IsClone() then killedUnit = killedUnit:GetCloneSource() end
 	--print("fired")
     if killedUnit and killedUnit:IsRealHero() and not killedUnit:IsReincarnating() then
 		local player_id = -1
@@ -801,6 +801,10 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	if newState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
 		if game_start then
 			game_start = false
+			Timers:CreateTimer(0.1, function()
+				GPM_Init()
+				return nil
+			end)
 		end
 	end
 end
