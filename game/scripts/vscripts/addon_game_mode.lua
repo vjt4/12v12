@@ -25,6 +25,7 @@ local NET_WORSE_FOR_RAPIER_MIN = 20000
 
 require("common/init")
 require("util")
+require("neutral_items_drop_choice")
 require("gpm_lib")
 
 WebApi.customGame = "Dota12v12"
@@ -81,8 +82,18 @@ _G.ItemKVs = {}
 function CMegaDotaGameMode:InitGameMode()
 	_G.ItemKVs = LoadKeyValues("scripts/npc/npc_block_items_for_troll.txt")
 	print( "10v10 Mode Loaded!" )
+  
+	local neutral_items = LoadKeyValues("scripts/npc/neutral_items.txt")
 
-	NeutralItemsTransfer:Init()
+	_G.neutralItems = {}
+
+	for _, data in pairs( neutral_items ) do
+		for item, turn in pairs( data.items ) do
+			if turn == 1 then
+				_G.neutralItems[item] = true
+			end
+		end
+	end
 
 	-- Adjust team limits
 	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 12 )
@@ -851,7 +862,6 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 	end
 	local hInventoryParent = EntIndexToHScript( filterTable["inventory_parent_entindex_const"] )
 	local hItem = EntIndexToHScript( filterTable["item_entindex_const"] )
-
 	if hItem ~= nil and hInventoryParent ~= nil then
 		local itemName = hItem:GetName()
 		if hInventoryParent:IsRealHero() then
@@ -1000,13 +1010,27 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		end
 	end
 
-	if hInventoryParent and hItem then
-		if hInventoryParent:IsIllusion() or hInventoryParent:IsClone() then
-			return true
+	if _G.neutralItems[hItem:GetAbilityName()] and hItem.new == nil then
+		hItem.new = true
+		local inventoryIsCorrect = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
+		if inventoryIsCorrect then
+			local playerId = hInventoryParent:GetPlayerID() or hInventoryParent:GetPlayerOwnerID()
+			CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( playerId ), "neutral_item_picked_up", { item = filterTable.item_entindex_const })
+			return false
 		end
+	end
 
-		NeutralItemsTransfer:AddedItem( hItem, filterTable.item_entindex_const, hInventoryParent )	
-	end		
+	if hItem and hItem.neutralDropInBase then
+		hItem.neutralDropInBase = false
+		local inventoryIsCorrect = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
+		local playerId = inventoryIsCorrect and hInventoryParent:GetPlayerOwnerID()
+		if playerId then
+			NotificationToAllPlayerOnTeam({
+				PlayerID = playerId,
+				item = filterTable.item_entindex_const,
+			})
+		end
+	end
 
 	return true
 end

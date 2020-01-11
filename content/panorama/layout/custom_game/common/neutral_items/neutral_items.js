@@ -4,29 +4,40 @@ droppedItems = []
 $( "#ItemsContainer" ).RemoveAndDeleteChildren()
 
 function NeutralItemPickedUp( data ) {
+	Game.EmitSound( "DOTA_Item.IronTalon.Activate" )
 	if ( itemPanels[data.item] ) {
 		return
 	}
-
+	var choiceWasMade = false
 	let item = $.CreatePanel( "Panel", $( "#ItemsContainer" ), "" )
 	item.BLoadLayoutSnippet( "NewItem" )
 	item.AddClass( "Slide" )
 	item.FindChildTraverse( "ItemImage" ).itemname = Abilities.GetAbilityName( data.item )
 	item.FindChildTraverse( "ButtonKeep" ).SetPanelEvent( "onactivate", function() {
+		GameEvents.SendCustomGameEventToServer( "neutral_item_keep", {
+			item: data.item
+		} )
 		item.visible = false
+		choiceWasMade = true
 	} )
 	item.FindChildTraverse( "ButtonDrop" ).SetPanelEvent( "onactivate", function() {
 		GameEvents.SendCustomGameEventToServer( "neutral_item_drop", {
 			item: data.item
 		} )
 		item.visible = false
+		choiceWasMade = true
 	} )
 
 	item.FindChildTraverse( "Countdown" ).AddClass( "Active" )
 
 	itemPanels[data.item] = true
 
-	$.Schedule( 10, function() {
+	$.Schedule( 15, function() {
+		if (!choiceWasMade){
+			GameEvents.SendCustomGameEventToServer( "neutral_item_drop", {
+            	item: data.item
+			} )
+		}
 		item.RemoveClass( "Slide" )
 		item.DeleteAsync( 0.3 )
 		itemPanels[data.item] = false
@@ -34,6 +45,7 @@ function NeutralItemPickedUp( data ) {
 }
 
 function NeutralItemDropped( data ) {
+	Game.EmitSound( "Loot_Drop_Stinger_Short" )
 	let item = $.CreatePanel( "Panel", $( "#ItemsContainer" ), "" )
 	item.BLoadLayoutSnippet( "TakeItem" )
 	item.AddClass( "Slide" )
@@ -51,31 +63,27 @@ function NeutralItemDropped( data ) {
 
 	droppedItems[data.item] = item
 
-	$.Schedule( 10, function() {
-		if ( droppedItems[data.item] ) {
-			item.RemoveClass( "Slide" )
-			item.DeleteAsync( 0.3 )
-			droppedItems[data.item] = false
-		}
+	$.Schedule( 15, function() {
+		item.RemoveClass( "Slide" )
+		item.DeleteAsync( 0.3 )
 	} )
 }
 
 function NeutralItemTaked( data ) {
-	if ( droppedItems[data.item] ) {
-		droppedItems[data.item].DeleteAsync( 0 )
-		droppedItems[data.item] = false
+	Game.EmitSound( "Loot_Drop_Stinger_Short" )
 
-		let taked = $.CreatePanel( "Panel", $( "#ItemsContainer" ), "" )
-		taked.BLoadLayoutSnippet( "WhoTakedItem" )
-		taked.AddClass( "Slide" )
-		taked.FindChildTraverse( "ItemImage" ).itemname = Abilities.GetAbilityName( data.item )
-		taked.FindChildTraverse( "HeroImage" ).heroname = Players.GetPlayerSelectedHero( data.player )
+	droppedItems[data.item].DeleteAsync(0)
 
-		$.Schedule( 10, function() {
-			taked.RemoveClass( "Slide" )
-			taked.DeleteAsync( 0.3 )
-		} )
-	}
+	let taked = $.CreatePanel( "Panel", $( "#ItemsContainer" ), "" )
+	taked.BLoadLayoutSnippet( "WhoTakedItem" )
+	taked.AddClass( "Slide" )
+	taked.FindChildTraverse( "ItemImage" ).itemname = Abilities.GetAbilityName( data.item )
+	taked.FindChildTraverse( "HeroImage" ).heroname = Players.GetPlayerSelectedHero( data.player )
+
+	$.Schedule( 5, function() {
+		taked.RemoveClass( "Slide" )
+		taked.DeleteAsync( 0.3 )
+	} )
 }
 
 GameEvents.Subscribe( "neutral_item_taked", NeutralItemTaked )
