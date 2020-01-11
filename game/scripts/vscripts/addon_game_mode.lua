@@ -358,7 +358,7 @@ function CMegaDotaGameMode:OnEntityKilled( event )
 			end
 		end
 	end
-	
+	if killedUnit:IsClone() then killedUnit = killedUnit:GetCloneSource() end
 	--print("fired")
     if killedUnit and killedUnit:IsRealHero() and not killedUnit:IsReincarnating() then
 		local player_id = -1
