@@ -71,8 +71,9 @@ function NeutralItemDropped( data ) {
 
 function NeutralItemTaked( data ) {
 	Game.EmitSound( "Loot_Drop_Stinger_Short" )
-
-	droppedItems[data.item].DeleteAsync(0)
+	if (droppedItems[data.item]){
+		droppedItems[data.item].DeleteAsync(0.3)
+	}
 
 	let taked = $.CreatePanel( "Panel", $( "#ItemsContainer" ), "" )
 	taked.BLoadLayoutSnippet( "WhoTakedItem" )

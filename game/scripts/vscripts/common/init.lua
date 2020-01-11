@@ -11,6 +11,5 @@ require("common/cosmetic_abilities")
 
 require("common/personal_items_cooldown")
 require("common/fast_items")
-require("common/neutral_items_transfer")
 
 LinkLuaModifier("modifier_donator", "common/modifier_donator", LUA_MODIFIER_MOTION_NONE)
