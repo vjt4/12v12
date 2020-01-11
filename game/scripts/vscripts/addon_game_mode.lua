@@ -25,6 +25,7 @@ local NET_WORSE_FOR_RAPIER_MIN = 20000
 
 require("common/init")
 require("util")
+require("gpm_lib")
 
 WebApi.customGame = "Dota12v12"
 
@@ -789,6 +790,10 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	if newState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
 		if game_start then
 			game_start = false
+			Timers:CreateTimer(0.1, function()
+				GPM_Init()
+				return nil
+			end)
 		end
 	end
 end
