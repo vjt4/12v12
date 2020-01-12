@@ -16,8 +16,12 @@ function CDOTA_BaseNPC:CheckPersonalCooldown(itemName)
 	local buyerEntIndex = self:GetEntityIndex()
 	local unique_key = itemName .. "_" .. buyerEntIndex
 	local playerID = self:GetPlayerID()
+	local psets = Patreons:GetPlayerSettings(playerID)
 	if _G.lastTimeBuyItemWithCooldown[unique_key] == nil or (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key]) >= _G.itemsCooldownForPlayer[itemName]) then
 		if not _G.stackedItems[itemName] then
+			_G.lastTimeBuyItemWithCooldown[unique_key] = GameRules:GetGameTime()
+			return true
+		elseif not ItemIsFastBuying(itemName) and (not (psets.level > 0)) then
 			_G.lastTimeBuyItemWithCooldown[unique_key] = GameRules:GetGameTime()
 			return true
 		end

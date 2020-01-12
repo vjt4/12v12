@@ -21,8 +21,8 @@ _G.stackedItems = {
 
 _G.itemsIsBuy = {}
 
-function CDOTA_Item:IsFastBuying()
-	return fastItems[self:GetName()]
+function ItemIsFastBuying(itemName)
+	return fastItems[itemName]
 end
 
 function DoesHeroHasFreeSlot(unit)
