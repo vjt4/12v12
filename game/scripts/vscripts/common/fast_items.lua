@@ -57,12 +57,14 @@ function CDOTA_Item:TransferToBuyer(unit)
 			return false
 		else
 			Timers:CreateTimer(0.04, function()
+				local itemCost = self:GetCost()
 				UTIL_Remove(self)
 				local newItem = buyer:AddItemByName(itemName)
 				local unique_key_cd = itemName .. "_" .. buyerEntIndex
 				if _G.lastTimeBuyItemWithCooldown[unique_key_cd] == nil or (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) >= _G.itemsCooldownForPlayer[itemName]) then
 					_G.lastTimeBuyItemWithCooldown[unique_key_cd] = GameRules:GetGameTime()
 				else
+					buyer:ModifyGold(itemCost, false, 0)
 					MessageToPlayerItemCooldown(itemName, buyer:GetPlayerID())
 					UTIL_Remove(newItem)
 				end
