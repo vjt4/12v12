@@ -1000,6 +1000,13 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				if hItem:TransferToBuyer(hInventoryParent) == false then
 					return false
 				end
+				local unique_key_cd = itemName .. "_" .. purchaser:GetEntityIndex()
+				if _G.lastTimeBuyItemWithCooldown[unique_key_cd] and (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) < _G.itemsCooldownForPlayer[itemName]) then
+					Timers:CreateTimer(1, function()
+						UTIL_Remove(hItem)
+					end)
+					return false
+				end
 			end
 
 			if (filterTable["item_parent_entindex_const"] > 0) and hItem and (not purchaser:CheckPersonalCooldown(itemName)) and correctInventory then

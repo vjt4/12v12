@@ -12,6 +12,14 @@ function CDOTA_Item:HasPersonalCooldown()
 	return itemsCooldownForPlayer[self:GetName()] and true
 end
 
+function MessageToPlayerItemCooldown(itemName, playerID)
+	if _G.itemsCooldownForPlayer[itemName] and _G.itemsCooldownForPlayer[itemName] < infinityCooldown then
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#fast_buy_items" })
+	else
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#you_can_buy_only_one_item" })
+	end
+end
+
 function CDOTA_BaseNPC:CheckPersonalCooldown(itemName)
 	local buyerEntIndex = self:GetEntityIndex()
 	local unique_key = itemName .. "_" .. buyerEntIndex
@@ -26,12 +34,15 @@ function CDOTA_BaseNPC:CheckPersonalCooldown(itemName)
 			return true
 		end
 	elseif _G.itemsCooldownForPlayer[itemName] then
-		if _G.itemsCooldownForPlayer[itemName] < infinityCooldown then
-			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#fast_buy_items" })
+		if _G.stackedItems[itemName] then
+			if not ItemIsFastBuying(itemName) and (not (psets.level > 0)) then
+				MessageToPlayerItemCooldown(itemName, playerID)
+				return false
+			end
 		else
-			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#you_can_buy_only_one_item" })
+			MessageToPlayerItemCooldown(itemName, playerID)
+			return false
 		end
-		return false
 	end
 	return true
 end

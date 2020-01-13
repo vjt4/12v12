@@ -34,29 +34,13 @@ function DoesHeroHasFreeSlot(unit)
 	return false
 end
 
-function CDOTA_BaseNPC:GetItemByNameFromStash(itemName)
-	for i = 9, 16 do
-		local currentItem = self:GetItemInSlot(i)
-		if currentItem then
-			local currentName = currentItem:GetName()
-			if currentName == itemName then
-				return {
-					["item"] = currentItem,
-					["slot"] = i
-				}
-			end
-		end
-	end
-	return nil
-end
-
 function CDOTA_Item:TransferToBuyer(unit)
 	local buyer = self:GetPurchaser()
 	local buyerEntIndex = buyer:GetEntityIndex()
 	local itemName = self:GetName()
 	local unique_key = itemName .. "_" .. buyerEntIndex
 
-	if unit:IsIllusion() or unit:IsCourier() then
+	if unit:IsIllusion() then
 		return
 	end
 	if not DoesHeroHasFreeSlot(buyer) and not _G.stackedItems[itemName] then
@@ -73,13 +57,15 @@ function CDOTA_Item:TransferToBuyer(unit)
 			return false
 		else
 			Timers:CreateTimer(0.04, function()
-				local item = buyer:GetItemByNameFromStash(itemName)
-				if item and item["item"] == self then
-					UTIL_Remove(self)
-					buyer:AddItemByName(itemName)
-				end
+				UTIL_Remove(self)
+				local newItem = buyer:AddItemByName(itemName)
 				local unique_key_cd = itemName .. "_" .. buyerEntIndex
-				_G.lastTimeBuyItemWithCooldown[unique_key_cd] = GameRules:GetGameTime()
+				if _G.lastTimeBuyItemWithCooldown[unique_key_cd] == nil or (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) >= _G.itemsCooldownForPlayer[itemName]) then
+					_G.lastTimeBuyItemWithCooldown[unique_key_cd] = GameRules:GetGameTime()
+				else
+					MessageToPlayerItemCooldown(itemName, buyer:GetPlayerID())
+					UTIL_Remove(newItem)
+				end
 			end)
 		end
 	end
