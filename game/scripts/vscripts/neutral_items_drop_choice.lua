@@ -73,11 +73,13 @@ RegisterCustomEventListener( "neutral_item_take", function( data )
 	local freeSlot = DoesHeroHasFreeSlot(hero)
 
 	if freeSlot then
-		local container = item:GetContainer()
-		UTIL_Remove( container )
-		item.neutralDropInBase = false
-		hero:AddItem( item )
-		NotificationToAllPlayerOnTeam(data)
+		if item.neutralDropInBase then
+			item.neutralDropInBase = false
+			local container = item:GetContainer()
+			UTIL_Remove( container )
+			hero:AddItem( item )
+			NotificationToAllPlayerOnTeam(data)
+		end
 	else
 		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.PlayerID), "display_custom_error", { message = "#inventory_full_custom_message" })
 	end
