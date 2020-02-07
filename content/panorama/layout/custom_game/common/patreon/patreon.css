@@ -473,3 +473,35 @@
 #NewMethodsAnnouncementImages > Image:active {
 	pre-transform-scale2d: 1.02;
 }
+
+#ClosePatreonButton {
+	background-color: rgb(66, 66, 66);
+	horizontal-align: right;
+	width: 16px;
+	height: 16px;
+	background-size: 100%;
+	margin-bottom: 42px;
+	margin-right: 2px;
+	border-radius: 1px;
+	border-color: rgb(79, 79, 79);
+	border-style: solid;
+	border-width: 1px;
+	visibility: collapse;
+	background-image: url("s2r://panorama/images/control_icons/x_close_png.vtex");
+}
+
+#CloseVOIconButton {
+	background-color: rgb(66, 66, 66);
+	horizontal-align: right;
+	width: 16px;
+	height: 16px;
+	background-size: 100%;
+	margin-bottom: 103px;
+	margin-right: 5px;
+	border-radius: 1px;
+	border-color: rgb(79, 79, 79);
+	border-style: solid;
+	border-width: 1px;
+	visibility: collapse;
+	background-image: url("s2r://panorama/images/control_icons/x_close_png.vtex");
+}

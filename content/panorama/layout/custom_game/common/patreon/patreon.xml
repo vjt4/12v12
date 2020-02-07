@@ -27,11 +27,13 @@
  	<Panel hittest="false" class="PatreonRoot">
  		<Panel id="PatreonButtonPanel">
 			<!--<Image src="file://{resources}/layout/custom_game/common/patreon/perks/unlimited_chat_wheel.png" />-->
-			<Image id="VOIcon" src="file://{resources}/layout/custom_game/common/patreon/voicon.png" onmouseover='DOTAShowTextTooltip(#votooltip)' onmouseout='DOTAHideTextTooltip()'/>
+			<Image id="VOIcon" src="file://{resources}/layout/custom_game/common/patreon/voicon.png" onmouseover='ShowVOIconButton()' onmouseout='HideVOIconButton()'/>
 			<TextButton id="PatreonButton" onactivate="OnPatreonButtonPressed()" text="#patreon_perks" />
-			<Button id="PatreonButtonSmallerImage">
+			<Button id="PatreonButtonSmallerImage" onmouseover='ShowClosePatreonButton()' onmouseout='HideClosePatreonButton()'>
 				<Image src="file://{resources}/layout/custom_game/common/patreon/small_button.png" onactivate="OnPatreonButtonPressed()"/>
 			</Button>
+			<Button id="CloseVOIconButton" onactivate="CloseVOIconButton();" onmouseover='ShowVOIconButton()' onmouseout='HideVOIconButton()'/>
+			<Button id="ClosePatreonButton" onactivate="ClosePatreonButton();" onmouseover='ShowClosePatreonButton()' onmouseout='HideClosePatreonButton()'/>
 			<Panel id="NewMethodsAnnouncement" hittest="false">
 				<Image id="NewMethodsAnnouncementImage" src="file://{resources}/layout/custom_game/common/patreon/new_methods_announcement.png" />
 				<Panel id="NewMethodsAnnouncementText">

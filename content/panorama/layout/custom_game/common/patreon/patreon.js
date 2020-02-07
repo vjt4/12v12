@@ -2,7 +2,8 @@ var hasPatreonStatus = true;
 var isPatron = false;
 var patreonLevel = 0
 var patreonPerks = []
-
+var offPatreonButton  = true
+var offVOIconButton  = true
 $( "#PatreonPerksContainer" ).RemoveAndDeleteChildren()
 
 class PatreonPerk {
@@ -78,13 +79,19 @@ function hideNewMethodsAnnouncement() {
 
 function updatePatreonButton() {
 	// TODO: Either remove full button, or revert this change
-	var minimizePatreonButton = true;
-
-	$('#PatreonButtonPanel').visible = hasPatreonStatus;
-	$('#PatreonButton').visible = !minimizePatreonButton;
-	$('#PatreonButtonSmallerImage').visible = minimizePatreonButton;
+		var minimizePatreonButton = true;
+		$('#PatreonButtonPanel').visible = hasPatreonStatus;
+		$('#PatreonButton').visible = !minimizePatreonButton;
+	if (offPatreonButton){
+		$('#PatreonButtonSmallerImage').visible = minimizePatreonButton;
+	}
 	// Show icon only when chat wheel is loaded as it's not a common module yet
-	$('#VOIcon').visible = Boolean(GameUI.CustomUIConfig().chatWheelLoaded) && Game.GetDOTATime(false, false) <= 120;
+	if (offVOIconButton){
+		$('#VOIcon').visible = Boolean(GameUI.CustomUIConfig().chatWheelLoaded) && Game.GetDOTATime(false, false) <= 120;
+	}
+	if (Game.GetDOTATime(false, false) > 120){
+		$('#CloseVOIconButton').visible = false
+	}
 	$('#NewMethodsAnnouncement').visible = !shouldHideNewMethodsAnnouncement && !isPatron && $.Language() !== 'russian' && Game.GetDOTATime(false, false) <= 120;
 }
 
@@ -205,6 +212,39 @@ function SetPatreonLevel( level ) {
 	$( "#PatreonSupporter" ).visible = visible3
 	$( "#PatreonSupporterHigh" ).visible = visible4
 	$( "#ThanksText" ).visible = visible5
+}
+
+function ClosePatreonButton() {
+	$("#PatreonButtonSmallerImage").visible = false
+	$("#ClosePatreonButton").visible = false
+	offPatreonButton = false
+	$("#CloseVOIconButton").style.marginRight = "0px";
+}
+
+function ShowClosePatreonButton() {
+	$("#ClosePatreonButton").visible = true
+}
+
+function HideClosePatreonButton() {
+	$("#ClosePatreonButton").visible = false
+}
+
+function ShowVOIconButton() {
+	var panel = $("#VOIcon");
+	$.DispatchEvent( 'DOTAShowTextTooltip', panel, $.Localize('#votooltip'));
+	$("#CloseVOIconButton").visible = true
+}
+
+function HideVOIconButton() {
+	var panel = $("#VOIcon");
+	$.DispatchEvent( 'DOTAHideTextTooltip', panel);
+	$("#CloseVOIconButton").visible = false
+}
+
+function CloseVOIconButton() {
+	$("#VOIcon").visible = false
+	$("#CloseVOIconButton").visible = false
+	offVOIconButton = false
 }
 
 $.GetContextPanel().RemoveClass('IsPatron');
