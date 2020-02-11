@@ -2,7 +2,7 @@
 	Times in seconds
 --]]
 
-local BASE_TIME = 240 -- Time for see, player save or use wards
+local BASE_TIME = 480 -- Time for see, player save or use wards
 local BLOCK_TIME = 240 -- Time to block buying and pick up ward
 --[[
 	System work with this items list. You need write ID from KV files (original dota or custom)

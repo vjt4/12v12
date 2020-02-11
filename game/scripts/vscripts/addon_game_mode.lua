@@ -1049,7 +1049,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		hItem.new = true
 		local inventoryIsCorrect = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
 		if inventoryIsCorrect then
-			local playerId = hInventoryParent:GetPlayerID() or hInventoryParent:GetPlayerOwnerID()
+			local playerId = hInventoryParent:GetPlayerOwnerID() or hInventoryParent:GetPlayerID()
 			CustomGameEventManager:Send_ServerToPlayer( PlayerResource:GetPlayer( playerId ), "neutral_item_picked_up", { item = filterTable.item_entindex_const })
 			return false
 		end
