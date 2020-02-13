@@ -79,10 +79,8 @@ function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderV
 			)
 
 			for _, hero in pairs( allies ) do
-				if PlayerResource:IsDisableHelpSetForPlayerID( hero:GetPlayerOwnerID(), unit:GetPlayerOwnerID() ) then
-					DisplayError(unit:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
-					return false
-				end
+				DisplayError(unit:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
+				return false
 			end
 		end
 	elseif (
