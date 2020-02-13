@@ -46,8 +46,46 @@ local disabledAbilities = {
 	tiny_toss = true,
 }
 
-function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit)
+function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderVector)
 	if (
+		orderType == DOTA_UNIT_ORDER_CAST_POSITION and
+		unit and
+		ability and
+		ability:GetAbilityName() == "furion_sprout"
+	) then
+		local enemies = FindUnitsInRadius(
+			unit:GetTeam(),
+			orderVector,
+			nil,
+			400, 
+			DOTA_UNIT_TARGET_TEAM_ENEMY,
+			DOTA_UNIT_TARGET_HERO,
+			DOTA_UNIT_TARGET_FLAG_NONE,
+			FIND_ANY_ORDER,
+			false
+		)
+
+		if #enemies == 0 then
+			local allies = FindUnitsInRadius(
+				unit:GetTeam(),
+				orderVector,
+				nil,
+				400, 
+				DOTA_UNIT_TARGET_TEAM_FRIENDLY,
+				DOTA_UNIT_TARGET_HERO,
+				DOTA_UNIT_TARGET_FLAG_NONE,
+				FIND_ANY_ORDER,
+				false
+			)
+
+			for _, hero in pairs( allies ) do
+				if PlayerResource:IsDisableHelpSetForPlayerID( hero:GetPlayerOwnerID(), unit:GetPlayerOwnerID() ) then
+					DisplayError(unit:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
+					return false
+				end
+			end
+		end
+	elseif (
 		orderType == DOTA_UNIT_ORDER_CAST_TARGET and
 		ability and
 		target and

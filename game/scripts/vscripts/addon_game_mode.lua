@@ -1096,6 +1096,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	local playerId = filterTable.issuer_player_id_const
 	local target = filterTable.entindex_target ~= 0 and EntIndexToHScript(filterTable.entindex_target) or nil
 	local ability = filterTable.entindex_ability ~= 0 and EntIndexToHScript(filterTable.entindex_ability) or nil
+	local orderVector = Vector(filterTable.position_x, filterTable.position_y, 0)
 	-- `entindex_ability` is item id in some orders without entity
 	if ability and not ability.GetAbilityName then ability = nil end
 	local abilityName = ability and ability:GetAbilityName() or nil
@@ -1187,7 +1188,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 		end
 	end
 
-	local disableHelpResult = DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit)
+	local disableHelpResult = DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderVector)
 	if disableHelpResult == false then
 		return false
 	end
@@ -1199,7 +1200,6 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	if orderType == DOTA_UNIT_ORDER_CAST_POSITION then
 		if abilityName == "item_ward_dispenser" or abilityName == "item_ward_sentry" or abilityName == "item_ward_observer" then
 			local list = Entities:FindAllByClassname("trigger_multiple")
-			local orderVector = Vector(filterTable.position_x, filterTable.position_y, 0)
 			local fs = {
 				Vector(5000,6912,0),
 				Vector(-5300,-6938,0)
