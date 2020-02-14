@@ -18,18 +18,32 @@ local disabledModifiers = {
 }
 
 function DisableHelp.ModifierGainedFilter(filterTable)
-	if disabledModifiers[filterTable.name_const] then
+	if filterTable.name_const == "modifier_tiny_toss" then
 		local parent = EntIndexToHScript(filterTable.entindex_parent_const)
 		local caster = EntIndexToHScript(filterTable.entindex_caster_const)
 		local ability = EntIndexToHScript(filterTable.entindex_ability_const)
+		local caster_id = caster:GetPlayerOwnerID()
 
-		if PlayerResource:IsDisableHelpSetForPlayerID(parent:GetPlayerOwnerID(), caster:GetPlayerOwnerID()) then
+		if PlayerResource:GetPartyID(parent:GetPlayerOwnerID()) ~= PlayerResource:GetPartyID(caster_id) then
 			ability:EndCooldown()
 			ability:RefundManaCost()
-			DisplayError(caster:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
+			DisplayError(caster_id, "dota_hud_error_target_has_disable_help")
 			return false
 		end
 	end
+
+	--if disabledModifiers[filterTable.name_const] then
+	--	local parent = EntIndexToHScript(filterTable.entindex_parent_const)
+	--	local caster = EntIndexToHScript(filterTable.entindex_caster_const)
+	--	local ability = EntIndexToHScript(filterTable.entindex_ability_const)
+
+	--	if PlayerResource:IsDisableHelpSetForPlayerID(parent:GetPlayerOwnerID(), caster:GetPlayerOwnerID()) then
+	--		ability:EndCooldown()
+	--		ability:RefundManaCost()
+	--		DisplayError(caster:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
+	--		return false
+	--	end
+	--end
 end
 
 local disabledAbilities = {
