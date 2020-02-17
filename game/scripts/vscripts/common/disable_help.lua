@@ -62,39 +62,46 @@ local disabledAbilities = {
 
 function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderVector)
 	if (
-		orderType == DOTA_UNIT_ORDER_CAST_POSITION and
 		unit and
 		ability and
 		ability:GetAbilityName() == "furion_sprout"
 	) then
-		local enemies = FindUnitsInRadius(
-			unit:GetTeam(),
-			orderVector,
-			nil,
-			400, 
-			DOTA_UNIT_TARGET_TEAM_ENEMY,
-			DOTA_UNIT_TARGET_HERO,
-			DOTA_UNIT_TARGET_FLAG_NONE,
-			FIND_ANY_ORDER,
-			false
-		)
+		local caster_id = unit:GetPlayerOwnerID()
 
-		if #enemies == 0 then
-			local allies = FindUnitsInRadius(
+		if orderType == DOTA_UNIT_ORDER_CAST_TARGET and target and PlayerResource:GetPartyID(target:GetPlayerOwnerID()) ~= PlayerResource:GetPartyID(caster_id) then
+			return false
+		else
+			local enemies = FindUnitsInRadius(
 				unit:GetTeam(),
 				orderVector,
 				nil,
 				400, 
-				DOTA_UNIT_TARGET_TEAM_FRIENDLY,
+				DOTA_UNIT_TARGET_TEAM_ENEMY,
 				DOTA_UNIT_TARGET_HERO,
 				DOTA_UNIT_TARGET_FLAG_NONE,
 				FIND_ANY_ORDER,
 				false
 			)
 
-			for _, hero in pairs( allies ) do
-				DisplayError(unit:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
-				return false
+			if #enemies == 0 then
+				local allies = FindUnitsInRadius(
+					unit:GetTeam(),
+					orderVector,
+					nil,
+					400, 
+					DOTA_UNIT_TARGET_TEAM_FRIENDLY,
+					DOTA_UNIT_TARGET_HERO,
+					DOTA_UNIT_TARGET_FLAG_NONE,
+					FIND_ANY_ORDER,
+					false
+				)
+
+				for _, hero in pairs( allies ) do
+					if PlayerResource:GetPartyID(hero:GetPlayerOwnerID()) ~= PlayerResource:GetPartyID(caster_id) then
+						DisplayError(unit:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
+						return false
+					end
+				end
 			end
 		end
 	elseif (
