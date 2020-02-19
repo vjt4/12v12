@@ -165,5 +165,9 @@
 		"troll_voting_final"					               			"%s1 被票选为破坏游戏体验的不良玩家."
 		"cannot_voite_against_high_tier_patreons"					    "你不能投票给高级赞助者"
 		"target_has_troll_debuff_with_voiting"					   		"该玩家已被惩罚"
+
+		"alertforban"					   								"警告：你的队友希望将你踢出当前游戏。"
+		"playerhasalertforban"					   						"该玩家已收到警告。请稍后再试。"
+		"DOTA_Tooltip_modifier_alert_before_kick"					   	"踢出游戏时的警告"
 	}
 }
