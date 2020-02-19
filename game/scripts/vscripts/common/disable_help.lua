@@ -59,8 +59,7 @@ function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderV
 			target and
 			target:IsRealHero() and
 			target ~= unit and
-			target:GetTeam() == unit:GetTeam() and
-			PlayerResource:GetPartyID(target:GetPlayerOwnerID()) ~= PlayerResource:GetPartyID(caster_id)
+			target:GetTeam() == unit:GetTeam()
 		) then
 			DisplayError(caster_id, "dota_hud_error_target_has_disable_help")
 			return false
