@@ -68,7 +68,8 @@ function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderV
 	) then
 		local caster_id = unit:GetPlayerOwnerID()
 
-		if orderType == DOTA_UNIT_ORDER_CAST_TARGET and target then
+		if orderType == DOTA_UNIT_ORDER_CAST_TARGET and target and target ~= unit then
+			DisplayError(unit:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
 			return false
 		else
 			local enemies = FindUnitsInRadius(
