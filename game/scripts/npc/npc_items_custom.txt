@@ -341,14 +341,11 @@
 			"modifier_alert_before_kick"
 			{
 				"IsDebuff"			"1"
+				"IsHidden"			"1"
 				"Duration"			"60"
 				"IsPurgable"		"0"
 				"RemoveOnDeath"		"0"
-				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
 				"TextureName" 		"banhammer2"
-				"EffectName"		"particles/alert_ban_hammer.vpcf"
-				"EffectAttachType"  "follow_overhead"
 			}
 		}
     }

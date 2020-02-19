@@ -168,6 +168,6 @@
 
 		"alertforban"					   								"警告：你的队友希望将你踢出当前游戏。"
 		"playerhasalertforban"					   						"该玩家已收到警告。请稍后再试。"
-		"DOTA_Tooltip_modifier_alert_before_kick"					   	"踢出游戏时的警告"
+		"DOTA_Tooltip_modifier_alert_before_kick_lua"					"踢出游戏时的警告"
 	}
 }

@@ -31,12 +31,14 @@ require("gpm_lib")
 WebApi.customGame = "Dota12v12"
 
 LinkLuaModifier("modifier_dummy_inventory", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_alert_before_kick_lua", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_patreon_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_silencer_new_int_steal", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_feed_token", 'anti_feed_system/modifier_troll_feed_token', LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_feed_token_couter", 'anti_feed_system/modifier_troll_feed_token_couter', LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_debuff_stop_feed", 'anti_feed_system/modifier_troll_debuff_stop_feed', LUA_MODIFIER_MOTION_NONE)
+
 
 _G.newStats = newStats or {}
 _G.personalCouriers = {}
@@ -566,9 +568,15 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 end
 
 function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
+
 	local disableHelpResult = DisableHelp.ModifierGainedFilter(filterTable)
 	if disableHelpResult == false then
 		return false
+	end
+
+	if filterTable.name_const == "modifier_alert_before_kick" then
+		local unit = filterTable.entindex_parent_const ~= 0 and EntIndexToHScript(filterTable.entindex_parent_const)
+		unit:AddNewModifier(unit, unit, "modifier_alert_before_kick_lua", { duration = filterTable.duration })
 	end
 
 	return true
