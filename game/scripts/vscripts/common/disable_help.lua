@@ -68,7 +68,7 @@ function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderV
 	) then
 		local caster_id = unit:GetPlayerOwnerID()
 
-		if orderType == DOTA_UNIT_ORDER_CAST_TARGET and target and PlayerResource:GetPartyID(target:GetPlayerOwnerID()) ~= PlayerResource:GetPartyID(caster_id) then
+		if orderType == DOTA_UNIT_ORDER_CAST_TARGET and target then
 			return false
 		else
 			local enemies = FindUnitsInRadius(
@@ -88,19 +88,16 @@ function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderV
 					unit:GetTeam(),
 					orderVector,
 					nil,
-					400, 
+					400,
 					DOTA_UNIT_TARGET_TEAM_FRIENDLY,
 					DOTA_UNIT_TARGET_HERO,
 					DOTA_UNIT_TARGET_FLAG_NONE,
 					FIND_ANY_ORDER,
 					false
 				)
-
-				for _, hero in pairs( allies ) do
-					if PlayerResource:GetPartyID(hero:GetPlayerOwnerID()) ~= PlayerResource:GetPartyID(caster_id) then
-						DisplayError(unit:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
-						return false
-					end
+				if #allies > 0 then
+					DisplayError(unit:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
+					return false
 				end
 			end
 		end
