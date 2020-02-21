@@ -33,12 +33,17 @@ function DisableHelp.ModifierGainedFilter(filterTable)
 			DisplayError(caster:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
 			return false
 		end
-	elseif disabledModifiersNotInParty[filterTable.name_const] then
+	end
+	if disabledModifiersNotInParty[filterTable.name_const] then
 		local parent = EntIndexToHScript(filterTable.entindex_parent_const)
 		local caster = EntIndexToHScript(filterTable.entindex_caster_const)
 		local ability = EntIndexToHScript(filterTable.entindex_ability_const)
 
-		if parent:IsRealHero() and PlayerResource:GetPartyID(parent:GetPlayerOwnerID()) ~= PlayerResource:GetPartyID(caster:GetPlayerOwnerID()) then
+		if
+		parent:IsRealHero()
+		and (parent:GetTeam() == caster:GetTeam())
+		--and PlayerResource:GetPartyID(parent:GetPlayerOwnerID()) ~= PlayerResource:GetPartyID(caster:GetPlayerOwnerID())
+		then
 			ability:EndCooldown()
 			ability:RefundManaCost()
 			DisplayError(caster:GetPlayerOwnerID(), "dota_hud_error_target_has_disable_help")
