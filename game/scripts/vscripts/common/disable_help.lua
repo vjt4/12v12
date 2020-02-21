@@ -42,7 +42,7 @@ function DisableHelp.ModifierGainedFilter(filterTable)
 		if
 		parent:IsRealHero()
 		and (parent:GetTeam() == caster:GetTeam())
-		--and PlayerResource:GetPartyID(parent:GetPlayerOwnerID()) ~= PlayerResource:GetPartyID(caster:GetPlayerOwnerID())
+		and PlayerResource:GetPartyID(parent:GetPlayerOwnerID()) ~= PlayerResource:GetPartyID(caster:GetPlayerOwnerID())
 		then
 			ability:EndCooldown()
 			ability:RefundManaCost()
