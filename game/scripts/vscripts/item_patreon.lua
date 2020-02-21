@@ -48,6 +48,17 @@ function OnSpellStartBanHammer( event )
                     local uniqueKey = caster:GetEntityIndex() .. "_" .. target:GetEntityIndex()
                     if not _G.alertsKickForPlayer[uniqueKey] then
                         _G.alertsKickForPlayer[uniqueKey] = true
+
+                        GameRules:SendCustomMessage("#alert_for_ban_message_1", caster:GetPlayerID(), 0)
+                        GameRules:SendCustomMessage("#alert_for_ban_message_2", target:GetPlayerID(), 0)
+
+                        local all_heroes = HeroList:GetAllHeroes()
+                        for _, hero in pairs(all_heroes) do
+                            if hero:IsRealHero() and hero:IsControllableByAnyPlayer() then
+                                EmitSoundOn("Hero_Sven.StormBoltImpact" , hero)
+                            end
+                        end
+
                         CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(target:GetPlayerID()), "display_custom_error", { message = "#alertforban" })
                         ability:ApplyDataDrivenModifier(caster, target, "modifier_alert_before_kick", { duration = 30 })
                     else
