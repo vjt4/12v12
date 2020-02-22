@@ -33,7 +33,7 @@
 }
 
 #PatreonsGamePerkMenu {
-	width: 860px;
+	width: 1275px;
 	height: 514px;
 	margin-bottom: 26%;
 	align: center bottom;
@@ -55,7 +55,7 @@
 	horizontal-align: center;
 	margin-bottom: 8px;
 	margin-top: 4px;
-	width: 823px;
+	width: 1236px;
 	height: 30px;
 }
 .PatreonsGamePerkMenuHeadText {
@@ -68,7 +68,7 @@
 }
 
 #PatreonsGamePerksTierList {
-	width: 860px;
+	width: 1275px;
 	flow-children: right;
 	overflow: squish scroll;
 	horizontal-align: center;
@@ -132,7 +132,7 @@
 	background-position: 4px 4px;
 	background-repeat: no-repeat;
 	margin-bottom: 71.9%;
-	margin-left: 44.5%;
+	margin-left: 65.9%;
 	background-color: rgb(40, 40, 40);
 	border-radius: 100%;
 	border-style: solid;

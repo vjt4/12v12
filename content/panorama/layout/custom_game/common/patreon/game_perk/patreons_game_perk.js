@@ -1,37 +1,54 @@
-var patreons_levels = 2;
+var patreons_levels = 3;
 var patreons_game_perks = {
-"patreon_perk_mp_regen_t1": 1,//
-"patreon_perk_mp_regen_t2": 2,//
-"patreon_perk_hp_regen_t1": 1,//
-"patreon_perk_hp_regen_t2": 2,//
-"patreon_perk_bonus_movespeed_t1": 1,//
-"patreon_perk_bonus_movespeed_t2": 2,//
-"patreon_perk_bonus_agi_t1": 1,//
-"patreon_perk_bonus_agi_t2": 2,//
-"patreon_perk_bonus_str_t1": 1,//
-"patreon_perk_bonus_str_t2": 2,//
-"patreon_perk_bonus_int_t1": 1,//
-"patreon_perk_bonus_int_t2": 2,//
-"patreon_perk_bonus_all_stats_t1": 1,//
-"patreon_perk_bonus_all_stats_t2": 2,//
+"patreon_perk_mp_regen_t0": 0,
+"patreon_perk_mp_regen_t1": 1,
+"patreon_perk_mp_regen_t2": 2,
+"patreon_perk_hp_regen_t0": 0,
+"patreon_perk_hp_regen_t1": 1,
+"patreon_perk_hp_regen_t2": 2,
+"patreon_perk_bonus_movespeed_t0": 0,
+"patreon_perk_bonus_movespeed_t1": 1,
+"patreon_perk_bonus_movespeed_t2": 2,
+"patreon_perk_bonus_agi_t0": 0,
+"patreon_perk_bonus_agi_t1": 1,
+"patreon_perk_bonus_agi_t2": 2,
+"patreon_perk_bonus_str_t0": 0,
+"patreon_perk_bonus_str_t1": 1,
+"patreon_perk_bonus_str_t2": 2,
+"patreon_perk_bonus_int_t0": 0,
+"patreon_perk_bonus_int_t1": 1,
+"patreon_perk_bonus_int_t2": 2,
+"patreon_perk_bonus_all_stats_t0": 0,
+"patreon_perk_bonus_all_stats_t1": 1,
+"patreon_perk_bonus_all_stats_t2": 2,
+"patreon_perk_attack_range_t0": 0,
 "patreon_perk_attack_range_t1": 1,
 "patreon_perk_attack_range_t2": 2,
+"patreon_perk_bonus_hp_pct_t0": 0,
 "patreon_perk_bonus_hp_pct_t1": 1,
 "patreon_perk_bonus_hp_pct_t2": 2,
+"patreon_perk_cast_range_t0": 0,
 "patreon_perk_cast_range_t1": 1,
 "patreon_perk_cast_range_t2": 2,
+"patreon_perk_cooldown_reduction_t0": 0,
 "patreon_perk_cooldown_reduction_t1": 1,
 "patreon_perk_cooldown_reduction_t2": 2,
+"patreon_perk_damage_t0": 0,
 "patreon_perk_damage_t1": 1,
 "patreon_perk_damage_t2": 2,
+"patreon_perk_evasion_t0": 0,
 "patreon_perk_evasion_t1": 1,
 "patreon_perk_evasion_t2": 2,
+"patreon_perk_lifesteal_t0": 0,
 "patreon_perk_lifesteal_t1": 1,
 "patreon_perk_lifesteal_t2": 2,
+"patreon_perk_mag_resist_t0": 0,
 "patreon_perk_mag_resist_t1": 1,
 "patreon_perk_mag_resist_t2": 2,
+"patreon_perk_spell_amp_t0": 0,
 "patreon_perk_spell_amp_t1": 1,
 "patreon_perk_spell_amp_t2": 2,
+"patreon_perk_spell_lifesteal_t0": 0,
 "patreon_perk_spell_lifesteal_t1": 1,
 "patreon_perk_spell_lifesteal_t2": 2,
 };
@@ -78,6 +95,22 @@ function HidePatreonsGamePerks(){
 	perksPanelClose.visible = false;
 }
 
+function ReloadSetttingButton(){
+	var settingPerksButton = $("#SetPatreonGamePerkButton")
+
+	settingPerksButton.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/patreon_button_setting_no_glow.png")
+
+	settingPerksButton.SetPanelEvent( "onmouseover", function() {
+		ShowPatreonsGamePerksHint();
+	} )
+	settingPerksButton.SetPanelEvent( "onmouseout", function() {
+		HidePatreonsGamePerksHint();
+	} )
+	settingPerksButton.SetPanelEvent( "onactivate", function() {
+		ShowPatreonsGamePerks();
+	} )
+}
+
 function SetPatreonsPerkButtonAction(panel, perkName){
 	panel.SetPanelEvent( "onactivate", function() {
 		var settingPerksButton = $("#SetPatreonGamePerkButton")
@@ -112,14 +145,14 @@ function UpdateBlockPatreonsPerk(panel, currectPatreonLevel){
 		$.DispatchEvent( 'DOTAHideTextTooltip', panel);
 	} )
 }
-
+var playerHasPanel = true
 function CreatePatreonsGamePerks(){
-	if (patreonLevel > 0){
-		$("#PatreonGamePerkButtonOption").visible = true;
-		$("#PatreonGamePerkButtonPanel").visible = true;
-
+	$("#PatreonGamePerkButtonOption").visible = true;
+	$("#PatreonGamePerkButtonPanel").visible = true;
+	if (playerHasPanel){
+		playerHasPanel = false
 		for (var x = 0; x < patreons_levels; x++) {
-			var tier = x+1
+			var tier = x;
 			var patreonGamePerksTier = $.CreatePanel("Panel", $("#PatreonsGamePerksTierList"), "");
 			patreonGamePerksTier.AddClass("PatreonGamePerksTier");
 
@@ -132,7 +165,7 @@ function CreatePatreonsGamePerks(){
 			patreonGamePerksTierHeaderText.text = $.Localize("#patreon_game_perk_tolltip_tier_"+tier);
 
 			var perkPanelListForTier = $.CreatePanel("Panel", patreonGamePerksTier, "");
-            perkPanelListForTier.AddClass("PerkPanelListForTier");
+			perkPanelListForTier.AddClass("PerkPanelListForTier");
 
 			for (var key in patreons_game_perks_have_only_low_tier) {
 				if (patreons_game_perks[key] < patreonLevel){
@@ -164,23 +197,24 @@ function CreatePatreonsGamePerks(){
 					}
 				}
 			}
-		}
-		if (patreonCurrentPerk != null){
-				var settingPerksButton = $("#SetPatreonGamePerkButton")
+			if (patreonCurrentPerk != null){
+					var settingPerksButton = $("#SetPatreonGamePerkButton")
 
-        		settingPerksButton.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/icons/"+patreonCurrentPerk+".png")
-        		settingPerksButton.SetPanelEvent( "onmouseover", function() {
-        			$.DispatchEvent( 'DOTAShowTextTooltip', settingPerksButton, $.Localize(patreonCurrentPerk+"_tooltip"));
-        		} )
-        		settingPerksButton.SetPanelEvent( "onmouseout", function() {
-        			$.DispatchEvent( 'DOTAHideTextTooltip', settingPerksButton);
-        		} )
-        		settingPerksButton.SetPanelEvent( "onactivate", function() {} )
-        		HidePatreonsGamePerks()
+					settingPerksButton.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/icons/"+patreonCurrentPerk+".png")
+					settingPerksButton.SetPanelEvent( "onmouseover", function() {
+						$.DispatchEvent( 'DOTAShowTextTooltip', settingPerksButton, $.Localize(patreonCurrentPerk+"_tooltip"));
+					} )
+					settingPerksButton.SetPanelEvent( "onmouseout", function() {
+						$.DispatchEvent( 'DOTAHideTextTooltip', settingPerksButton);
+					} )
+					settingPerksButton.SetPanelEvent( "onactivate", function() {} )
+					HidePatreonsGamePerks()
+			}
 		}
 	}
 }
 function PatreonsGamePerkInit(){
+	GameEvents.Subscribe('reload_patreon_perk_setings_button', ReloadSetttingButton);
 	GameEvents.Subscribe('return_patreon_level_and_perks', SetPlayerPatreonLevel);
 	GameEvents.SendCustomGameEventToServer("check_patreon_level_and_perks", {});
 	$.Schedule(1, function() {
