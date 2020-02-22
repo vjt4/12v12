@@ -66,7 +66,9 @@ function modifier_donator:RefreshEffect()
 
 	if self.pfx then
 		local emblemColor = Patreons:GetPlayerEmblemColor(playerId)
-		ParticleManager:SetParticleControl(self.pfx, 9, emblemColor)
+		if self.pfx and emblemColor then
+			ParticleManager:SetParticleControl(self.pfx, 9, emblemColor)
+		end
 	end
 end
 
