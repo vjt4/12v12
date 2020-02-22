@@ -335,7 +335,11 @@
                 "Function"	    "OnSpellStartBanHammer"
             }
         }
-
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_sven.vsndevts"
+			"particle"			"particles/alert_ban_hammer.vpcf"
+		}
 		"Modifiers"
 		{
 			"modifier_alert_before_kick"
