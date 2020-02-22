@@ -12,6 +12,6 @@ require("common/cosmetic_abilities")
 require("common/personal_items_cooldown")
 require("common/fast_items")
 require("common/block_holding_wards")
-
+require("common/patreons_game_perk/patreon_game_perk")
 
 LinkLuaModifier("modifier_donator", "common/modifier_donator", LUA_MODIFIER_MOTION_NONE)
