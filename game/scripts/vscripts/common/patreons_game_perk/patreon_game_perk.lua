@@ -33,9 +33,14 @@ LinkLuaModifier( "patreon_perk_spell_amp_t2", "common/patreons_game_perk/modifie
 LinkLuaModifier( "patreon_perk_spell_lifesteal_t1", "common/patreons_game_perk/modifier_lib/patreon_perk_spell_lifesteal_t1" ,LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "patreon_perk_spell_lifesteal_t2", "common/patreons_game_perk/modifier_lib/patreon_perk_spell_lifesteal_t2" ,LUA_MODIFIER_MOTION_NONE )
 
-RegisterCustomEventListener("check_patreon_level", function(data)
+_G.PlayersPatreonsPerk = {}
+
+RegisterCustomEventListener("check_patreon_level_and_perks", function(data)
 	local patreon = Patreons:GetPlayerSettings(data.PlayerID)
-	CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.PlayerID), "return_patreon_level", { patreonLevel = patreon.level})
+	CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.PlayerID), "return_patreon_level_and_perks", {
+		patreonLevel = patreon.level,
+		patreonCurrentPerk = _G.PlayersPatreonsPerk[data.PlayerID]
+	})
 end)
 
 --RegisterCustomEventListener("replace_patreon_perk", function(data)
@@ -66,7 +71,7 @@ RegisterCustomEventListener("set_patreon_game_perk", function(data)
 	local player = PlayerResource:GetPlayer(playerID)
 	local newModifierName = data.newPerkName
 	local hero = player:GetAssignedHero()
-
+	_G.PlayersPatreonsPerk[playerID] = newModifierName
 	--print("start perk: ",newModifierName)
 	if hero then
 		--print("hero is been")

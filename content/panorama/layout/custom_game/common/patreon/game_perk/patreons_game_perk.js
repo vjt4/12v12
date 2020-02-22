@@ -41,6 +41,7 @@ var patreons_game_perks_have_only_low_tier = {
 }
 
 var patreonLevel = 0;
+var patreonCurrentPerk;
 
 function print(val){
 	$.Msg(val);
@@ -48,6 +49,7 @@ function print(val){
 
 function SetPlayerPatreonLevel(data){
 	patreonLevel = data.patreonLevel;
+	patreonCurrentPerk = data.patreonCurrentPerk;
 }
 
 function HidePatreonsGamePerksHint(){
@@ -163,11 +165,24 @@ function CreatePatreonsGamePerks(){
 				}
 			}
 		}
+		if (patreonCurrentPerk != null){
+				var settingPerksButton = $("#SetPatreonGamePerkButton")
+
+        		settingPerksButton.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/icons/"+patreonCurrentPerk+".png")
+        		settingPerksButton.SetPanelEvent( "onmouseover", function() {
+        			$.DispatchEvent( 'DOTAShowTextTooltip', settingPerksButton, $.Localize(patreonCurrentPerk+"_tooltip"));
+        		} )
+        		settingPerksButton.SetPanelEvent( "onmouseout", function() {
+        			$.DispatchEvent( 'DOTAHideTextTooltip', settingPerksButton);
+        		} )
+        		settingPerksButton.SetPanelEvent( "onactivate", function() {} )
+        		HidePatreonsGamePerks()
+		}
 	}
 }
 function PatreonsGamePerkInit(){
-	GameEvents.Subscribe('return_patreon_level', SetPlayerPatreonLevel);
-	GameEvents.SendCustomGameEventToServer("check_patreon_level", {});
+	GameEvents.Subscribe('return_patreon_level_and_perks', SetPlayerPatreonLevel);
+	GameEvents.SendCustomGameEventToServer("check_patreon_level_and_perks", {});
 	$.Schedule(1, function() {
 		CreatePatreonsGamePerks();
 	});
