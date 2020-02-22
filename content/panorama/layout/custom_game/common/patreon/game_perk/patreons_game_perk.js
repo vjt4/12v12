@@ -165,11 +165,11 @@ function CreatePatreonsGamePerks(){
 		}
 	}
 }
-
-(function () {
+function PatreonsGamePerkInit(){
 	GameEvents.Subscribe('return_patreon_level', SetPlayerPatreonLevel);
 	GameEvents.SendCustomGameEventToServer("check_patreon_level", {});
 	$.Schedule(1, function() {
 		CreatePatreonsGamePerks();
 	});
-})();
+}
+PatreonsGamePerkInit()
