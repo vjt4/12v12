@@ -74,6 +74,8 @@ function OnSpellStartBanHammer( event )
                             CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(target:GetPlayerID()), "setkicks", {kicks = _G.kicks})
                         end
                     end
+                else
+                    CustomGameEventManager:Send_ServerToPlayer(caster:GetPlayerID(), "display_custom_error", { message = "#cannotkickotherpatreons" })
                 end
             else
                 CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(caster:GetPlayerID()), "display_custom_error", { message = "#nopatreonerror2" })
