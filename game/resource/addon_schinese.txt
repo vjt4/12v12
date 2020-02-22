@@ -30,6 +30,7 @@
 
 		"immune_kick_troll"											"踢巨魔免疫"
 		"immune_kick_troll_description"								"对踢巨魔免疫"
+		"cannotkickotherpatreons"					               	"你无法将付费用户踢出游戏"
 
 		"kick_troll"												"踢巨魔"
 		"kick_troll_description"									"踢巨魔！ 有权访问拖钓的踢出盟友（警告：该特权会从发现正在滥用的支持者中移除）"
@@ -169,7 +170,7 @@
 		"alertforban"					   								"警告：你的队友希望将你踢出当前游戏。"
 		"playerhasalertforban"					   						"该玩家已收到警告。请稍后再试。"
 		"DOTA_Tooltip_modifier_alert_before_kick_lua"					"踢出游戏时的警告"
-		
+
 		"patreonperktooltip_hint"					   						"选择此游戏的支持者特权"
 		"close_patreons_game_perks_menu"					   				"关闭"
 		"patreons_perk_hide_choose"					   						"选择您的特权"
