@@ -25,7 +25,11 @@ end
 --------------------------------------------------------------------------------
 
 function patreon_perk_attack_range_t2:GetModifierAttackRangeBonus()
-	return GetPerkValue(150, self, 1, 0)
+	if self:GetParent():IsRangedAttacker() then
+		return GetPerkValue(150, self, 1, 0)
+	else
+		return GetPerkValue(75, self, 1, 0)
+	end
 end
 
 --------------------------------------------------------------------------------

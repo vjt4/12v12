@@ -24,9 +24,14 @@ function patreon_perk_attack_range_t1:DeclareFunctions()
 end
 --------------------------------------------------------------------------------
 
-function patreon_perk_attack_range_t1:GetModifierAttackRangeBonus(params)
-    return GetPerkValue(75, self, 1, 0)
+function patreon_perk_attack_range_t1:GetModifierAttackRangeBonus()
+	if self:GetParent():IsRangedAttacker() then
+		return GetPerkValue(75, self, 1, 0)
+	else
+		return GetPerkValue(35, self, 1, 0)
+	end
 end
+
 
 --------------------------------------------------------------------------------
 function GetPerkValue(const, modifier, levelCounter, bonusPerLevel)
