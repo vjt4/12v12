@@ -51,6 +51,12 @@ var patreons_game_perks = {
 "patreon_perk_spell_lifesteal_t0": 0,
 "patreon_perk_spell_lifesteal_t1": 1,
 "patreon_perk_spell_lifesteal_t2": 2,
+"patreon_perk_status_resistance_t0": 0,
+"patreon_perk_status_resistance_t1": 1,
+"patreon_perk_status_resistance_t2": 2,
+"patreon_perk_outcomming_heal_amplify_t0": 0,
+"patreon_perk_outcomming_heal_amplify_t1": 1,
+"patreon_perk_outcomming_heal_amplify_t2": 2,
 };
 
 var patreons_game_perks_have_only_low_tier = {
