@@ -297,5 +297,19 @@
         "patreon_perk_spell_lifesteal_t1_tooltip"		"+8%技能吸血"
         "patreon_perk_spell_lifesteal_t2"				"高级技能吸血"
         "patreon_perk_spell_lifesteal_t2_tooltip"		"+16%技能吸血"
+
+        "patreon_perk_status_resistance_t0"				"基本状态抵抗"
+		"patreon_perk_status_resistance_t0_tooltip"		"+8% 状态抗性"
+		"patreon_perk_status_resistance_t1"				"状态抗性"
+		"patreon_perk_status_resistance_t1_tooltip"		"+16% 状态抗性"
+		"patreon_perk_status_resistance_t2"				"先进的状态抵抗"
+		"patreon_perk_status_resistance_t2_tooltip"		"+32% 状态抗性"
+
+		"patreon_perk_outcomming_heal_amplify_t0"			"基本治疗增强"
+		"patreon_perk_outcomming_heal_amplify_t0_tooltip"	"自身提供的治疗效果提升7%"
+		"patreon_perk_outcomming_heal_amplify_t1"			"治疗增强"
+		"patreon_perk_outcomming_heal_amplify_t1_tooltip"	"自身提供的治疗效果提升14%"
+		"patreon_perk_outcomming_heal_amplify_t2"			"先进治疗增强"
+		"patreon_perk_outcomming_heal_amplify_t2_tooltip"	"自身提供的治疗效果提升28%"
 	}
 }
