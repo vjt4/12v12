@@ -27,6 +27,7 @@ end
 
 -----------------------------------------------------------------------------
 function modifier_troll_feed_token:OnDestroy()
+    if not IsServer() then return end
     local parent = self:GetParent()
     local tokenCouter = "modifier_troll_feed_token_couter"
     local currentStackTokenCouter = parent:GetModifierStackCount(tokenCouter, parent)

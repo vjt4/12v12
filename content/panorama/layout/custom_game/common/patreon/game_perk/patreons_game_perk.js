@@ -221,4 +221,4 @@ function PatreonsGamePerkInit(){
 		CreatePatreonsGamePerks();
 	});
 }
-setInterval(PatreonsGamePerkInit, 1000);
+PatreonsGamePerkInit();

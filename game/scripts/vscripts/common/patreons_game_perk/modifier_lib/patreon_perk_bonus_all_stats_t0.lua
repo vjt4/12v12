@@ -16,7 +16,7 @@ function patreon_perk_bonus_all_stats_t0:RemoveOnDeath()
 end
 --------------------------------------------------------------------------------
 
-function patreon_perk_bonus_all_stats_t1:DeclareFunctions()
+function patreon_perk_bonus_all_stats_t0:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_STATS_AGILITY_BONUS,
 		MODIFIER_PROPERTY_STATS_INTELLECT_BONUS,
