@@ -469,6 +469,16 @@
 		"BonusDelayedStockCount"		"4"
 	}
 
+    "item_ward_sentry"
+    {
+        "ItemStockTime"                 "60.0"
+    }    
+
+    "item_gem"
+    {
+        "ItemStockTime"                 "360.0"
+    }   
+
     // TIER 1
     "item_elixer"
     {
