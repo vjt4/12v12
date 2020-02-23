@@ -66,9 +66,11 @@ _G.PlayersPatreonsPerk = {}
 
 RegisterCustomEventListener("check_patreon_level_and_perks", function(data)
 	local patreon = Patreons:GetPlayerSettings(data.PlayerID)
+	local patreonLvl = patreon.level
+	local currentPerk = _G.PlayersPatreonsPerk[data.PlayerID]
 	CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.PlayerID), "return_patreon_level_and_perks", {
-		patreonLevel = patreon.level,
-		patreonCurrentPerk = _G.PlayersPatreonsPerk[data.PlayerID]
+		patreonLevel = patreonLvl,
+		patreonCurrentPerk = currentPerk
 	})
 end)
 
@@ -90,7 +92,6 @@ RegisterCustomEventListener("set_patreon_game_perk", function(data)
 			hero:AddNewModifier(hero, nil, newModifierName, {duration = -1})
 		else
 			Timers:CreateTimer(0.5, function()
-				--print("try....")
 				if hero:IsAlive() then
 					hero:AddNewModifier(hero, nil, newModifierName, {duration = -1})
 					return nil

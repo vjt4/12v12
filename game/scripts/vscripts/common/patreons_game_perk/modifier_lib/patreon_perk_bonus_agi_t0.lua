@@ -2,10 +2,16 @@ patreon_perk_bonus_agi_t0 = class({})
 --------------------------------------------------------------------------------
 
 function patreon_perk_bonus_agi_t0:IsHidden()
-	return true
+	return false
 end
 
 --------------------------------------------------------------------------------
+function patreon_perk_bonus_agi_t0:GetTexture()
+	return "perkIcons/patreon_perk_bonus_agi_t0"
+end
+
+--------------------------------------------------------------------------------
+
 
 function patreon_perk_bonus_agi_t0:IsPurgable()
 	return false

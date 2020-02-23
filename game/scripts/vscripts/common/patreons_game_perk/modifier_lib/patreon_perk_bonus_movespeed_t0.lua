@@ -2,11 +2,16 @@ patreon_perk_bonus_movespeed_t0 = class({})
 --------------------------------------------------------------------------------
 
 function patreon_perk_bonus_movespeed_t0:IsHidden()
+
 	return true
 end
 
 --------------------------------------------------------------------------------
+function patreon_perk_bonus_movespeed_t0:GetTexture()
+	return "perkIcons/patreon_perk_bonus_movespeed_t0"
+end
 
+--------------------------------------------------------------------------------
 function patreon_perk_bonus_movespeed_t0:IsPurgable()
 	return false
 end

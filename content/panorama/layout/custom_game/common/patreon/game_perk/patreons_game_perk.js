@@ -73,6 +73,7 @@ function print(val){
 function SetPlayerPatreonLevel(data){
 	patreonLevel = data.patreonLevel;
 	patreonCurrentPerk = data.patreonCurrentPerk;
+	CreatePatreonsGamePerks();
 }
 
 function HidePatreonsGamePerksHint(){
@@ -151,71 +152,65 @@ function UpdateBlockPatreonsPerk(panel, currectPatreonLevel){
 		$.DispatchEvent( 'DOTAHideTextTooltip', panel);
 	} )
 }
-var playerHasPanel = true
 function CreatePatreonsGamePerks(){
-	$("#PatreonGamePerkButtonOption").visible = true;
-	$("#PatreonGamePerkButtonPanel").visible = true;
-	if (playerHasPanel){
-		playerHasPanel = false
-		for (var x = 0; x < patreons_levels; x++) {
-			var tier = x;
-			var patreonGamePerksTier = $.CreatePanel("Panel", $("#PatreonsGamePerksTierList"), "");
-			patreonGamePerksTier.AddClass("PatreonGamePerksTier");
+	for (var x = 0; x < patreons_levels; x++) {
+		var tier = x;
+		var patreonGamePerksTier = $.CreatePanel("Panel", $("#PatreonsGamePerksTierList"), "");
+		patreonGamePerksTier.AddClass("PatreonGamePerksTier");
 
-			var patreonGamePerksTierHeader = $.CreatePanel("Panel", patreonGamePerksTier, "");
-			patreonGamePerksTierHeader.AddClass("PatreonGamePerksTierHeader");
+		var patreonGamePerksTierHeader = $.CreatePanel("Panel", patreonGamePerksTier, "");
+		patreonGamePerksTierHeader.AddClass("PatreonGamePerksTierHeader");
 
-			var patreonGamePerksTierHeaderText = $.CreatePanel("Label", patreonGamePerksTierHeader, "");
-			patreonGamePerksTierHeaderText.AddClass("PatreonGamePerksTierHeaderTextMain");
-			patreonGamePerksTierHeaderText.AddClass("PatreonGamePerksTierHeaderTextTier"+tier);
-			patreonGamePerksTierHeaderText.text = $.Localize("#patreon_game_perk_tolltip_tier_"+tier);
+		var patreonGamePerksTierHeaderText = $.CreatePanel("Label", patreonGamePerksTierHeader, "");
+		patreonGamePerksTierHeaderText.AddClass("PatreonGamePerksTierHeaderTextMain");
+		patreonGamePerksTierHeaderText.AddClass("PatreonGamePerksTierHeaderTextTier"+tier);
+		patreonGamePerksTierHeaderText.text = $.Localize("#patreon_game_perk_tolltip_tier_"+tier);
 
-			var perkPanelListForTier = $.CreatePanel("Panel", patreonGamePerksTier, "");
-			perkPanelListForTier.AddClass("PerkPanelListForTier");
+		var perkPanelListForTier = $.CreatePanel("Panel", patreonGamePerksTier, "");
+		perkPanelListForTier.AddClass("PerkPanelListForTier");
 
-			for (var key in patreons_game_perks_have_only_low_tier) {
-				if (patreons_game_perks[key] < patreonLevel){
-					patreons_game_perks[key] = patreonLevel
+		for (var key in patreons_game_perks_have_only_low_tier) {
+			if (patreons_game_perks[key] < patreonLevel){
+				patreons_game_perks[key] = patreonLevel
+			}
+		}
+
+		for (var key in patreons_game_perks) {
+			if (patreons_game_perks[key] == tier){
+				var perkPanel = $.CreatePanel("Panel", perkPanelListForTier, "");
+				perkPanel.AddClass("GamePerkForPatreon");
+
+				var perkIconImage = $.CreatePanel("Image", perkPanel, "");
+				perkIconImage.AddClass("GamePerkImage");
+				perkIconImage.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/icons/"+key+".png")
+				perkIconImage.icon = key
+
+				var perkLabelText = $.CreatePanel("Label", perkPanel, "");
+				perkLabelText.AddClass("GamePerkText");
+				perkLabelText.text = $.Localize(key);
+
+				if (patreons_game_perks[key] == patreonLevel){
+					perkIconImage.AddClass("GamePerkImageHover");
+					SetPatreonsPerkButtonAction(perkIconImage, key);
+				}else{
+					perkIconImage.AddClass("GamePerkImageNotAvailable");
+					perkLabelText.AddClass("GamePerkTextNotAvailable");
+					UpdateBlockPatreonsPerk(perkIconImage, patreons_game_perks[key]);
 				}
 			}
+		}
+		if (patreonCurrentPerk != null){
+				var settingPerksButton = $("#SetPatreonGamePerkButton")
 
-			for (var key in patreons_game_perks) {
-				if (patreons_game_perks[key] == tier){
-					var perkPanel = $.CreatePanel("Panel", perkPanelListForTier, "");
-					perkPanel.AddClass("GamePerkForPatreon");
-
-					var perkIconImage = $.CreatePanel("Image", perkPanel, "");
-					perkIconImage.AddClass("GamePerkImage");
-					perkIconImage.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/icons/"+key+".png")
-					perkIconImage.icon = key
-
-					var perkLabelText = $.CreatePanel("Label", perkPanel, "");
-					perkLabelText.AddClass("GamePerkText");
-					perkLabelText.text = $.Localize(key);
-
-					if (patreons_game_perks[key] == patreonLevel){
-						perkIconImage.AddClass("GamePerkImageHover");
-						SetPatreonsPerkButtonAction(perkIconImage, key);
-					}else{
-						perkIconImage.AddClass("GamePerkImageNotAvailable");
-						perkLabelText.AddClass("GamePerkTextNotAvailable");
-						UpdateBlockPatreonsPerk(perkIconImage, patreons_game_perks[key]);
-					}
-				}
-			}
-			if (patreonCurrentPerk != null){
-					var settingPerksButton = $("#SetPatreonGamePerkButton")
-
-					settingPerksButton.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/icons/"+patreonCurrentPerk+".png")
-					settingPerksButton.SetPanelEvent( "onmouseover", function() {
-						$.DispatchEvent( 'DOTAShowTextTooltip', settingPerksButton, $.Localize(patreonCurrentPerk+"_tooltip"));
-					} )
-					settingPerksButton.SetPanelEvent( "onmouseout", function() {
-						$.DispatchEvent( 'DOTAHideTextTooltip', settingPerksButton);
-					} )
-					settingPerksButton.SetPanelEvent( "onactivate", function() {} )
-					HidePatreonsGamePerks()
-			}
+				settingPerksButton.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/icons/"+patreonCurrentPerk+".png")
+				settingPerksButton.SetPanelEvent( "onmouseover", function() {
+					$.DispatchEvent( 'DOTAShowTextTooltip', settingPerksButton, $.Localize(patreonCurrentPerk+"_tooltip"));
+				} )
+				settingPerksButton.SetPanelEvent( "onmouseout", function() {
+					$.DispatchEvent( 'DOTAHideTextTooltip', settingPerksButton);
+				} )
+				settingPerksButton.SetPanelEvent( "onactivate", function() {} )
+				HidePatreonsGamePerks()
 		}
 	}
 }
@@ -223,8 +218,5 @@ function PatreonsGamePerkInit(){
 	GameEvents.Subscribe('reload_patreon_perk_setings_button', ReloadSetttingButton);
 	GameEvents.Subscribe('return_patreon_level_and_perks', SetPlayerPatreonLevel);
 	GameEvents.SendCustomGameEventToServer("check_patreon_level_and_perks", {});
-	$.Schedule(1, function() {
-		CreatePatreonsGamePerks();
-	});
 }
 PatreonsGamePerkInit();

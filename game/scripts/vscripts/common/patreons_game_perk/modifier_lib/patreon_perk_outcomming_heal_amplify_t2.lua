@@ -2,11 +2,15 @@ patreon_perk_outcomming_heal_amplify_t2 = class({})
 --------------------------------------------------------------------------------
 
 function patreon_perk_outcomming_heal_amplify_t2:IsHidden()
-	return true
+	return false
 end
 
 --------------------------------------------------------------------------------
+function patreon_perk_outcomming_heal_amplify_t2:GetTexture()
+	return "perkIcons/patreon_perk_outcomming_heal_amplify_t0"
+end
 
+--------------------------------------------------------------------------------
 function patreon_perk_outcomming_heal_amplify_t2:IsPurgable()
 	return false
 end

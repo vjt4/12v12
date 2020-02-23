@@ -2,11 +2,15 @@ patreon_perk_mag_resist_t2 = class({})
 --------------------------------------------------------------------------------
 
 function patreon_perk_mag_resist_t2:IsHidden()
-	return true
+	return false
 end
 
 --------------------------------------------------------------------------------
+function patreon_perk_mag_resist_t2:GetTexture()
+	return "perkIcons/patreon_perk_mag_resist_t0"
+end
 
+--------------------------------------------------------------------------------
 function patreon_perk_mag_resist_t2:IsPurgable()
 	return false
 end

@@ -2,11 +2,15 @@ patreon_perk_cooldown_reduction_t1 = class({})
 --------------------------------------------------------------------------------
 
 function patreon_perk_cooldown_reduction_t1:IsHidden()
-	return true
+	return false
 end
 
 --------------------------------------------------------------------------------
+function patreon_perk_cooldown_reduction_t1:GetTexture()
+	return "perkIcons/patreon_perk_cooldown_reduction_t0"
+end
 
+--------------------------------------------------------------------------------
 function patreon_perk_cooldown_reduction_t1:IsPurgable()
 	return false
 end

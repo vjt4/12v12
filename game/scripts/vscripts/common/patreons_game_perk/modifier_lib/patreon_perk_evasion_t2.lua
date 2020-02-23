@@ -2,7 +2,7 @@ patreon_perk_evasion_t2 = class({})
 --------------------------------------------------------------------------------
 
 function patreon_perk_evasion_t2:IsHidden()
-	return true
+	return false
 end
 
 --------------------------------------------------------------------------------
