@@ -185,6 +185,9 @@
 		"patreon_perk_mp_regen_t1_tooltip" 				"+1魔法恢复 并每级增长0.2"
         "patreon_perk_mp_regen_t2" 						"高级魔法恢复"
         "patreon_perk_mp_regen_t2_tooltip" 				"+2魔法恢复并每级增长0.4"
+        "DOTA_Tooltip_patreon_perk_mp_regen_t0" 		"个人特权： 魔法恢复"
+		"DOTA_Tooltip_patreon_perk_mp_regen_t1" 		"个人特权： 魔法恢复"
+		"DOTA_Tooltip_patreon_perk_mp_regen_t2" 		"个人特权： M魔法恢复"
         
         "patreon_perk_hp_regen_t0" 						"初级生命恢复"
         "patreon_perk_hp_regen_t0_tooltip" 				"+3生命恢复"
@@ -192,6 +195,9 @@
         "patreon_perk_hp_regen_t1_tooltip" 				"+1生命恢复并每级增长0.5"
         "patreon_perk_hp_regen_t2" 						"高级生命恢复"
 		"patreon_perk_hp_regen_t2_tooltip" 				"+1生命恢复并每级增长1"
+		"DOTA_Tooltip_patreon_perk_hp_regen_t0" 		"个人特权：生命恢复"
+		"DOTA_Tooltip_patreon_perk_hp_regen_t1" 		"个人特权：生命恢复"
+		"DOTA_Tooltip_patreon_perk_hp_regen_t2" 		"个人特权： H生命恢复"
         
         "patreon_perk_bonus_movespeed_t0" 				"初级移动速度"
 		"patreon_perk_bonus_movespeed_t0_tooltip" 		"+10移动速度"
@@ -199,6 +205,9 @@
 		"patreon_perk_bonus_movespeed_t1_tooltip" 		"+15移动速度"
         "patreon_perk_bonus_movespeed_t2" 				"高级移动速度"
         "patreon_perk_bonus_movespeed_t2_tooltip" 		"+30移动速度"
+        "DOTA_Tooltip_patreon_perk_bonus_movespeed_t0" 	"个人特权： 移动速度"
+		"DOTA_Tooltip_patreon_perk_bonus_movespeed_t1" 	"个人特权： 移动速度"
+		"DOTA_Tooltip_patreon_perk_bonus_movespeed_t2" 	"个人特权： 移动速度"
         
         "patreon_perk_bonus_agi_t0"						"初级敏捷"
         "patreon_perk_bonus_agi_t0_tooltip"				"每级+0.5敏捷"
@@ -206,6 +215,9 @@
         "patreon_perk_bonus_agi_t1_tooltip"				"每级+1敏捷"
 		"patreon_perk_bonus_agi_t2"						"高级敏捷"
 		"patreon_perk_bonus_agi_t2_tooltip"				"每级+2敏捷"
+		"DOTA_Tooltip_patreon_perk_bonus_agi_t0" 		"个人特权： 敏捷"
+		"DOTA_Tooltip_patreon_perk_bonus_agi_t1" 		"个人特权： 敏捷"
+		"DOTA_Tooltip_patreon_perk_bonus_agi_t2" 		"个人特权： 敏捷"
         
         "patreon_perk_bonus_str_t0"						"初级力量"
         "patreon_perk_bonus_str_t0_tooltip"				"每级+0.5力量"
@@ -213,6 +225,9 @@
         "patreon_perk_bonus_str_t1_tooltip"				"每级+1力量"
         "patreon_perk_bonus_str_t2"						"高级力量"
         "patreon_perk_bonus_str_t2_tooltip"				"每级+2力量"
+        "DOTA_Tooltip_patreon_perk_bonus_str_t0" 		"个人特权： 力量"
+		"DOTA_Tooltip_patreon_perk_bonus_str_t1" 		"个人特权： 力量"
+		"DOTA_Tooltip_patreon_perk_bonus_str_t2" 		"个人特权： 力量"
         
         "patreon_perk_bonus_int_t0"						"初级智力"
         "patreon_perk_bonus_int_t0_tooltip"				"每级+0.5智力"
@@ -220,6 +235,9 @@
         "patreon_perk_bonus_int_t1_tooltip"				"每级+1智力"
 		"patreon_perk_bonus_int_t2"						"高级智力"
 		"patreon_perk_bonus_int_t2_tooltip"				"每级+2智力"
+		"DOTA_Tooltip_patreon_perk_bonus_int_t0" 		"个人特权： 智力"
+		"DOTA_Tooltip_patreon_perk_bonus_int_t1" 		"个人特权： 智力"
+		"DOTA_Tooltip_patreon_perk_bonus_int_t2" 		"个人特权： 智力"
         
         "patreon_perk_bonus_all_stats_t0" 				"初级全属性"
         "patreon_perk_bonus_all_stats_t0_tooltip" 		"每级+0.25所有属性"
@@ -227,6 +245,9 @@
         "patreon_perk_bonus_all_stats_t1_tooltip" 		"每级+0.5所有属性"
 		"patreon_perk_bonus_all_stats_t2" 				"高级全属性"
 		"patreon_perk_bonus_all_stats_t2_tooltip" 		"每级+1所有属性"
+		"DOTA_Tooltip_patreon_perk_bonus_all_stats_t0" 	"个人特权： 全属性"
+		"DOTA_Tooltip_patreon_perk_bonus_all_stats_t1" 	"个人特权： 全属性"
+		"DOTA_Tooltip_patreon_perk_bonus_all_stats_t2" 	"个人特权： 全属性"
         
         "patreon_perk_attack_range_t0"					"初级攻击范围"
         "patreon_perk_attack_range_t0_tooltip"			"+35攻击范围（远程英雄）或+15攻击范围（近战英雄）"
@@ -234,6 +255,9 @@
         "patreon_perk_attack_range_t1_tooltip"			"+75攻击范围"
         "patreon_perk_attack_range_t2"					"高级攻击范围"
         "patreon_perk_attack_range_t2_tooltip"			"+150攻击范围"
+        "DOTA_Tooltip_patreon_perk_attack_range_t0" 	"个人特权： 攻击范围"
+		"DOTA_Tooltip_patreon_perk_attack_range_t1" 	"个人特权： 攻击范围"
+		"DOTA_Tooltip_patreon_perk_attack_range_t2" 	"个人特权： 攻击范围"
         
         "patreon_perk_bonus_hp_pct_t0"					"铜铸体质"
         "patreon_perk_bonus_hp_pct_t0_tooltip"			"+6%生命值"
@@ -241,6 +265,9 @@
         "patreon_perk_bonus_hp_pct_t1_tooltip"			"+8%生命值"
         "patreon_perk_bonus_hp_pct_t2"					"钢铸体质"
         "patreon_perk_bonus_hp_pct_t2_tooltip"			"+16%生命值"
+        "DOTA_Tooltip_patreon_perk_bonus_hp_pct_t0" 	"个人特权： 铁铸体质"
+		"DOTA_Tooltip_patreon_perk_bonus_hp_pct_t1" 	"个人特权： 铁铸体质"
+		"DOTA_Tooltip_patreon_perk_bonus_hp_pct_t2" 	"个人特权： 铁铸体质"
         
         "patreon_perk_cast_range_t0"					"初级施法距离"
         "patreon_perk_cast_range_t0_tooltip"			"+50施法距离"
@@ -248,6 +275,9 @@
         "patreon_perk_cast_range_t1_tooltip"			"+100施法距离"
         "patreon_perk_cast_range_t2"					"高级施法距离"
         "patreon_perk_cast_range_t2_tooltip"			"+200施法距离"
+        "DOTA_Tooltip_patreon_perk_cast_range_t0" 		"个人特权： 施法距离"
+		"DOTA_Tooltip_patreon_perk_cast_range_t1" 		"个人特权： 施法距离"
+		"DOTA_Tooltip_patreon_perk_cast_range_t2" 		"个人特权： 施法距离"
         
         "patreon_perk_cooldown_reduction_t0"			"初级冷却时间减少"
         "patreon_perk_cooldown_reduction_t0_tooltip"	"冷却时间减少4%"
@@ -255,6 +285,9 @@
         "patreon_perk_cooldown_reduction_t1_tooltip"	"冷却时间减少8%"
         "patreon_perk_cooldown_reduction_t2"			"高级冷却时间减少"
         "patreon_perk_cooldown_reduction_t2_tooltip"	"冷却时间减少16%"
+        "DOTA_Tooltip_patreon_perk_cooldown_reduction_t0"	"个人特权： 冷却时间减少"
+		"DOTA_Tooltip_patreon_perk_cooldown_reduction_t1"	"个人特权： 冷却时间减少"
+		"DOTA_Tooltip_patreon_perk_cooldown_reduction_t2"	"个人特权： 冷却时间减少"
         
         "patreon_perk_damage_t0"						"初级额外伤害"
         "patreon_perk_damage_t0_tooltip"				"+5点伤害并每级增长0.5点"
@@ -262,6 +295,9 @@
         "patreon_perk_damage_t1_tooltip"				"+10点伤害并每级增长1点"
         "patreon_perk_damage_t2"						"高级额外伤害"
         "patreon_perk_damage_t2_tooltip"				"+20点伤害并每级增长2点"
+        "DOTA_Tooltip_patreon_perk_damage_t0"			"个人特权： 额外伤害"
+ 		"DOTA_Tooltip_patreon_perk_damage_t1"			"个人特权： 额外伤害"
+		"DOTA_Tooltip_patreon_perk_damage_t2"			"个人特权： B额外伤害"
         
         "patreon_perk_evasion_t0"						"初级闪避"
         "patreon_perk_evasion_t0_tooltip"				"+5%闪避"
@@ -269,6 +305,9 @@
         "patreon_perk_evasion_t1_tooltip"				"+10%闪避"
         "patreon_perk_evasion_t2"						"高级闪避"
         "patreon_perk_evasion_t2_tooltip"				"+20%闪避"
+        "DOTA_Tooltip_patreon_perk_evasion_t0"			"个人特权： 闪避"
+		"DOTA_Tooltip_patreon_perk_evasion_t1"			"个人特权： 闪避"
+		"DOTA_Tooltip_patreon_perk_evasion_t2"			"个人特权： 闪避"
         
         "patreon_perk_lifesteal_t0"						"初级吸血"
         "patreon_perk_lifesteal_t0_tooltip"				"+4%吸血"
@@ -276,6 +315,9 @@
         "patreon_perk_lifesteal_t1_tooltip"				"+8%吸血"
         "patreon_perk_lifesteal_t2"						"高级吸血"
         "patreon_perk_lifesteal_t2_tooltip"				"+16%吸血"
+        "DOTA_Tooltip_patreon_perk_lifesteal_t0"		"个人特权： 吸血"
+		"DOTA_Tooltip_patreon_perk_lifesteal_t1"		"个人特权： 吸血"
+		"DOTA_Tooltip_patreon_perk_lifesteal_t2"		"个人特权： 吸血"
         
         "patreon_perk_mag_resist_t0"					"初级魔法抗性"
         "patreon_perk_mag_resist_t0_tooltip"			"+5%魔法抗性"
@@ -283,6 +325,9 @@
         "patreon_perk_mag_resist_t1_tooltip"			"+10%魔法抗性"
         "patreon_perk_mag_resist_t2"					"高级魔法抗性"
         "patreon_perk_mag_resist_t2_tooltip"			"+25%魔法抗性"
+        "DOTA_Tooltip_patreon_perk_mag_resist_t0"		"个人特权： 魔法抗性"
+		"DOTA_Tooltip_patreon_perk_mag_resist_t1"		"个人特权： 魔法抗性"
+		"DOTA_Tooltip_patreon_perk_mag_resist_t2"		"个人特权： 魔法抗性"
         
         "patreon_perk_spell_amp_t0"						"初级技能增强"
         "patreon_perk_spell_amp_t0_tooltip"				"+5%技能增强"
@@ -290,6 +335,9 @@
         "patreon_perk_spell_amp_t1_tooltip"				"+10%技能增强"
         "patreon_perk_spell_amp_t2"						"高级技能增强"
         "patreon_perk_spell_amp_t2_tooltip"				"+20%技能增强"
+        "DOTA_Tooltip_patreon_perk_spell_amp_t0"		"个人特权： 技能增强"
+		"DOTA_Tooltip_patreon_perk_spell_amp_t1"		"个人特权： 技能增强"
+		"DOTA_Tooltip_patreon_perk_spell_amp_t2"		"个人特权： 技能增强"
         
         "patreon_perk_spell_lifesteal_t0"				"初级技能吸血"
         "patreon_perk_spell_lifesteal_t0_tooltip"		"+4%技能吸血"
@@ -297,19 +345,30 @@
         "patreon_perk_spell_lifesteal_t1_tooltip"		"+8%技能吸血"
         "patreon_perk_spell_lifesteal_t2"				"高级技能吸血"
         "patreon_perk_spell_lifesteal_t2_tooltip"		"+16%技能吸血"
+        "DOTA_Tooltip_patreon_perk_spell_lifesteal_t0"	"个人特权： 技能吸血"
+		"DOTA_Tooltip_patreon_perk_spell_lifesteal_t1"	"个人特权： 技能吸血"
+		"DOTA_Tooltip_patreon_perk_spell_lifesteal_t2"	"个人特权： 技能吸血"
 
         "patreon_perk_status_resistance_t0"				"基本状态抵抗"
 		"patreon_perk_status_resistance_t0_tooltip"		"+8% 状态抗性"
 		"patreon_perk_status_resistance_t1"				"状态抗性"
 		"patreon_perk_status_resistance_t1_tooltip"		"+16% 状态抗性"
-		"patreon_perk_status_resistance_t2"				"先进的状态抵抗"
+		"patreon_perk_status_resistance_t2"				"高级状态抗性"
 		"patreon_perk_status_resistance_t2_tooltip"		"+32% 状态抗性"
+		"DOTA_Tooltip_patreon_perk_status_resistance_t0"	"个人特权： 状态抗性"
+		"DOTA_Tooltip_patreon_perk_status_resistance_t1"	"个人特权： 状态抗性"
+		"DOTA_Tooltip_patreon_perk_status_resistance_t2"	"个人特权： 状态抗性"
 
-		"patreon_perk_outcomming_heal_amplify_t0"			"基本治疗增强"
+		"patreon_perk_outcomming_heal_amplify_t0"			"初级治疗增强"
 		"patreon_perk_outcomming_heal_amplify_t0_tooltip"	"自身提供的治疗效果提升7%"
 		"patreon_perk_outcomming_heal_amplify_t1"			"治疗增强"
 		"patreon_perk_outcomming_heal_amplify_t1_tooltip"	"自身提供的治疗效果提升14%"
-		"patreon_perk_outcomming_heal_amplify_t2"			"先进治疗增强"
+		"patreon_perk_outcomming_heal_amplify_t2"			"高级治疗增强"
 		"patreon_perk_outcomming_heal_amplify_t2_tooltip"	"自身提供的治疗效果提升28%"
+		"DOTA_Tooltip_patreon_perk_outcomming_heal_amplify_t0"	"个人特权： 治疗增强"
+		"DOTA_Tooltip_patreon_perk_outcomming_heal_amplify_t1"	"个人特权： 治疗增强"
+		"DOTA_Tooltip_patreon_perk_outcomming_heal_amplify_t2"	"个人特权： 治疗增强"
+
+
 	}
 }
