@@ -67,7 +67,7 @@ end
 function Precache( context )
 	PrecacheResource( "soundfile", "soundevents/custom_soundboard_soundevents.vsndevts", context )
 
-	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_sven.vsndevts", context )
+	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_chen.vsndevts", context )
 	PrecacheResource( "particle", "particles/alert_ban_hammer.vpcf", context )
 	
 	local heroeskv = LoadKeyValues("scripts/heroes.txt")
