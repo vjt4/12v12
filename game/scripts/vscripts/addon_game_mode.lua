@@ -794,7 +794,24 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
             luna_moon_glaive_fountain = 4,
             ursa_fury_swipes_fountain = 1,
         }
-
+		Timers:CreateTimer("pause_start_game", {
+			useGameTime = false,
+			endTime = 0,
+			callback = function()
+				PauseGame(true)
+				return 0.1
+			end
+		})
+		Timers:CreateTimer({
+			useGameTime = false,
+			endTime = 10,
+			callback = function()
+				PauseGame(false)
+				Timers:RemoveTimer("pause_start_game")
+				return nil
+			end
+		})
+		
         local fountains = Entities:FindAllByClassname('ent_dota_fountain')
 		-- Loop over all ents
         for k,fountain in pairs(fountains) do
