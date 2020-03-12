@@ -107,7 +107,9 @@ function ShowPatreonsGamePerks(){
 function HidePatreonsGamePerks(){
 	var perksPanel = $("#PatreonsGamePerkMenu");
 	var perksPanelClose = $("#ClosePatreonsPerks");
-	perksPanel.visible = false;
+	if(perksPanel != null){
+		perksPanel.visible = false;
+	}
 	perksPanelClose.visible = false;
 }
 
