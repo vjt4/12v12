@@ -481,7 +481,25 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"restore_mana"		"150"
+				"restore_mana"		"110"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"hp_regen"				"0.6"
+			}
+		}
+		"Modifiers"
+		{
+			"modifier_item_patreon_mango_regen"
+			{
+				"Passive"	"1"
+				"IsHidden"	"1"
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT" 		"%hp_regen"
+				}
 			}
 		}
 		"OnSpellStart"
