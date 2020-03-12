@@ -110,7 +110,9 @@ function HidePatreonsGamePerks(){
 	if(perksPanel != null){
 		perksPanel.visible = false;
 	}
-	perksPanelClose.visible = false;
+	if(perksPanelClose != null){
+		perksPanelClose.visible = false;
+	}
 }
 
 function ReloadSetttingButton(){
@@ -147,6 +149,7 @@ function SetPatreonsPerkButtonAction(panel, perkName){
 		settingPerksButton.SetPanelEvent( "onactivate", function() {} )
 
 		$("#PatreonsGamePerkMenu").DeleteAsync(0)
+		$("#ClosePatreonsPerks").DeleteAsync(0)
 	} )
 
 	panel.SetPanelEvent( "onmouseover", function() {
