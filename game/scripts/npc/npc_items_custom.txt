@@ -460,6 +460,41 @@
 		}
 	}
 
+	"item_patreon_mango"
+	{
+		"BaseClass"						"item_datadriven"
+		"AbilityTextureName"			"custom/item_patreon_mango"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+
+		"ItemHideCharges"				"1"
+		"ItemInitialCharges"			"1"
+		"ItemQuality"					"artifact"
+		"ItemCost"						"0"
+		"ItemStackable"					"0"
+        "ItemKillable"                  "1"
+        "ItemSellable"                  "0"
+        "ItemDroppable"                 "0"
+        "ItemPurchasable"				"0"
+        "IsTempestDoubleClonable"		"0"
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"restore_mana"		"150"
+			}
+		}
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"mana"			"%restore_mana"
+				"ScriptFile"	"item_patreon.lua"
+				"Function"	    "OnSpellStartCustomMango"
+			}
+		}
+	}
+
 	"item_tome_of_knowledge"
 	{
 		"AbilityCooldown"				"300.0"

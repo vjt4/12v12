@@ -49,13 +49,9 @@ function Patreons:GiveOnSpawnBonus(playerId)
 		hero:AddNewModifier(hero, nil, "modifier_donator", { patron_level = patreonSettings.level })
 	end
 
-	--if patreonSettings.level >= 1 then
-	--	if hero:HasItemInInventory("item_boots") then
-	--		hero:ModifyGold(500, false, 0)
-	--	else
-	--		hero:AddItemByName("item_boots")
-	--	end
-	--end
+	if patreonSettings.level >= 1 then
+		hero:AddItemByName("item_patreon_mango")
+	end
 end
 
 RegisterCustomEventListener("patreon_toggle_boots", function(data)
