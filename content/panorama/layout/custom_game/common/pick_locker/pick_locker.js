@@ -12,21 +12,21 @@ var localized_text = [
 
 var interval = 0.3
 
-function _InvokeUpdate(new_time, button) {
+function _InvokeUpdate(initial_time, new_time, button) {
 	$.Schedule(interval, function() {
-		_UpdatePickButton(new_time, button)
+		_UpdatePickButton(initial_time, new_time, button)
 	})
 }
 
-function _UpdatePickButton(time, button) {
+function _UpdatePickButton(initial_time, time, button) {
 	// waiting until ban phase or pause expires
 	if (Game.IsInBanPhase() || Game.IsGamePaused()) { 
-		_InvokeUpdate(time, button)
+		_InvokeUpdate(initial_time, time, button)
 		return
 	}
 
 	let lock_text = localized_text[0]
-	if (time <= 3) {
+	if (time <= 3 && initial_time > 3) {
 		lock_text = localized_text[1]
 	}
 	
@@ -40,7 +40,8 @@ function _UpdatePickButton(time, button) {
 		button.GetChild(0).text = localized_text[2]
 		return
 	}
-	_InvokeUpdate(time - interval, button)
+
+	_InvokeUpdate(initial_time, time - interval, button)
 }
 
 function _InitPickLocker(level) {
@@ -60,7 +61,7 @@ function _InitPickLocker(level) {
 		label.style.horizontalAlign = "left"
 		label.style.textOverflow = "shrink"
 
-		_UpdatePickButton(time, pick_button)
+		_UpdatePickButton(time, time, pick_button)
 	}
 }
 
