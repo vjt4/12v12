@@ -12,16 +12,16 @@ var localized_text = [
 
 var interval = 0.3
 
-function _InvokeUpdate(initial_time, new_time, pick_button, random_button) {
+function _InvokeUpdate(initial_time, new_time, buttons) {
 	$.Schedule(interval, function() {
-		_UpdatePickButton(initial_time, new_time, pick_button, random_button)
+		_UpdatePickButton(initial_time, new_time, buttons)
 	})
 }
 
-function _UpdatePickButton(initial_time, time, pick_button, random_button) {
+function _UpdatePickButton(initial_time, time, buttons) {
 	// waiting until ban phase or pause expires
 	if (Game.IsInBanPhase() || Game.IsGamePaused()) { 
-		_InvokeUpdate(initial_time, time, pick_button, random_button)
+		_InvokeUpdate(initial_time, time, buttons)
 		return
 	}
 
@@ -30,43 +30,40 @@ function _UpdatePickButton(initial_time, time, pick_button, random_button) {
 		lock_text = localized_text[1]
 	}
 	
-	pick_button.GetChild(0).text = `${lock_text} (${time.toFixed(0)})`
+	buttons[0].GetChild(0).text = `${lock_text} (${time.toFixed(0)})`
 	if (time < interval) {
-		pick_button.SetAcceptsFocus(true)
-		pick_button.BAcceptsInput(true)
-		pick_button.style.saturation = null
-		pick_button.style.brightness = null
 
-		random_button.SetAcceptsFocus(true)
-		random_button.BAcceptsInput(true)
-		random_button.style.saturation = null
-		random_button.style.brightness = null
+		buttons.forEach(button => {
+			button.SetAcceptsFocus(true)
+			button.BAcceptsInput(true)
+			button.style.saturation = null
+			button.style.brightness = null
+		})
 
-		pick_button.GetChild(0).text = localized_text[2]
+		buttons[0].GetChild(0).text = localized_text[2]
 		return
 	}
 
-	_InvokeUpdate(initial_time, time - interval, pick_button, random_button)
+	_InvokeUpdate(initial_time, time - interval, buttons)
 }
 
 function _InitPickLocker(level) {
 	$.Msg("Locking pick button, patreon level: ", level)
 	let pick_button = FindDotaHudElement("LockInButton")
 	let random_button = FindDotaHudElement("RandomButton")
+	let smart_random_button = FindDotaHudElement("smartRandomButton")
+
+	let buttons = [pick_button, random_button, smart_random_button]
 
 	if (level < 2) {
 		let time = wait_time[level]
 
-		pick_button.SetAcceptsFocus(false)
-		pick_button.BAcceptsInput(false)
-		pick_button.style.saturation = 0.0
-		pick_button.style.brightness = 0.2
-
-		random_button.SetAcceptsFocus(false)
-		random_button.BAcceptsInput(false)
-		random_button.style.saturation = 0.0
-		random_button.style.brightness = 0.2
-
+		buttons.forEach(button => {
+			button.SetAcceptsFocus(false)
+			button.BAcceptsInput(false)
+			button.style.saturation = 0.0
+			button.style.brightness = 0.2
+		})
 
 		let label = pick_button.GetChild(0)
 		label.style.width = "95%"
@@ -74,7 +71,7 @@ function _InitPickLocker(level) {
 		label.style.horizontalAlign = "left"
 		label.style.textOverflow = "shrink"
 
-		_UpdatePickButton(time, time, pick_button, random_button)
+		_UpdatePickButton(time, time, buttons)
 	}
 }
 
@@ -84,5 +81,5 @@ SubscribeToNetTableKey("game_state", "patreon_bonuses", function (patreon_bonuse
 	if (local_stats && local_stats.level) {
 		level = local_stats.level
 	}
-	_InitPickLocker(2)
+	_InitPickLocker(level)
 })
