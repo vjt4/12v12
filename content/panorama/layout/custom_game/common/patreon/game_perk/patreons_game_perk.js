@@ -226,17 +226,20 @@ function CreatePatreonsGamePerks(){
 					$.DispatchEvent( 'DOTAHideTextTooltip', settingPerksButton);
 				} )
 				settingPerksButton.SetPanelEvent( "onactivate", function() {} )
-				HidePatreonsGamePerks()
+				$("#PatreonsGamePerkMenu").DeleteAsync(0)
+				$("#ClosePatreonsPerks").DeleteAsync(0)
 		}
 	}
-    $.Schedule(3, function() {
-       	var perksPanel = $("#PatreonsGamePerkMenu");
-       	var perksPanelClose = $("#ClosePatreonsPerks");
-       	if (!perksPanel.visible && patreonCurrentPerk == null){
-			perksPanel.visible = true;
-			perksPanelClose.visible = true;
-       	}
-    });
+	if (patreonCurrentPerk == null){
+		$.Schedule(3, function() {
+			var perksPanel = $("#PatreonsGamePerkMenu");
+			var perksPanelClose = $("#ClosePatreonsPerks");
+			if (!perksPanel.visible){
+				perksPanel.visible = true;
+				perksPanelClose.visible = true;
+			}
+		});
+    }
 }
 function PatreonsGamePerkInit(){
 	GameEvents.Subscribe('reload_patreon_perk_setings_button', ReloadSetttingButton);

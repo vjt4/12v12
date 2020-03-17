@@ -86,6 +86,7 @@ end)
 RegisterCustomEventListener("set_patreon_game_perk", function(data)
 	local playerID = data.PlayerID
 	if not playerID then return end
+	if _G.PlayersPatreonsPerk[playerID] then return end
 	local player = PlayerResource:GetPlayer(playerID)
 	local newModifierName = data.newPerkName
 	local patreon = Patreons:GetPlayerSettings(playerID)
