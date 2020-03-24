@@ -1268,14 +1268,20 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	return true
 end
 
+local blockedChatPhraseCode = {
+	[796] = true,
+}
+
 function CMegaDotaGameMode:OnPlayerChat(keys)
 	local text = keys.text
 	local playerid = keys.playerid
 	if string.sub(text, 0,4) == "-ch " then
 		local data = {}
 		data.num = tonumber(string.sub(text, 5))
-		data.PlayerID = playerid
-		SelectVO(data)
+		if not blockedChatPhraseCode[data.num] then
+			data.PlayerID = playerid
+			SelectVO(data)
+		end
 	end
 end
 
