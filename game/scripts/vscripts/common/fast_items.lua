@@ -1,4 +1,20 @@
 --[[
+	This items doens't fast travel
+--]]
+local notFastItems = {
+	["item_ward_observer"] = true,
+	["item_ward_sentry"] = true,
+	["item_smoke_of_deceit"] = true,
+	["item_clarity"] = true,
+	["item_flask"] = true,
+	["item_greater_mango"] = true,
+	["item_enchanted_mango"] = true,
+	["item_tango"] = true,
+	["item_faerie_fire"] = true,
+	["item_tpscroll"] = true,
+	["item_dust"] = true,
+}
+--[[
 	This items fast travel for ALL players
 --]]
 local fastItems = {
@@ -34,10 +50,36 @@ function DoesHeroHasFreeSlot(unit)
 	return false
 end
 
+function CDOTA_Item:SetCooldownStackedItem(itemName, buyer)
+	if _G.itemsCooldownForPlayer[itemName] then
+		local buyerEntIndex = buyer:GetEntityIndex()
+		Timers:CreateTimer(0.04, function()
+			local itemCost = self:GetCost()
+			local item = self
+			if not notFastItems[itemName] then
+				UTIL_Remove(item)
+				item = buyer:AddItemByName(itemName)
+			end
+			local unique_key_cd = itemName .. "_" .. buyerEntIndex
+			if _G.lastTimeBuyItemWithCooldown[unique_key_cd] == nil or (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) >= _G.itemsCooldownForPlayer[itemName]) then
+				_G.lastTimeBuyItemWithCooldown[unique_key_cd] = GameRules:GetGameTime()
+			elseif _G.itemsCooldownForPlayer[itemName] then
+				buyer:ModifyGold(itemCost, false, 0)
+				MessageToPlayerItemCooldown(itemName, buyer:GetPlayerID())
+				UTIL_Remove(item)
+			end
+		end)
+	end
+end
+
 function CDOTA_Item:TransferToBuyer(unit)
 	local buyer = self:GetPurchaser()
 	local buyerEntIndex = buyer:GetEntityIndex()
 	local itemName = self:GetName()
+	if notFastItems[itemName] then
+		self:SetCooldownStackedItem(itemName, buyer)
+		return
+	end
 	local unique_key = itemName .. "_" .. buyerEntIndex
 
 	if unit:IsIllusion() then
@@ -56,19 +98,7 @@ function CDOTA_Item:TransferToBuyer(unit)
 			buyer:AddItemByName(itemName)
 			return false
 		else
-			Timers:CreateTimer(0.04, function()
-				local itemCost = self:GetCost()
-				UTIL_Remove(self)
-				local newItem = buyer:AddItemByName(itemName)
-				local unique_key_cd = itemName .. "_" .. buyerEntIndex
-				if _G.lastTimeBuyItemWithCooldown[unique_key_cd] == nil or (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) >= _G.itemsCooldownForPlayer[itemName]) then
-					_G.lastTimeBuyItemWithCooldown[unique_key_cd] = GameRules:GetGameTime()
-				elseif _G.itemsCooldownForPlayer[itemName] then
-					buyer:ModifyGold(itemCost, false, 0)
-					MessageToPlayerItemCooldown(itemName, buyer:GetPlayerID())
-					UTIL_Remove(newItem)
-				end
-			end)
+			self:SetCooldownStackedItem(itemName, buyer)
 		end
 	end
 end
