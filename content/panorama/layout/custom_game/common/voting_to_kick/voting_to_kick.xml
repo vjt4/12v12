@@ -1,0 +1,54 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
+		<include src="file://{resources}/layout/custom_game/common/voting_to_kick/voting_to_kick.css" />
+	</styles>
+ 	<scripts>
+		<include src="file://{resources}/layout/custom_game/common/utils.js" />
+		<include src="file://{resources}/layout/custom_game/common/voting_to_kick/voting_to_kick.js" />
+	</scripts>
+
+ 	<Panel hittest="false" class="VotingToKickRoot">
+
+		<Panel id="VotingToKickReasonPanel">
+			<Panel class="VotingToKickReasonHeadPanel">
+				<Label id="VotingToKickReasonHeadPanelText" text=""/>
+				<Label class="VotingToKickReasonClose" onactivate="VotingToKickHideReason()"/>
+			</Panel>
+
+			<Panel class="VotingToKickReasonsList">
+				<Panel class="VotingToKickReason">
+					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/patreon/game_perk/icons/patreon_perk_mp_regen_t0.png"/>
+					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_feeding" onactivate="VotingToKickInitVoting('feeding')"/>
+				</Panel>
+				<Panel class="VotingToKickReason">
+					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/patreon/game_perk/icons/patreon_perk_mp_regen_t0.png"/>
+					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_ability_abuse" onactivate="VotingToKickInitVoting('ability_abuse')"/>
+				</Panel>
+				<Panel class="VotingToKickReason">
+					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/patreon/game_perk/icons/patreon_perk_mp_regen_t0.png"/>
+					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_hateful_talk" onactivate="VotingToKickInitVoting('hateful_talk')"/>
+				</Panel>
+			</Panel>
+		</Panel>
+
+		<Panel id="VotingToKickVoting">
+			<Panel class="VotingToKickVotingHeadPanel">
+				<Label id="VotingToKickVotingHeadText" text=""/>
+			</Panel>
+
+			<Panel class="VotingToKickVotingReasonPanel">
+				<Label id="VotingToKickVotingReasonText" text="Reason: Ability Abuse"/>
+			</Panel>
+
+			<Panel id="VotingToKickModelPanel" style="width:210px;height:210px;horizontal-align:center;" hittest="false">
+			</Panel>
+
+			<Panel class="VotingToKickVotingButtons">
+				<Label class="VotingToKickVotingButton" id="VotingToKickVotingYes" text="#voting_to_kick_yes" onactivate="VotingToKickVoteYes()"/>
+				<Label class="VotingToKickVotingButton" id="VotingToKickVotingNo" text="#voting_to_kick_no" onactivate="VotingToKickVoteNo()"/>
+			</Panel>
+		</Panel>
+
+	</Panel>
+</root>

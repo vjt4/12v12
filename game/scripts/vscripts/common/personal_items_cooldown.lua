@@ -5,7 +5,6 @@ _G.itemsCooldownForPlayer = {
 	["item_disable_help_custom"] = 10,
 	["item_mute_custom"] = 10,
 	["item_tome_of_knowledge"] = 300,
-	["item_voiting_troll"] = infinityCooldown,
 }
 
 function CDOTA_Item:HasPersonalCooldown()

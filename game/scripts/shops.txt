@@ -40,7 +40,6 @@
 		"item"		"item_blade_of_alacrity"
 		"item"		"item_staff_of_wizardry"
 		"item"		"item_patreon_courier"
-		"item"		"item_voiting_troll"
 		"item"		"item_river_painter7"	
 		"item"		"item_river_painter6"	
 		"item"		"item_river_painter5"	

@@ -151,10 +151,6 @@
 		"rapier_littleKD"					                            "您的击杀数必须大于死亡数才能购买圣剑"
 		"cannotpullit"					                            	"你不能将它放置在地上"
 
-		"DOTA_Tooltip_ability_item_voiting_troll"					    "坑逼投票"
-		"DOTA_Tooltip_ability_item_voiting_troll_Description"			"<h1>使用: 选出‘故意破坏游戏体验的人’</h1> 购买这项道具并对一名玩家使用算作对其投票. 得票数超过6的玩家会被选出<br><br> 将不能购买有储存限制的物品（例如眼）、圣剑、使用信使，并且会有送人头debuff.<br><br> 会员的1票=3票，高级会员拥有一票选出权。"
-		"DOTA_Tooltip_troll_vote_debuff"								"坑逼光环"
-
 		"you_cannot_buy_it"												"你不能购买它"
 		"you_cannot_control_courier"					                "你不能使用信使"
 		"already_voiting_against_troll"					                "你已经投过票了"

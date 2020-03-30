@@ -20,7 +20,6 @@ local notFastItems = {
 local fastItems = {
 	["item_disable_help_custom"] = true,
 	["item_mute_custom"] = true,
-	["item_voiting_troll"] = true,
 }
 
 --[[
@@ -31,7 +30,6 @@ _G.stackedItems = {
 	["item_ward_sentry"] = true,
 	["item_smoke_of_deceit"] = true,
 	["item_tome_of_knowledge"] = true,
-	["item_banhammer"] = true,
 	["item_gem"] = true,
 }
 
