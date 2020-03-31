@@ -31,6 +31,8 @@
 		"immune_kick_troll"											"踢巨魔免疫"
 		"immune_kick_troll_description"								"对踢巨魔免疫"
 
+		"DOTA_Tooltip_ability_special_bonus_unique_mirana_4"		"-20秒 月之暗面冷却"
+
 		"kick_troll"												"踢巨魔"
 		"kick_troll_description"									"踢巨魔！ 有权访问拖钓的踢出盟友（警告：该特权会从发现正在滥用的支持者中移除）"
 

@@ -43,6 +43,8 @@
 		"high_tier_supporter"										"您是高级支持者"
 		"thanks_for_supporting"										"感谢您支持我们！"
 
+		"DOTA_Tooltip_ability_special_bonus_unique_mirana_4"		"-20秒 月之暗面冷却"
+
 		"neutral_item_keep"											"保持"
 		"neutral_item_drop"											"落基"
 		"neutral_item_take"											"采取"
