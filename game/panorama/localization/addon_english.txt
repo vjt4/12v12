@@ -41,8 +41,7 @@
 		- Items instantly transfer to your inventory when purchased<br>
 - Immunity to Kick Troll Item<br>
 - Choose your hero before other players, <font color='#70EA72'>even before basic supporters</font><br>
-- Best Perks! Get <font color='#70EA72'>Tier Two Perks</font>, twice as good as Tier One Perks<br>
-<font color='#70EA72'>- Kick Trolls from the game! Have access to an item that can be used to kick allied players that are trolling (WARNING: This perk will be removed from supporters that are found to be abusing it)</font>"
+- Best Perks! Get <font color='#70EA72'>Tier Two Perks</font>, twice as good as Tier One Perks</font>"
 		// Common end
 	}
 }
