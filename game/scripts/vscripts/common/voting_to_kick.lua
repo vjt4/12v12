@@ -1,5 +1,5 @@
 _G.votingForKick = nil
-local timeToVoting = 60
+local timeToVoting = 40
 local votesToKick = 6
 local reasonCheck = {
 	["feeding"] = true,

@@ -180,7 +180,7 @@
 	width: 100%;
 	background-color: white;
     transition-property: width;
-    transition-duration: 60s;
+    transition-duration: 40s;
 }
 
 #VotingToKickCountdown.Active {
