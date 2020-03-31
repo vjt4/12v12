@@ -17,17 +17,17 @@
 			</Panel>
 
 			<Panel class="VotingToKickReasonsList">
-				<Panel class="VotingToKickReason">
+				<Panel class="VotingToKickReason" onactivate="VotingToKickInitVoting('feeding')">
 					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/voting_to_kick/reason_feeding.png"/>
-					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_feeding" onactivate="VotingToKickInitVoting('feeding')"/>
+					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_feeding"/>
 				</Panel>
-				<Panel class="VotingToKickReason">
+				<Panel class="VotingToKickReason" onactivate="VotingToKickInitVoting('ability_abuse')">
 					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/voting_to_kick/reason_ability_abuse.png"/>
-					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_ability_abuse" onactivate="VotingToKickInitVoting('ability_abuse')"/>
+					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_ability_abuse"/>
 				</Panel>
-				<Panel class="VotingToKickReason">
+				<Panel class="VotingToKickReason" onactivate="VotingToKickInitVoting('hateful_talk')">
 					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/voting_to_kick/reason_hateful_talk.png"/>
-					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_hateful_talk" onactivate="VotingToKickInitVoting('hateful_talk')"/>
+					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_hateful_talk" />
 				</Panel>
 			</Panel>
 		</Panel>
