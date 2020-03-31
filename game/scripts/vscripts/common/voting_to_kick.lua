@@ -72,6 +72,7 @@ RegisterCustomEventListener("voting_to_kick_vote_yes", function(data)
 		if _G.votingForKick.votes >= votesToKick then
 			_G.kicks[_G.votingForKick.target+1] = true
 			Timers:RemoveTimer("start_voting_to_kick")
+			CustomGameEventManager:Send_ServerToTeam(_G.votingForKick.playerInit:GetTeam(), "voting_to_kick_hide_voting", {})
 			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(_G.votingForKick.target), "setkicks", {kicks = _G.kicks})
 			GameRules:SendCustomMessage("#voting_to_kick_player_kicked", _G.votingForKick.target, 0)
 			_G.votingForKick = nil
