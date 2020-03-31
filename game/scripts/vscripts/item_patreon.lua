@@ -46,7 +46,6 @@ function OnSpellStartBanHammer(event)
             if (psetsTarget.level > 0) then
                 CustomGameEventManager:Send_ServerToPlayer(caster:GetPlayerOwner(), "display_custom_error", { message = "#cannotkickotherpatreons" })
             else
-                print(_G.votingForKick)
                 if not _G.votingForKick then
                     caster.wantToKick = target
                     CustomGameEventManager:Send_ServerToPlayer(caster:GetPlayerOwner(), "voting_to_kick_show_reason", { playerId = target:GetPlayerID() })

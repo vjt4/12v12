@@ -1034,7 +1034,10 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				end
 				local unique_key_cd = itemName .. "_" .. purchaser:GetEntityIndex()
 				if _G.lastTimeBuyItemWithCooldown[unique_key_cd] and (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) < _G.itemsCooldownForPlayer[itemName]) then
-					MessageToPlayerItemCooldown(itemName, prshID)
+					local checkMaxCount = CheckMaxItemCount(hItem, unique_key_cd, prshID, false)
+					if checkMaxCount then
+						MessageToPlayerItemCooldown(itemName, prshID)
+					end
 					Timers:CreateTimer(0.08, function()
 						UTIL_Remove(hItem)
 					end)
@@ -1042,7 +1045,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				end
 			end
 
-			if (filterTable["item_parent_entindex_const"] > 0) and hItem and (not purchaser:CheckPersonalCooldown(itemName)) and correctInventory then
+			if (filterTable["item_parent_entindex_const"] > 0) and hItem and correctInventory and (not purchaser:CheckPersonalCooldown(hItem)) then
 				purchaser:ModifyGold(itemCost, false, 0)
 				UTIL_Remove(hItem)
 				return false

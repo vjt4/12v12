@@ -20,6 +20,7 @@ local notFastItems = {
 local fastItems = {
 	["item_disable_help_custom"] = true,
 	["item_mute_custom"] = true,
+	["item_banhammer"] = true,
 }
 
 --[[

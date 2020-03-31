@@ -22,6 +22,13 @@ RegisterCustomEventListener("voting_to_kick_reason_is_picked", function(data)
 		_G.votingForKick.target = playerTarget:GetPlayerID()
 		_G.votingForKick.votes = 1
 
+		local all_heroes = HeroList:GetAllHeroes()
+		for _, hero in pairs(all_heroes) do
+			if hero:IsRealHero() and hero:IsControllableByAnyPlayer() and (hero:GetTeam() == playerInit:GetTeam())then
+				EmitSoundOn("Hero_Chen.TeleportOut", hero)
+			end
+		end
+
 		CustomGameEventManager:Send_ServerToTeam(playerInit:GetTeam(), "voting_to_kick_show_voting", { playerId = playerTarget:GetPlayerID(), reason = data.reason, playerIdInit = data.PlayerID})
 		CustomGameEventManager:Send_ServerToPlayer(playerInit, "voting_to_kick_hide_reason", {})
 
