@@ -265,8 +265,6 @@ Divider()
 new PatreonPerk( "first_pick_high", 2 )
 Divider()
 new PatreonPerk( "supporter_perks_high", 2 )
-Divider()
-new PatreonPerk( "kick_troll", 2 )
 //Divider()
 
 SetPatreonLevel( 0 )
