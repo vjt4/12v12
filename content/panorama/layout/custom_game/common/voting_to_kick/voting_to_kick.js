@@ -48,6 +48,7 @@ function VotingToKickVoteYes(data){
 
 function VotingToKickVoteNo(data){
 	print("NO VOTING")
+	GameEvents.SendCustomGameEventToServer("voting_to_kick_vote_no", {});
 	$("#VotingToKickVotingYes").visible = false
 	$("#VotingToKickVotingNo").visible = false
 }
@@ -72,7 +73,10 @@ function VotingToKickInitVoting(reason){
 	print("PICK REASON")
  	GameEvents.SendCustomGameEventToServer("voting_to_kick_reason_is_picked", {reason:reason});
 }
-
+function VotingToKickDebugPring(data){
+	var playerVoted = Game.GetPlayerInfo( data.playerVotedId );
+	print(playerVoted.player_name + " VOTE: " + data.vote)
+}
 function VotingToKickInit(){
 	GameEvents.SendCustomGameEventToServer("voting_to_kick_check_voting_state", {});
 	GameEvents.Subscribe('voting_to_kick_show_reason', VotingToKickShowReason);
@@ -80,5 +84,7 @@ function VotingToKickInit(){
 
 	GameEvents.Subscribe('voting_to_kick_show_voting', VotingToKickShowVoting);
 	GameEvents.Subscribe('voting_to_kick_hide_voting', VotingToKickHideVoting);
+
+	GameEvents.Subscribe('voting_to_kick_debug_print', VotingToKickDebugPring);
 }
 VotingToKickInit();
