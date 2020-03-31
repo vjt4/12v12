@@ -15,7 +15,7 @@ function VotingToKickShowVoting(data){
 
 	var votingPanelHideText = $("#VotingToKickVotingHeadText");
 	votingPanelHideText.html=true
-	votingPanelHideText.text = "Kick "+"<font color='#ed1313'>" + targetPlayer.player_name + "</font>"+" ?";
+	votingPanelHideText.text =  $.Localize("#voting_to_kick_tooltip")+" "+"<font color='#ed1313'>" + targetPlayer.player_name + "</font>"+" ?";
 	var votingPanelModelHero = $("#VotingToKickVotingHeroModel");
 	$("#VotingToKickModelPanel").BCreateChildren("<DOTAScenePanel hittest=\"false\" id=\"VotingToKickVotingHeroModel\" style=\"width:210px;height:210px;\" unit=\""+targetPlayer.player_selected_hero+"\" particleonly=\"false\"/>")
 
@@ -65,7 +65,7 @@ function VotingToKickShowReason(data){
 	var reasonPanelHideText = $("#VotingToKickReasonHeadPanelText");
 	reasonPanelHideText.html=true
 	var targetPlayer = Game.GetPlayerInfo( data.playerId );
-	reasonPanelHideText.text = "Choose a reason to kick "+"<font color='#23d923'>" + targetPlayer.player_name + "</font>";
+	reasonPanelHideText.text = $.Localize("#voting_to_kick_choose_reason_tooltip")+" "+"<font color='#23d923'>" + targetPlayer.player_name + "</font>";
 
 }
 function VotingToKickInitVoting(reason){

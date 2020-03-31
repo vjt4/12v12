@@ -18,15 +18,15 @@
 
 			<Panel class="VotingToKickReasonsList">
 				<Panel class="VotingToKickReason">
-					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/patreon/game_perk/icons/patreon_perk_mp_regen_t0.png"/>
+					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/voting_to_kick/reason_feeding.png"/>
 					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_feeding" onactivate="VotingToKickInitVoting('feeding')"/>
 				</Panel>
 				<Panel class="VotingToKickReason">
-					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/patreon/game_perk/icons/patreon_perk_mp_regen_t0.png"/>
+					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/voting_to_kick/reason_ability_abuse.png"/>
 					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_ability_abuse" onactivate="VotingToKickInitVoting('ability_abuse')"/>
 				</Panel>
 				<Panel class="VotingToKickReason">
-					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/patreon/game_perk/icons/patreon_perk_mp_regen_t0.png"/>
+					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/voting_to_kick/reason_hateful_talk.png"/>
 					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_hateful_talk" onactivate="VotingToKickInitVoting('hateful_talk')"/>
 				</Panel>
 			</Panel>
@@ -38,7 +38,7 @@
 			</Panel>
 
 			<Panel class="VotingToKickVotingReasonPanel">
-				<Label id="VotingToKickVotingReasonText" text="Reason: Ability Abuse"/>
+				<Label id="VotingToKickVotingReasonText" text=""/>
 			</Panel>
 
 			<Panel id="VotingToKickModelPanel" style="width:210px;height:210px;horizontal-align:center;" hittest="false">
