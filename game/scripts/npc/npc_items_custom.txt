@@ -304,28 +304,24 @@
     }
     "item_banhammer"
     {
-        "BaseClass"	"item_datadriven"
-        "AbilityBehavior"	"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+        "BaseClass"						"item_datadriven"
+        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"AbilityCastAnimation"			"ACT_INVALID"
-        "Model"	"models/props_gameplay/red_box.vmdl"
-        "Effect"	"particles/generic_gameplay/dropped_item.vpcf"
-        "AbilityTextureName"	"custom/banhammer2"
+        "Model"							"models/props_gameplay/red_box.vmdl"
+        "Effect"						"particles/generic_gameplay/dropped_item.vpcf"
+        "AbilityTextureName"			"custom/banhammer2"
 	    "CastFilterRejectCaster" 		"1"
-		"ItemStackable"					"1"
+		"ItemStackable"					"0"
 		"ItemPermanent"					"0"
-		"ItemInitialCharges"			"1"
-		"ItemStockMax"					"2"
-		"ItemStockInitial"				"2"
-		"ItemStockTime"					"-1"
 		"IsTempestDoubleClonable"		"0"
 		"ShouldBeInitiallySuggested"	"1"
-        "ItemPurchasable"	"1"
-        "AbilityCastRange"	"999999"
-        "AbilityCastPoint"	"0"
-        "AbilityCooldown"	"10"
-        "AbilityManaCost"	"0"
+        "ItemPurchasable"				"1"
+        "AbilityCastRange"				"999999"
+        "AbilityCastPoint"				"0"
+        "AbilityCooldown"				"600"
+        "AbilityManaCost"				"0"
         "ItemCost"	"0"
         "OnSpellStart"
         {
@@ -339,18 +335,6 @@
 		{
 			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_sven.vsndevts"
 			"particle"			"particles/alert_ban_hammer.vpcf"
-		}
-		"Modifiers"
-		{
-			"modifier_alert_before_kick"
-			{
-				"IsDebuff"			"1"
-				"IsHidden"			"1"
-				"Duration"			"60"
-				"IsPurgable"		"0"
-				"RemoveOnDeath"		"0"
-				"TextureName" 		"banhammer2"
-			}
 		}
     }
 
@@ -428,34 +412,6 @@
 			{
 				"ScriptFile"	"items/item_mute_custom.lua"
 				"Function"	    "OnSpellStartMute"
-			}
-		}
-	}
-
-	"item_voiting_troll"
-	{
-		"BaseClass"						"item_datadriven"
-		"AbilityTextureName"			"custom/item_voiting_troll"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
-		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
-		"AbilityCastRange"				"99999"
-
-		"ItemQuality"					"artifact"
-
-		"ItemStackable"					"0"
-		"ItemPermanent"					"0"
-		"ItemHideCharges"				"0"
-		"CastFilterRejectCaster" 		"1"
-		"IsTempestDoubleClonable"		"0"
-		"ShouldBeInitiallySuggested"	"1"
-
-		"OnSpellStart"
-		{
-			"RunScript"
-			{
-				"ScriptFile"	"items/voiting_troll/item_voiting_troll"
-				"Function"	    "OnSpellStartVoite"
 			}
 		}
 	}

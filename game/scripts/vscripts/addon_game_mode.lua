@@ -31,7 +31,6 @@ require("gpm_lib")
 WebApi.customGame = "Dota12v12"
 
 LinkLuaModifier("modifier_dummy_inventory", LUA_MODIFIER_MOTION_NONE)
-LinkLuaModifier("modifier_alert_before_kick_lua", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_patreon_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_silencer_new_int_steal", LUA_MODIFIER_MOTION_NONE)
@@ -43,9 +42,6 @@ LinkLuaModifier("modifier_troll_debuff_stop_feed", 'anti_feed_system/modifier_tr
 _G.newStats = newStats or {}
 _G.personalCouriers = {}
 _G.mainTeamCouriers = {}
-
-_G.playersVoices = {} 
-_G.trollList = {}
 
 _G.lastDeathTimes = {}
 _G.lastHeroKillers = {}
@@ -578,10 +574,6 @@ function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
 		return false
 	end
 
-	if filterTable.name_const == "modifier_alert_before_kick" then
-		local unit = filterTable.entindex_parent_const ~= 0 and EntIndexToHScript(filterTable.entindex_parent_const)
-		unit:AddNewModifier(unit, unit, "modifier_alert_before_kick_lua", { duration = filterTable.duration })
-	end
 	local parent = filterTable.entindex_parent_const and filterTable.entindex_parent_const ~= 0 and EntIndexToHScript(filterTable.entindex_parent_const)
 	local caster = filterTable.entindex_caster_const and filterTable.entindex_caster_const ~= 0 and EntIndexToHScript(filterTable.entindex_caster_const)
 
@@ -879,15 +871,7 @@ function SearchAndCheckRapiers(buyer, unit, plyID, maxSlots, timerKey)
 			if _G.playersNetWorthes[plyID] == nil then
 				_G.playersNetWorthes[plyID] = PlayerResource:GetTotalGoldSpent(plyID) + PlayerResource:GetGold(plyID)
 			end
-			if _G.trollList[plyID] then
-				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#you_cannot_buy_it" })
-				UTIL_Remove(item)
-				_G.playersNetWorthes[plyID] = (PlayerResource:GetTotalGoldSpent(plyID) + PlayerResource:GetGold(plyID))
-				buyer:ModifyGold(fullRapierCost, false, 0)
-				Timers:CreateTimer(0.03, function()
-					Timers:RemoveTimer(timerKey)
-				end)
-			elseif _G.playersNetWorthes[plyID] and (_G.playersNetWorthes[plyID] < NET_WORSE_FOR_RAPIER_MIN) then
+			if _G.playersNetWorthes[plyID] and (_G.playersNetWorthes[plyID] < NET_WORSE_FOR_RAPIER_MIN) then
 				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#rapier_small_networth" })
 				UTIL_Remove(item)
 				_G.playersNetWorthes[plyID] = (PlayerResource:GetTotalGoldSpent(plyID) + PlayerResource:GetGold(plyID) - fullRapierCost)
@@ -963,24 +947,16 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			end
 
 			if itemName == "item_banhammer" then
-				local psets = Patreons:GetPlayerSettings(plyID)
-				if psets.level < 2 then
-					CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#nopatreonerror2" })
+				if GameRules:GetDOTATime(false,false) < 300 then
+					CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#notyettime" })
 					UTIL_Remove(hItem)
 					return false
-				else
-					if GameRules:GetDOTATime(false,false) < 300 then
-						CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#notyettime" })
-						UTIL_Remove(hItem)
-						return false
-					end
 				end
 			end
 		else
 			local pitems = {
 				"item_patreonbundle_1",
 				"item_patreonbundle_2",
-				"item_banhammer",
 			}
 			for i=1,#pitems do
 				if itemName == pitems[i] then
@@ -1004,16 +980,10 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 								return false
 							end
 							if itemName == "item_banhammer" then
-								if psets.level < 2 then
-									CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(prshID), "display_custom_error", { message = "#nopatreonerror2" })
+								if GameRules:GetDOTATime(false,false) < 300 then
+									CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(prshID), "display_custom_error", { message = "#notyettime" })
 									UTIL_Remove(hItem)
 									return false
-								else
-									if GameRules:GetDOTATime(false,false) < 300 then
-										CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(prshID), "display_custom_error", { message = "#notyettime" })
-										UTIL_Remove(hItem)
-										return false
-									end
 								end
 							else
 								if psets.level < 1 then
@@ -1064,7 +1034,10 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				end
 				local unique_key_cd = itemName .. "_" .. purchaser:GetEntityIndex()
 				if _G.lastTimeBuyItemWithCooldown[unique_key_cd] and (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) < _G.itemsCooldownForPlayer[itemName]) then
-					MessageToPlayerItemCooldown(itemName, prshID)
+					local checkMaxCount = CheckMaxItemCount(hItem, unique_key_cd, prshID, false)
+					if checkMaxCount then
+						MessageToPlayerItemCooldown(itemName, prshID)
+					end
 					Timers:CreateTimer(0.08, function()
 						UTIL_Remove(hItem)
 					end)
@@ -1072,7 +1045,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				end
 			end
 
-			if (filterTable["item_parent_entindex_const"] > 0) and hItem and (not purchaser:CheckPersonalCooldown(itemName)) and correctInventory then
+			if (filterTable["item_parent_entindex_const"] > 0) and hItem and correctInventory and (not purchaser:CheckPersonalCooldown(hItem)) then
 				purchaser:ModifyGold(itemCost, false, 0)
 				UTIL_Remove(hItem)
 				return false
@@ -1147,13 +1120,6 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	}
 	if orderType == DOTA_UNIT_ORDER_PURCHASE_ITEM then
 		local entIndexAbility = filterTable["entindex_ability"]
-		if _G.trollList[playerId] then
-			local item = GetBlockItemByID(entIndexAbility)
-			if item ~= nil then
-				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#you_cannot_buy_it" })
-				return false
-			end
-		end
 		if ItemIsWard(entIndexAbility) then
 			if _G.playerIsBlockForWards[playerId] then
 				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#you_cannot_buy_it" })
@@ -1188,18 +1154,6 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 		local pickedItem = target:GetContainedItem()
 		if not pickedItem then return true end
 		local itemName = pickedItem:GetAbilityName()
-		if _G.trollList[playerId] then
-			local blockedItemToPickUpTroll = {
-				["item_gem"] = true,
-				["item_aegis"] = true,
-				["item_refresher_shard"] = true,
-				["item_cheese"] = true,
-				["item_ultimate_scepter_2"] = true,
-			}
-			if blockedItemToPickUpTroll[itemName] then
-				return false
-			end
-		end
 
 		if _G.wardsList[itemName] then
 			if _G.playerIsBlockForWards[playerId] then
