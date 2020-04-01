@@ -19,6 +19,10 @@ function VotingToKickShowVoting(data){
 	var votingPanelModelHero = $("#VotingToKickVotingHeroModel");
 	$("#VotingToKickModelPanel").BCreateChildren("<DOTAScenePanel hittest=\"false\" id=\"VotingToKickVotingHeroModel\" style=\"width:210px;height:210px;\" unit=\""+targetPlayer.player_selected_hero+"\" particleonly=\"false\"/>")
 
+
+	$("#VotingToKickKDA").html=true
+	$("#VotingToKickKDA").text = $.Localize("#voting_to_kick_kda_tooltip")+"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"+Players.GetKills(data.playerId)+" / "+Players.GetDeaths(data.playerId)+" / "+Players.GetAssists(data.playerId)
+
 	if(Game.GetLocalPlayerID() != data.playerIdInit){
 		$("#VotingToKickVotingYes").visible = true
     	$("#VotingToKickVotingNo").visible = true

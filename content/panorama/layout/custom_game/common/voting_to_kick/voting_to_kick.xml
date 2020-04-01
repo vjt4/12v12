@@ -48,6 +48,8 @@
 			<Panel id="VotingToKickModelPanel" style="width:210px;height:210px;horizontal-align:center;" hittest="false">
 			</Panel>
 
+			<Label id="VotingToKickKDA" text=""/>
+
 			<Panel class="VotingToKickVotingButtons">
 				<Label class="VotingToKickVotingButton" id="VotingToKickVotingYes" text="#voting_to_kick_yes" onactivate="VotingToKickVoteYes()"/>
 				<Label class="VotingToKickVotingButton" id="VotingToKickVotingNo" text="#voting_to_kick_no" onactivate="VotingToKickVoteNo()"/>
