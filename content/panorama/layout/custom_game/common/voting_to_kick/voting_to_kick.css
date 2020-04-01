@@ -4,14 +4,14 @@
 	height: 100%;
 }
 #VotingToKickReasonPanel {
-	width: 420px;
+	width: 560px;
 	height: 165px;
 	flow-children: down;
 	horizontal-align: right;
 	vertical-align: center;
 	background-image: url( "s2r://panorama/images/hud/reborn/item_purchase_bg_psd.vtex" );
 	background-size: cover;
-	transform: translatex( 500px );
+	transform: translatex( 1000px );
 	transition-property: transform;
 	transition-duration: 0.3s;
 }
@@ -28,11 +28,10 @@
 }
 #VotingToKickReasonHeadPanelText {
 	margin-top: 1px;
-	margin-left: 2px;
+	margin-left: 5%;
 	color: white;
-	text-align: center;
 	font-size: 30px;
-	width: 94%;
+	width: 90%;
 	height: 100%;
 	text-overflow: shrink;
 	text-shadow: 1px -1px 2px 2.0 #000000FF;
@@ -102,7 +101,7 @@
 	vertical-align: center;
 	background-image: url( "s2r://panorama/images/hud/reborn/item_purchase_bg_psd.vtex" );
 	background-size: cover;
-	transform: translatex( 500px );
+	transform: translatex( 1000px );
 	transition-property: transform;
 	transition-duration: 0.3s;
 }

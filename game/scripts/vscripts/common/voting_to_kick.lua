@@ -5,6 +5,7 @@ local reasonCheck = {
 	["feeding"] = true,
 	["ability_abuse"] = true,
 	["hateful_talk"] = true,
+	["afk"] = true,
 }
 
 local steamIDsToDebugg = {

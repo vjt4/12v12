@@ -29,6 +29,10 @@
 					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/voting_to_kick/reason_hateful_talk.png"/>
 					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_hateful_talk" />
 				</Panel>
+				<Panel class="VotingToKickReason" onactivate="VotingToKickInitVoting('afk')">
+					<Image class="VotingToKickReasonIcon" src="file://{resources}/layout/custom_game/common/voting_to_kick/reason_afk.png"/>
+					<Label class="VotingToKickReasonButton" text="#voting_to_kick_reason_afk" />
+				</Panel>
 			</Panel>
 		</Panel>
 
