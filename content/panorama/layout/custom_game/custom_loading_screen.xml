@@ -3,7 +3,20 @@
 		<include src="file://{resources}/styles/dotastyles.css" />
 		<include src="file://{resources}/styles/custom_game/custom_loading_screen.css" />
 	</styles>
+	<scripts>
+		<include src="file://{resources}/scripts/custom_game/loading_screen.js" />
+	</scripts>
 	<Panel class="MegaDotaRoot">
 		<Image id="mega_bg" src="file://{resources}/images/custom_game/manyplayer_dota.png" />
+
+		<Panel id="LoadingScreenTipsPanel">
+			<Panel id="PrevTip" onactivate="prevHint()"/>
+			<Image id="LoadingTipImage" />
+			<Label id="LoadingTipText" />
+			<Panel class="NextTip" onactivate="nextHint()"/>
+		</Panel>
+		<Panel style="visibility: collapse;">
+			<Image src="file://{resources}/images/custom_game/tips_icon/tip_chat_wheel.png"/>
+		</Panel>
 	</Panel>
 </root>

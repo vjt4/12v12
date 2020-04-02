@@ -408,5 +408,7 @@
 
 		"HighSupportersOnly"					"仅限于高级支持者"
 		"SupportersOnly"						"仅限于支持者"
+
+		"LoadingTip_1"				"您可以在游戏中使用自定义聊天轮（按L）。 它有一些使用冷却时间。"
 	}
 }
