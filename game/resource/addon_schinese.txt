@@ -391,6 +391,21 @@
 		"patreon_perk_bonus_gold_t2_tooltip"			"+800 gold"
 		"DOTA_Tooltip_patreon_perk_bonus_gold_t2"		"Personal Perk: Extra Gold"
 
+		"voting_to_kick_yes"                        "是"
+        "voting_to_kick_no"                            "否"
+        "voting_to_kick_choose_reason_tooltip"        "选择踢出理由"
+        "voting_to_kick_reason_tooltip"                "理由"
+        "voting_to_kick_reason_feeding"                "送人头"
+        "voting_to_kick_reason_ability_abuse"        "滥用能力"
+        "voting_to_kick_reason_hateful_talk"        "仇恨言论"
+        "voting_to_kick_reason_afk"                    "AFK"
+        "voting_to_kick_tooltip"                    "踢出"
+        "voting_to_kick_player_kicked"                "已将 %s1 从游戏中踢出"
+        "voting_to_kick_voiting_for_now"            "已有踢出玩家的投票"
+        "voting_to_kick_voting_failed"                "踢出 %s1 的投票失败。"
+        "voting_to_kick_kda_tooltip"                "<font color='#94a6be'>K/D/A</font>"
+        "you_cannot_buy_more_items_this_type"        "你无法购买更多此类物品"
+
 		"HighSupportersOnly"					"仅限于高级支持者"
 		"SupportersOnly"						"仅限于支持者"
 	}
