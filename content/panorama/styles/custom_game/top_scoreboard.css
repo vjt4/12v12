@@ -66,19 +66,19 @@
 	margin-left: -2px;
 }
 .AspectRatio16x10 #HeroImage {
-	width: 60px;
+	width: 58px;
 }
 .AspectRatio16x10 #BuybackIcon {
 	margin-bottom: 12px;
 }
 .AspectRatio16x10 .TopBarBackground {
-	background-size: 100% 95%;
+	background-size: 100% 92%;
 }
 .AspectRatio16x10 #TopBarScore {
 	margin-top: 3px;
 }
 .AspectRatio16x10 #TopBarUltIndicator {
-	margin-top: 26px;
+	margin-top: 24px;
 }
 .AspectRatio16x10 #RespawnTimer {
 	margin-bottom: 3px;
@@ -87,7 +87,7 @@
 	margin-bottom: 8px;
 }
 .AspectRatio16x10 #DisconnectIcon {
-	width: 61px;
+	width: 59px;
 }
 .AspectRatio16x10 .TopBarHealthBar {
 	width: 100%;
@@ -99,41 +99,50 @@
 }
 
 .AspectRatio4x3 #TopBarLeftTeams {
-	margin-left: -91px;
+	margin-left: -140px;
 }
 .AspectRatio4x3 #HeroImage {
-	width: 50px;
+	width: 46px;
 }
 .AspectRatio4x3 #BuybackIcon {
-	margin-bottom: 18px;
+	margin-bottom: 13px;
 }
 .AspectRatio4x3 .TopBarBackground {
-	background-size: 100% 80%;
+	background-size: 100% 73%;
 }
 .AspectRatio4x3 #TopBarScore {
-	margin-top: 3px;
+	margin-top: 2px;
+	width: 36px;
+	height: 38px;
 }
 .AspectRatio4x3 #TopBarUltIndicator {
-	margin-top: 21px;
+	margin-top: 15px;
 }
 .AspectRatio4x3 #RespawnTimer {
-	margin-bottom: 8px;
+	margin-bottom: 2px;
 }
 .AspectRatio4x3 #GoldIcon {
-	margin-bottom: 8px;
+	margin-bottom: 3px;
 }
 .AspectRatio4x3 #DisconnectIcon {
-	width: 50px;
+	width: 38px;
 }
 .AspectRatio4x3 .TopBarHealthBar {
-	width: 40px;
-	margin-bottom: 38px;
-}
-.AspectRatio4x3 #ManaBar {
-	width: 40px;
+	width: 35px;
 	margin-bottom: 30px;
 }
-
+.AspectRatio4x3 #ManaBar {
+	width: 35px;
+	margin-bottom: 30px;
+}
+.AspectRatio4x3 #TopBarLeftPlayers #TopBarScore {
+	margin-left: -5px;
+	margin-right: 5px;
+}
+.AspectRatio4x3 #TopBarRightPlayers #TopBarScore {
+	margin-right: 0px;
+	margin-left: 5px;
+}
 .AspectRatio5x4 #TopBarLeftTeams {
 	margin-left: -91px;
 }
@@ -621,7 +630,9 @@
 	margin-top: 4px;
 	background-color: gradient(linear, 0 0, 0 100%, from(black), color-stop(0.03, rgba(0, 0, 0, 0.66667)), color-stop(0.1, transparent), color-stop(0.91, transparent), color-stop(0.95, rgba(0, 0, 0, 0.4)), to(rgba(0, 0, 0, 0.66667)));
 }
-
+.AspectRatio4x3 #PlayerColorShadow {
+	width: 1%;
+}
 .Disconnected #HeroImage {
 	opacity: 0.5;
 }
