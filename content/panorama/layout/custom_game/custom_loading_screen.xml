@@ -17,6 +17,18 @@
 		</Panel>
 		<Panel style="visibility: collapse;">
 			<Image src="file://{resources}/images/custom_game/tips_icon/tip_chat_wheel.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/towers.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/kicktroll.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/disablehelp.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/fountain.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/helpus.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/itemtransfer.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/mute.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/nerfed.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/perks.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/raxes.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/respawn.png"/>
+			<Image src="file://{resources}/images/custom_game/tips_icon/savefavs.png"/>
 		</Panel>
 	</Panel>
 </root>
