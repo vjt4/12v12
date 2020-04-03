@@ -12,8 +12,10 @@
 
 		<Panel id="VotingToKickReasonPanel">
 			<Panel class="VotingToKickReasonHeadPanel">
-				<Label id="VotingToKickReasonHeadPanelText" text=""/>
 				<Label class="VotingToKickReasonClose" onactivate="VotingToKickHideReason()"/>
+				<Panel class="VotingToKickReasonHeadPanelTextGrid">
+					<Label id="VotingToKickReasonHeadPanelText" text=""/>
+				</Panel>
 			</Panel>
 
 			<Panel class="VotingToKickReasonsList">

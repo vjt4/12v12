@@ -16,7 +16,7 @@
 				<Panel class="TopBarBackground" />
 				<Panel id="TeamScorePlayersMainFlow">
 					<Panel id="TopBarPlayersContainer" class="LeftRightFlow" />
-					<Label id="TopBarScore" text="12" hittest="true" />
+					<Label id="TopBarScore" text="{d:team_score}" hittest="true" />
 				</Panel>
 			</Panel>
 		</snippet>

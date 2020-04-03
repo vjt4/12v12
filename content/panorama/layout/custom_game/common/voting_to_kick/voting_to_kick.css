@@ -24,17 +24,37 @@
 	width: 100%;
 	height: 35px;
 	background-color: rgba(20,20,20,0.9);
-	flow-children: right;
 }
-#VotingToKickReasonHeadPanelText {
-	margin-top: 1px;
-	margin-left: 5%;
+
+.VotingToKickReasonHeadPanelTextGrid {
 	color: white;
 	font-size: 30px;
-	width: 90%;
 	height: 100%;
 	text-overflow: shrink;
 	text-shadow: 1px -1px 2px 2.0 #000000FF;
+	horizontal-align: center;
+	max-width: 95%;
+	vertical-align: center;
+}
+
+
+#VotingToKickReasonHeadPanelText {
+	color: white;
+	font-size: 30px;
+	text-overflow: shrink;
+	text-shadow: 1px -1px 2px 2.0 #000000FF;
+}
+
+.VotingToKickReasonClose {
+	horizontal-align:right;
+	width: 18px;
+	height: 18px;
+	background-size: 100%;
+	margin: 2px;
+	background-image: url("s2r://panorama/images/control_icons/x_close_png.vtex");
+}
+.VotingToKickReasonClose:hover {
+	wash-color: red;
 }
 
 .VotingToKickReasonsList {
@@ -82,17 +102,6 @@
 	text-overflow: shrink;
 }
 
-.VotingToKickReasonClose {
-	horizontal-align: right;
-	width: 18px;
-	height: 18px;
-	background-size: 100%;
-	margin: 2px;
-	background-image: url("s2r://panorama/images/control_icons/x_close_png.vtex");
-}
-.VotingToKickReasonClose:hover {
-	wash-color: red;
-}
 #VotingToKickVoting{
 	flow-children: down;
 	width: 250px;
