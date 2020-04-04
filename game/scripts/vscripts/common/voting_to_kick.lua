@@ -24,11 +24,12 @@ RegisterCustomEventListener("voting_to_kick_reason_is_picked", function(data)
 		if not reasonCheck[data.reason] then return end
 		local playerTarget = heroTarget:GetPlayerOwner()
 
+		_G.votingForKick.playersVoted = {}
 		_G.votingForKick.reason = data.reason
 		_G.votingForKick.init = data.PlayerID
 		_G.votingForKick.target = playerTarget:GetPlayerID()
 		_G.votingForKick.votes = 1
-
+		_G.votingForKick.playersVoted[data.PlayerID] = true
 		local all_heroes = HeroList:GetAllHeroes()
 		for _, hero in pairs(all_heroes) do
 			if hero:IsRealHero() and hero:IsControllableByAnyPlayer() and (hero:GetTeam() == playerInit:GetTeam())then
@@ -69,6 +70,7 @@ end
 RegisterCustomEventListener("voting_to_kick_vote_yes", function(data)
 	if _G.votingForKick then
 		_G.votingForKick.votes = _G.votingForKick.votes + 1
+		_G.votingForKick.playersVoted[data.PlayerID] = true
 		SendDegugResult(data, "YES TOTAL VOICES: ".._G.votingForKick.votes)
 		if _G.votingForKick.votes >= votesToKick then
 			_G.kicks[_G.votingForKick.target+1] = true
@@ -90,7 +92,8 @@ RegisterCustomEventListener("voting_to_kick_check_voting_state", function(data)
 		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.PlayerID), "voting_to_kick_show_voting", {
 			playerId = _G.votingForKick.target,
 			reason = _G.votingForKick.reason,
-			playerIdInit = _G.votingForKick.init
+			playerIdInit = _G.votingForKick.init,
+			playerVoted = _G.votingForKick.playersVoted[data.PlayerID],
 		})
 	end
 end)

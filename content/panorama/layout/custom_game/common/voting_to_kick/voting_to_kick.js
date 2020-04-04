@@ -30,6 +30,11 @@ function VotingToKickShowVoting(data){
 		$("#VotingToKickVotingYes").visible = false
 		$("#VotingToKickVotingNo").visible = false
 	}
+
+	if(data.playerVoted != null){
+		$("#VotingToKickVotingYes").visible = false
+		$("#VotingToKickVotingNo").visible = false
+	}
 }
 
 
