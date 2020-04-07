@@ -45,10 +45,6 @@ function Patreons:GiveOnSpawnBonus(playerId)
 	local hero = PlayerResource:GetSelectedHeroEntity(playerId)
 	local patreonSettings = Patreons:GetPlayerSettings(playerId)
 
-	if patreonSettings.level >= 1 then
-		hero:AddNewModifier(hero, nil, "modifier_donator", { patron_level = patreonSettings.level })
-	end
-
 	hero:AddItemByName("item_patreon_mango")
 end
 
@@ -71,13 +67,6 @@ RegisterCustomEventListener("patreon_update_emblem", function(args)
 
 	local playerBonuses = Patreons:GetPlayerSettings(playerId)
 	playerBonuses.emblemColor = args.color
-	Patreons:SetPlayerSettings(playerId, playerBonuses)
-end)
-
-RegisterCustomEventListener("patreon_toggle_emblem", function(args)
-	local playerId = args.PlayerID
-	local playerBonuses = Patreons:GetPlayerSettings(playerId)
-	playerBonuses.emblemEnabled = args.enabled == 1
 	Patreons:SetPlayerSettings(playerId, playerBonuses)
 end)
 

@@ -37,29 +37,6 @@ class PatreonPerk {
 		}
 	}
 }
-
-//class FreeBoots extends PatreonPerk {
-//	constructor() {
-//		super( "boots_free", 1 )
-//
-//		this.button = $.CreatePanel( "ToggleButton", this.panel.FindChildTraverse( "PatreonPerkAdditional" ), "" )
-//		this.button.text = $.Localize( "#boots_enable" )
-//		this.button.style["margin-top"] = "18px"
-//
-//		let btn = this.button
-//
-//		this.button.SetPanelEvent( "onactivate", function() {
-//			if ( isPatron ) {
-//				GameEvents.SendCustomGameEventToServer( "patreon_toggle_boots", { enabled: !!btn.checked } )
-//			}
-//		} )
-//	}
-//
-//	Enable( bool ) {
-//		this.button.checked = bool
-//	}
-//}
-
 function Divider() {
 	let panel = $.CreatePanel( "Panel", $( "#PatreonPerksContainer" ), "" )
 	panel.AddClass( "Divider" )
@@ -249,8 +226,6 @@ function CloseVOIconButton() {
 
 $.GetContextPanel().RemoveClass('IsPatron');
 
-//var boots = new FreeBoots()
-//Divider()
 new PatreonPerk( "our_thanks_and_appreciation", 1 )
 Divider()
 new PatreonPerk( "supporter_perks_low", 1 )
