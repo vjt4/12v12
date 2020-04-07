@@ -42,3 +42,34 @@ function IsInTriggerBox(trigger, extension, vector)
 		origin + ExpandVector(trigger:GetBoundingMaxs(), extension)
 	)
 end
+
+
+function table.find(tbl, f)
+  	for _, v in ipairs(tbl) do
+	    if f == v then
+	      	return v
+	    end
+  	end
+  	return false
+end
+
+function table.length(tbl)
+	local amount = 0
+	for __,___ in pairs(tbl) do
+		amount = amount + 1
+	end
+  	return amount
+end
+
+
+function table.concat(tbl1,tbl2)
+	local tbl = {}
+	for k,v in ipairs(tbl1) do
+		table.insert(tbl,v)
+	end
+	for k,v in ipairs(tbl2) do
+		table.insert(tbl,v)
+	end
+
+	return tbl
+end

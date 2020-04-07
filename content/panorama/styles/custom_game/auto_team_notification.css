@@ -1,0 +1,33 @@
+.hud{
+	width: 100%;
+	height: 100%;
+	z-index: 20000;
+}
+
+#notification{
+	width: 465px;
+	height: 210px;
+	vertical-align: center;
+	background-image: url( "file://{resources}/images/custom_game/auto_team_notification.png" );
+	horizontal-align:right;
+	background-size: 100% 100%;
+	margin: 4px;
+	text-align: center;
+	transition-duration: .5s;
+	transition-property: transform;
+	transform: translateX(100%);
+}
+#notification.Visible{
+	transform:none;
+}
+#notification > Label{
+	font-size: 19px;
+	margin-left: 195px;
+	margin-right: 20px;
+	vertical-align: bottom;
+	margin-bottom: 32px;
+	color: white;
+	width: 400px;
+	height: 75px;
+	text-overflow: shrink;
+}

@@ -30,6 +30,16 @@
 			}
 		}
 
+		GameEvents.Subscribe('debug_message', (data) => {
+		    let arr = data.message
+		    if (typeof data.message == 'object')
+		        for (k in arr){
+		            $.Msg(arr[k])
+		        }
+		    else
+		        $.Msg(arr)
+		});
+
 		FindDotaHudElement( "PreGame" ).FindChild( "Header" ).style.visibility = "collapse"
 	</script>
 
@@ -45,5 +55,7 @@
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/common/neutral_items/neutral_items.xml" />
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/common/patreon/game_perk/patreons_game_perk.xml" />
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/common/voting_to_kick/voting_to_kick.xml" />
+
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/auto_team_notification.xml" />
 	</Panel>
 </root>
