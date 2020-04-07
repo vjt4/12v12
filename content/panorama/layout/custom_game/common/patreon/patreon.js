@@ -4,6 +4,11 @@ var patreonLevel = 0
 var patreonPerks = []
 var offPatreonButton  = true
 var offVOIconButton  = true
+var giftNotificationRemainingTime = 0;
+var giftNotificationScheduler = false;
+var paymentTargetID = Game.GetLocalPlayerID();
+var donation_target_dropdown = false;
+
 $( "#PatreonPerksContainer" ).RemoveAndDeleteChildren()
 
 class PatreonPerk {
@@ -245,6 +250,8 @@ new PatreonPerk( "supporter_perks_high", 2 )
 SetPatreonLevel( 0 )
 
 SubscribeToNetTableKey('game_state', 'patreon_bonuses', function (data) {
+	UpdatePaymentTargetList(data);
+
 	var status = data[Game.GetLocalPlayerID()];
 	if (!status) return;
 
