@@ -130,7 +130,7 @@ function updatePaymentWindow() {
 		}
 	}
 
-	var requestData = { provider: provider, paymentKind: paymentKind };
+	var requestData = { provider: provider, paymentKind: paymentKind, paymentTargetID: paymentTargetID };
 	paymentWindowUpdateListener = createPaymentRequest(requestData, function(response) {
 		if (response.url != null) {
 			$('#PaymentWindowBody').SetURL(response.url);
@@ -336,6 +336,9 @@ function UpdatePaymentTargetList(patreonData) {
 		}
 		layout_string = layout_string + '</DropDown></root>';
 		donation_target_dropdown.BLoadLayoutFromString(layout_string, false, true);
+
+		donation_target_dropdown.SetSelected("PatreonOption" + local_id);
+		UpdatePaymentTarget(local_id);
 	}
 }
 
