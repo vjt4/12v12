@@ -7,6 +7,7 @@ var offVOIconButton  = true
 var giftNotificationRemainingTime = 0;
 var giftNotificationScheduler = false;
 var paymentTargetID = Game.GetLocalPlayerID();
+var lastConfirmedDonationTarget = Game.GetLocalPlayerID();
 var donation_target_dropdown = false;
 
 $( "#PatreonPerksContainer" ).RemoveAndDeleteChildren()
@@ -42,6 +43,16 @@ class PatreonPerk {
 		}
 	}
 }
+
+GameEvents.Subscribe('is_local_server', function() {
+	$('#LocalServerWarningContainer').style.visibility = 'visible';
+	$('#LocalServerWarningContainer').style.opacity = '1.0';
+});
+
+function CloseLocalServerWarning() {
+	$('#LocalServerWarningContainer').style.visibility = 'collapse';
+}
+
 function Divider() {
 	let panel = $.CreatePanel( "Panel", $( "#PatreonPerksContainer" ), "" )
 	panel.AddClass( "Divider" )
@@ -81,8 +92,13 @@ function setPaymentWindowVisible(visible) {
 	GameEvents.SendCustomGameEventToServer('patreon:payments:window', { visible: visible });
 	$('#PaymentWindow').visible = visible;
 	$('#SupportButtonPaymentWindow').checked = visible;
+	$('#PaymentConfirmationContainer').visible = visible;
+	lastConfirmedDonationTarget = Game.GetLocalPlayerID();
 	if (visible) {
 		updatePaymentWindow();
+		donation_target_dropdown.enabled = true;
+	} else {
+		donation_target_dropdown.enabled = false;
 	}
 }
 
@@ -101,11 +117,32 @@ function togglePaymentWindowVisible() {
 	setPaymentWindowVisible(!$('#PaymentWindow').visible);
 }
 
+function ShowPaymentConfirmationWindow() {
+	$('#PaymentConfirmationAvatar').steamid = Game.GetPlayerInfo(paymentTargetID).player_steamid;
+	$('#PaymentConfirmationAvatarLabel').text = Players.GetPlayerName(paymentTargetID);
+	$('#PaymentConfirmationContainer').style.visibility = 'visible';
+}
+
+function ConfirmPaymentTarget() {
+	$('#PaymentConfirmationContainer').style.visibility = 'collapse';
+	lastConfirmedDonationTarget = paymentTargetID;
+	updatePaymentWindow()
+}
+
+function ResetPaymentTarget() {
+	$('#PaymentConfirmationContainer').style.visibility = 'collapse';
+}
+
 var createPaymentRequest = createEventRequestCreator('patreon:payments:create');
 
 var paymentWindowUpdateListener;
 var paymentWindowPostUpdateTimer;
 function updatePaymentWindow() {
+	if (paymentTargetID != lastConfirmedDonationTarget && paymentTargetID != Game.GetLocalPlayerID()) {
+		ShowPaymentConfirmationWindow();
+		return;
+	}
+
 	if (paymentWindowUpdateListener != null) {
 		GameEvents.Unsubscribe(paymentWindowUpdateListener);
 	}
