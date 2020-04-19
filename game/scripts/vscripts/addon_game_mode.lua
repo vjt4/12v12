@@ -782,6 +782,12 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	end
 
 	if newState == DOTA_GAMERULES_STATE_PRE_GAME then
+		if not IsDedicatedServer() then
+			Timers:CreateTimer(3, function()
+				CustomGameEventManager:Send_ServerToAllClients("is_local_server", {})
+			end)
+		end
+
         local toAdd = {
             luna_moon_glaive_fountain = 4,
             ursa_fury_swipes_fountain = 1,
