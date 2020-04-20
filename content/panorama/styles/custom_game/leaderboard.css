@@ -25,7 +25,7 @@
 }
 
 .BackgroundPanelBody {
-    width: 100%;
+    width: fit-children;
     height: fill-parent-flow(1.0);
 
     padding: 0 38px;
@@ -33,8 +33,8 @@
 
 
 .Leaderboard {
-    width: 80%;
-    height: 80%;
+    width: fit-children;
+    max-height: 80%;
 
     horizontal-align: center;
     vertical-align: center;
@@ -49,7 +49,7 @@
 }
 
 .table {
-    width: 100%;
+    width: fit-children;
     height: fill-parent-flow(1.0);
 
     flow-children: down;
@@ -60,7 +60,7 @@
 }
 
 #TableHeader {
-    width: 100%;
+    width: fit-children;
 }
 
 #TableHeader Label {
@@ -69,7 +69,7 @@
 }
 
 #TableBody {
-    width: 100%;
+    width: fit-children;
     height: fill-parent-flow(1.0);
 
     margin-bottom: 16px;
@@ -79,7 +79,7 @@
 }
 
 .TableRecord {
-    width: 100%;
+    width: fit-children;
     height: 50px;
 
     border-bottom: 1px solid #364140;
@@ -102,7 +102,11 @@
 }
 
 #Player {
-    width: fill-parent-flow(1.0);
+    width: 300px;
+}
+
+#Rating {
+    width: 100px;
 }
 
 .playerInfo {
@@ -110,7 +114,7 @@
     horizontal-align: left;
 }
 
-#playerAvatar {
+#PlayerAvatar {
     width: 40px;
     height: 40px;
 
