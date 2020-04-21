@@ -116,10 +116,11 @@
 
 #PlayerAvatar {
     width: 40px;
-    height: 40px;
+    height: width-percentage(100%);
 
     border-radius: 50%;
     border: 2px solid #32383677;
+    padding: -2px;
 }
 
 #Player DOTAAvatarImage,

@@ -46,6 +46,19 @@ function addMenuButton() {
     attachMenuButton(button);
 }
 
+function testLeaderboard() {
+    let leaderboard = [];
+    for (let i = 0; i < 100; i++) {
+        leaderboard.push({
+            rank: i,
+            steamId: /*"76561198057976123",*/ "76561198143905703",
+            rating: 2000
+        })
+    }
+
+    updateTable(leaderboard);
+}
+
 (function () {
     $('#Leaderboard').visible = false;
     addMenuButton();
