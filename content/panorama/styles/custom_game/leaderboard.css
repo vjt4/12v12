@@ -134,7 +134,6 @@
 }
 
 #OpenLeaderboard {
-    background-image: url('s2r://panorama/images/topbar/armory_icon_off_png.vtex');
-    background-size: 46px;
-    brightness: 1.5;
+    background-image: url('file://{resources}/images/custom_game/leaderboard_icon.png');
+    background-size: 28px;
 }

@@ -43,6 +43,14 @@ function addMenuButton() {
         panel.visible = !panel.visible;
     });
 
+    button.SetPanelEvent('onmouseover', () => {
+        $.DispatchEvent("DOTAShowTextTooltip", button, "#leaderboard");
+    });
+
+    button.SetPanelEvent('onmouseout', () => {
+        $.DispatchEvent("DOTAHideTextTooltip");
+    });    
+
     attachMenuButton(button);
 }
 
