@@ -92,6 +92,8 @@ function setPaymentWindowVisible(visible) {
 	GameEvents.SendCustomGameEventToServer('patreon:payments:window', { visible: visible });
 	$('#PaymentWindow').visible = visible;
 	$('#SupportButtonPaymentWindow').checked = visible;
+	$('#PaymentConfirmationContainer').visible = visible;
+	lastConfirmedDonationTarget = Game.GetLocalPlayerID();
 	if (visible) {
 		updatePaymentWindow();
 		donation_target_dropdown.enabled = true;

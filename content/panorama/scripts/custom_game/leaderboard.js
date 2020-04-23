@@ -43,7 +43,28 @@ function addMenuButton() {
         panel.visible = !panel.visible;
     });
 
+    button.SetPanelEvent('onmouseover', () => {
+        $.DispatchEvent("DOTAShowTextTooltip", button, "#leaderboard");
+    });
+
+    button.SetPanelEvent('onmouseout', () => {
+        $.DispatchEvent("DOTAHideTextTooltip");
+    });    
+
     attachMenuButton(button);
+}
+
+function testLeaderboard() {
+    let leaderboard = [];
+    for (let i = 0; i < 100; i++) {
+        leaderboard.push({
+            rank: i,
+            steamId: /*"76561198057976123",*/ "76561198143905703",
+            rating: 2000
+        })
+    }
+
+    updateTable(leaderboard);
 }
 
 (function () {
