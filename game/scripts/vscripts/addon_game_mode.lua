@@ -166,14 +166,6 @@ function CMegaDotaGameMode:InitGameMode()
 	_G.raxBonuses[DOTA_TEAM_GOODGUYS] = 0
 	_G.raxBonuses[DOTA_TEAM_BADGUYS] = 0
 
-	_G.kicks = {
-		false,
-		false,
-		false,
-		false,
-		false
-	}
-
 	Timers:CreateTimer( 0.6, function()
 		for i = 0, GameRules:NumDroppedItems() - 1 do
 			local container = GameRules:GetDroppedItem( i )
@@ -1089,11 +1081,11 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 	return true
 end
 
-RegisterCustomEventListener("GetKicks", function(data)
-    CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.id), "setkicks", {kicks = _G.kicks})
-end)
-
 function CMegaDotaGameMode:OnConnectFull(data)
+	_G.tUserIds[data.PlayerID] = data.userid
+	if _G.kicks and _G.kicks[data.PlayerID] then
+		SendToServerConsole('kickid '.. data.userid);
+	end
 	CustomGameEventManager:Send_ServerToAllClients( "change_leave_status", {leave = false, playerId = data.PlayerID} )
 end
 

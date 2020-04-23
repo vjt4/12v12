@@ -1,4 +1,7 @@
 _G.votingForKick = nil
+_G.kicks = {}
+_G.tUserIds = {}
+
 local timeToVoting = 40
 local votesToKick = 6
 local reasonCheck = {
@@ -73,10 +76,10 @@ RegisterCustomEventListener("voting_to_kick_vote_yes", function(data)
 		_G.votingForKick.playersVoted[data.PlayerID] = true
 		SendDegugResult(data, "YES TOTAL VOICES: ".._G.votingForKick.votes)
 		if _G.votingForKick.votes >= votesToKick then
-			_G.kicks[_G.votingForKick.target+1] = true
+			_G.kicks[_G.votingForKick.target] = true
 			Timers:RemoveTimer("start_voting_to_kick")
 			CustomGameEventManager:Send_ServerToTeam(PlayerResource:GetPlayer(_G.votingForKick.init):GetTeam(), "voting_to_kick_hide_voting", {})
-			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(_G.votingForKick.target), "setkicks", {kicks = _G.kicks})
+			SendToServerConsole('kickid '.. _G.tUserIds[_G.votingForKick.target]);
 			GameRules:SendCustomMessage("#voting_to_kick_player_kicked", _G.votingForKick.target, 0)
 			_G.votingForKick = nil
 		end
