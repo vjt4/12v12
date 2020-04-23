@@ -17,14 +17,23 @@ function getTableRecord(record, parent, id) {
 }
 
 function updateTable(players) {
-    let body = $.GetContextPanel().FindChildTraverse('TableBody');
+    let body = $('#TableBody');
     body.RemoveAndDeleteChildren();
 
+    let localSteamId = Game.GetLocalPlayerInfo().player_steamid;
     players.forEach((player, i) => {
-        getTableRecord(player, body);
+        let panel = getTableRecord(player, body);
+        if (player.steamId == localSteamId)
+            panel.AddClass('local');
     });
 }
 
+function updateLocalPlayer(player) {
+    let localPlayer = $('#LocalPlayer');
+    localPlayer.RemoveAndDeleteChildren();
+
+    getTableRecord(player, localPlayer);
+}
 
 function attachMenuButton(panel) {
     let menu = GetDotaHud().FindChildTraverse('MenuButtons').FindChildTraverse('ButtonBar');
@@ -80,4 +89,15 @@ function testLeaderboard() {
 
         updateTable(leaderboard);
     })
+
+    SubscribeToNetTableKey('game_state', 'player_ratings', (ratingsObj) => {
+        let localSteamId = Game.GetLocalPlayerInfo().player_steamid;
+        let ratings = Object.values(ratingsObj)
+            .filter(r => r.steamId == localSteamId);
+
+        if (ratings.length == 0)
+            return
+
+        updateLocalPlayer(ratings[0])
+    })    
 })();

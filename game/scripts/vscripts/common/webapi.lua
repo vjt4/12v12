@@ -107,6 +107,7 @@ function WebApi:BeforeMatch()
 
 		CustomNetTables:SetTableValue("game_state", "player_stats", publicStats)
 		CustomNetTables:SetTableValue("game_state", "leaderboard", data.leaderboard)
+		CustomNetTables:SetTableValue("game_state", "player_ratings", data.mapPlayersRating)
 	end)
 end
 

@@ -38,10 +38,14 @@
                         <Panel class="TableRecord">
                             <Label text="#leaderboard_rank" id="Rank" />
                             <Label text="#leaderboard_player" id="Player" />
-                            <Label text="#leaderboard_rating" id="Rating" />
+                            <Panel id="Rating">
+                                <Label text="#leaderboard_rating" />
+                                <Panel class="rating-info" onmouseover="DOTAShowTextTooltip(#leaderboard_info)" onmouseout="DOTAHideTextTooltip()" />
+                            </Panel>
                         </Panel>
                     </Panel>
                     <Panel id="TableBody" />
+                    <Panel id="LocalPlayer" />
                 </Panel>
             </Panel>
         </Panel>

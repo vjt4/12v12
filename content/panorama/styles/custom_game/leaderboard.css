@@ -72,10 +72,15 @@
     width: fit-children;
     height: fill-parent-flow(1.0);
 
-    margin-bottom: 16px;
-
     flow-children: down;
     overflow: clip scroll;
+}
+
+#LocalPlayer {
+    margin-top: 8px;
+    margin-bottom: 16px; 
+
+    border-top: 1px solid #364140;
 }
 
 .TableRecord {
@@ -87,13 +92,17 @@
     flow-children: right;
 }
 
+.TableRecord.local {
+    background-color: #3d3d42;
+}
+
 .TableRecord > Label {
     width: fill-parent-flow(1.0);
     text-align: center;
     vertical-align: middle;
 }
 
-.TableRecord Panel {
+.TableRecord > Panel {
     height: 100%;
 }
 
@@ -102,11 +111,33 @@
 }
 
 #Player {
-    width: 300px;
+    width: 300px;    
+}
+
+#Player > Panel {
+    vertical-align: middle;
 }
 
 #Rating {
     width: 100px;
+    
+    flow-children: right;
+}
+
+#Rating > Panel,
+#Rating > Label {
+    vertical-align: middle;
+}
+
+.rating-info {
+    width: 20px;
+    height: 20px;
+
+    margin-left: 8px;
+
+    background-image: url("s2r://panorama/images/status_icons/information_psd.vtex");
+    background-position: 50% 50%;
+    background-size: contain;
 }
 
 .playerInfo {
