@@ -785,20 +785,12 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
             luna_moon_glaive_fountain = 4,
             ursa_fury_swipes_fountain = 1,
         }
-		Timers:CreateTimer("pause_start_game", {
-			useGameTime = false,
-			endTime = 0,
-			callback = function()
-				PauseGame(true)
-				return 0.1
-			end
-		})
+		SendToServerConsole('host_timescale 0.1')
 		Timers:CreateTimer({
 			useGameTime = false,
-			endTime = (IsInToolsMode() and 0) or 30,
+			endTime = 3,
 			callback = function()
-				PauseGame(false)
-				Timers:RemoveTimer("pause_start_game")
+				SendToServerConsole('host_timescale 1')
 				return nil
 			end
 		})
