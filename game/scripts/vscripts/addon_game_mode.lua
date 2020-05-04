@@ -785,12 +785,12 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
             luna_moon_glaive_fountain = 4,
             ursa_fury_swipes_fountain = 1,
         }
-		SendToServerConsole('host_timescale 0.1')
+		Convars:SetFloat("host_timescale", 0.1)
 		Timers:CreateTimer({
 			useGameTime = false,
 			endTime = 3,
 			callback = function()
-				SendToServerConsole('host_timescale 1')
+				Convars:SetFloat("host_timescale", 1)
 				return nil
 			end
 		})
