@@ -54,7 +54,6 @@ _G.newRespawnTimes = {}
 _G.itemsIsBuy = {}
 _G.lastTimeBuyItemWithCooldown = {}
 
-_G.playersNetWorthes = {}
 _G.tPlayersMuted = {}
 
 if CMegaDotaGameMode == nil then
@@ -863,13 +862,10 @@ function SearchAndCheckRapiers(buyer, unit, plyID, maxSlots, timerKey)
 	for i = 0, maxSlots do
 		local item = unit:GetItemInSlot(i)
 		if item and item:GetAbilityName() == "item_rapier" and (item:GetPurchaser() == buyer) and ((item.defend == nil) or (item.defend == false)) then
-			if _G.playersNetWorthes[plyID] == nil then
-				_G.playersNetWorthes[plyID] = PlayerResource:GetTotalGoldSpent(plyID) + PlayerResource:GetGold(plyID)
-			end
-			if _G.playersNetWorthes[plyID] and (_G.playersNetWorthes[plyID] < NET_WORSE_FOR_RAPIER_MIN) then
+			local playerNetWorse = PlayerResource:GetNetWorth(plyID)
+			if playerNetWorse < NET_WORSE_FOR_RAPIER_MIN then
 				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#rapier_small_networth" })
 				UTIL_Remove(item)
-				_G.playersNetWorthes[plyID] = (PlayerResource:GetTotalGoldSpent(plyID) + PlayerResource:GetGold(plyID) - fullRapierCost)
 				buyer:ModifyGold(fullRapierCost, false, 0)
 				Timers:CreateTimer(0.03, function()
 					Timers:RemoveTimer(timerKey)
@@ -883,7 +879,6 @@ function SearchAndCheckRapiers(buyer, unit, plyID, maxSlots, timerKey)
 				elseif (GetHeroKD(buyer) <= 0) then
 					CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#rapier_littleKD" })
 					UTIL_Remove(item)
-					_G.playersNetWorthes[plyID] = (PlayerResource:GetTotalGoldSpent(plyID) + PlayerResource:GetGold(plyID))
 					buyer:ModifyGold(fullRapierCost, false, 0)
 					Timers:CreateTimer(0.03, function()
 						Timers:RemoveTimer(timerKey)
