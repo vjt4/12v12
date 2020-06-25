@@ -44,6 +44,8 @@
 	</script>
 
 	<Panel>
+		<CustomUIElement type="GameSetup"			layoutfile="file://{resources}/layout/custom_game/team_select.xml" />
+		<CustomUIElement type="GameSetup"			layoutfile="file://{resources}/layout/custom_game/voting_for_game_options.xml" />
 		<CustomUIElement type="FlyoutScoreboard"	layoutfile="file://{resources}/layout/custom_game/multiteam_flyout_scoreboard.xml" />
 		<CustomUIElement type="HeroSelection" 		layoutfile="file://{resources}/layout/custom_game/common/pick_locker/pick_locker.xml" />
 		<CustomUIElement type="HeroSelection" 		layoutfile="file://{resources}/layout/custom_game/multiteam_hero_select_overlay.xml" />
@@ -56,5 +58,7 @@
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/common/patreon/game_perk/patreons_game_perk.xml" />
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/common/voting_to_kick/voting_to_kick.xml" />
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/leaderboard.xml" />
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/common/change_team/change_team.xml" />
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/common/override_link/override_link.xml" />
 	</Panel>
 </root>

@@ -1,0 +1,85 @@
+#VoteOptionsGrid {
+	width: 320px;
+	background-color: rgba(0, 0, 0, 0.4);
+	margin-left: 50px;
+	margin-bottom: 200px;
+	flow-children: down;
+	vertical-align: center;
+}
+#VoteOptionsHeaderWrap {
+	width: 100%;
+	background-color: rgba(4, 5, 26, 0.3);
+	height: 33px;
+}
+#VoteOptionsTotalVotesWrap {
+	width: 100%;
+}
+#VoteOptionsHeaderText {
+	align: center center;
+	font-weight: lighter;
+	color: gainsboro;
+	font-size: 28px;
+	text-overflow: shrink;
+	text-align: center;
+	width: 100%;
+}
+#VoteOptionsTotalVotesText {
+	align: right center;
+	font-weight: lighter;
+	color: gainsboro;
+	font-size: 14px;
+}
+#VoteOptionsButtons {
+	flow-children: down;
+	width: 100%;
+	padding-left: 3px;
+	padding-bottom: 3px;
+}
+
+.VoteOption {
+	flow-children: right;
+	width: 100%;
+	margin-top: 3px;
+}
+#VoteOptionLocalVote {
+	width: 7px;
+	height: 100%;
+	margin-left: 3px;
+	margin-right: 1px;
+	transition: background-color 0.3s ease-in-out 0s;
+}
+#VoteOptionLocalVote.choosed {
+	background-color: #268c16;
+}
+#VoteOptionTotalVotesWrap {
+	width: 36px;
+	align: right center;
+	padding-right: 1px;
+}
+#VoteOptionTotalVotesText {
+	align: center center;
+	font-size: 23px;
+	color: gainsboro;
+	text-align: center;
+}
+#VoteOptionTotalVotesText.init {
+	text-shadow: 0px 0px 2px 1 #ffd600;
+}
+#VoteOptionButton {
+	height: 31px;
+	width: 85%;
+	background-color: #222529;
+	box-shadow: inset rgba(255, 255, 255, 0.07) -2px 1px 1px -1px;
+	transition: brightness 0.2s ease-in-out 0s, transform 0.2s ease-in-out 0s;
+}
+#VoteOptionButton:hover {
+	brightness: 2;
+}
+#VoteOptionButton.active {
+	brightness: 2;
+}
+#VoteOptionText {
+	align: center center;
+	font-weight: lighter;
+	color: gainsboro;
+}

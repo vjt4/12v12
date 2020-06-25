@@ -65,6 +65,24 @@ local perksTierPatreon = {
 	["patreon_perk_gpm_t0"] = 0,
 	["patreon_perk_gpm_t1"] = 1,
 	["patreon_perk_gpm_t2"] = 2,
+	["patreon_perk_str_for_kill_t0"] = 0,
+	["patreon_perk_str_for_kill_t1"] = 1,
+	["patreon_perk_str_for_kill_t2"] = 2,
+	["patreon_perk_agi_for_kill_t0"] = 0,
+	["patreon_perk_agi_for_kill_t1"] = 1,
+	["patreon_perk_agi_for_kill_t2"] = 2,
+	["patreon_perk_int_for_kill_t0"] = 0,
+	["patreon_perk_int_for_kill_t1"] = 1,
+	["patreon_perk_int_for_kill_t2"] = 2,
+	["patreon_perk_cleave_t0"] = 0,
+	["patreon_perk_cleave_t1"] = 1,
+	["patreon_perk_cleave_t2"] = 2,
+	["patreon_perk_cd_after_deadth_t0"] = 0,
+	["patreon_perk_cd_after_deadth_t1"] = 1,
+	["patreon_perk_cd_after_deadth_t2"] = 2,
+	["patreon_perk_manaburn_t0"] = 0,
+	["patreon_perk_manaburn_t1"] = 1,
+	["patreon_perk_manaburn_t2"] = 2,
 };
 
 for name in pairs(perksTierPatreon) do
@@ -112,7 +130,12 @@ RegisterCustomEventListener("set_patreon_game_perk", function(data)
 	else
 		Timers:CreateTimer(3, function()
 			hero = player:GetAssignedHero()
-			hero:AddNewModifier(hero, nil, newModifierName, {duration = -1})
+			if hero then
+				hero:AddNewModifier(hero, nil, newModifierName, {duration = -1})
+				return nil
+			else 
+				return 1
+			end
 		end)
 	end
 end)

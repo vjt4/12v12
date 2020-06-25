@@ -6,6 +6,8 @@
     </styles>
 
     <scripts>
+		<include src="file://{resources}/layout/custom_game/common/utils.js" />
+		<include src="file://{resources}/layout/custom_game/common/party_highlighter.js" />
         <include src="file://{resources}/scripts/custom_game/shared_scoreboard_updater.js" />
         <include src="file://{resources}/scripts/custom_game/multiteam_flyout_scoreboard.js" />
     </scripts>
@@ -20,6 +22,7 @@
 				<Label class="LegendPanel ScoreCol_Kills" text="#custom_end_screen_legend_kills" />
 				<Label class="LegendPanel ScoreCol_Deaths" text="#custom_end_screen_legend_deaths" />
 				<Label class="LegendPanel ScoreCol_Assists" text="#custom_end_screen_legend_assists" />
+				<Label id="RankHeader" class="LegendPanel ScoreCol_Rank" text="{s:rank_text}\n({s:average_team_rank})" />
 			</Panel>
 			<Panel hittest="false" id="_dynamic_team_2" class="FlyoutTeam">
 				<Panel class="FlyoutTeamData">
@@ -41,6 +44,7 @@
 				<Label class="LegendPanel ScoreCol_Kills" text="#custom_end_screen_legend_kills" />
 				<Label class="LegendPanel ScoreCol_Deaths" text="#custom_end_screen_legend_deaths" />
 				<Label class="LegendPanel ScoreCol_Assists" text="#custom_end_screen_legend_assists" />
+				<Label id="RankHeader" class="LegendPanel ScoreCol_Rank" text="{s:rank_text}\n({s:average_team_rank})" />
 			</Panel>
 			<Panel hittest="false" id="_dynamic_team_3" class="FlyoutTeam">
 				<Panel class="FlyoutTeamData">
