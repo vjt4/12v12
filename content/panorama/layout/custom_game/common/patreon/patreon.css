@@ -539,21 +539,13 @@
 	align: center center;
 }
 
-#spinner_container {
+#PaymentWindowLoaderContainer {
 	align: center center;
 	flow-children: down;
 }
 
-#loading_spinner {
-	align: center center;
-}
-
-#alipay_loading_warning {
-	align: center center;
-	text-align: center;
-	margin-top: 20px;
-	color: white;
-	font-size: 24px;
+#PaymentWindowLoaderContainer > Panel {
+	horizontal-align: center;
 }
 
 #PaymentWindowErrorMessage {

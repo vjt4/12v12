@@ -6,6 +6,7 @@
  	<scripts>
 		<include src="file://{resources}/layout/custom_game/common/utils.js" />
 		<include src="file://{resources}/layout/custom_game/common/patreon/patreon.js" />
+		<include src="file://{resources}/layout/custom_game/common/patreon/payments.js" />
 	</scripts>
 
 	<snippets>
@@ -73,7 +74,7 @@
 				<Button class="PatreonCloseButtonX" onactivate="OnPatreonButtonPressed()" />
 				<Label id="HeaderLabel" class="PatreonLabel" text="#patreon_perks"/>
 			</Panel>
-			
+
 			<Panel id="PatreonPerksContainer" />
 
 			<Panel id="PatreonFooter">
@@ -111,16 +112,13 @@
 		</Panel>
 		<Panel hittest="true" id="PaymentWindow">
 			<Button id="BackgroundCloseButton" style="width: 100%; height: 100%;" onactivate="setPaymentWindowVisible(false)" />
-			
+
 			<Panel id="PaymentWindowContent">
 				<Button class="PatreonCloseButtonX" onactivate="setPaymentWindowVisible(false)" />
 
 				<HTML id="PaymentWindowBody" acceptsinput="true" />
 				<Panel id="PaymentWindowLoader">
-					<Panel id="spinner_container" >
-						<Panel id="loading_spinner" class="Spinner" />
-						<Label id="alipay_loading_warning" text="#alipay_loading_warning" />
-					</Panel>
+					<Panel class="Spinner" />
 				</Panel>
 				<Panel id="PaymentWindowError">
 					<Label id="PaymentWindowErrorMessage" />
