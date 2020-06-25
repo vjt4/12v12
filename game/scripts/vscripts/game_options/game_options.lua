@@ -46,8 +46,10 @@ function GameOptions:PlayerVoteForGameOption(data)
 		gameOptions[data.id].players[data.PlayerID] = true
 		local newValue = gameOptions[data.id].votes + 1
 		gameOptions[data.id].votes = newValue
-		self.pauseTime = self.pauseTime + 3
-		self:UpdatePause()
+		if newValue < votesForInitOption then
+			self.pauseTime = self.pauseTime + 1
+			self:UpdatePause()
+		end
 	else
 		gameOptions[data.id].players[data.PlayerID] = not gameOptions[data.id].players[data.PlayerID]
 		local newValue = -1
