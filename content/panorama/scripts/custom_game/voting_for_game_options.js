@@ -24,17 +24,19 @@ function VotingOptionsInit() {
 		createEventForVoteButton(newOption, index, optionName);
 	});
 
-	const removeCancelButton = () => {
-		const cancelButton = FindDotaHudElement("CancelAndUnlockButton");
-		if (cancelButton) {
+	const deleteDotaElement = (sID) => {
+		const element = FindDotaHudElement(sID);
+		if (element) {
 			if (!Game.IsInToolsMode()) {
-				FindDotaHudElement("CancelAndUnlockButton").DeleteAsync(0);
+				element.DeleteAsync(0);
 			}
 		} else {
 			$.Schedule(0.1, removeCancelButton);
 		}
 	};
-	removeCancelButton();
+
+	deleteDotaElement("CancelAndUnlockButton");
+	deleteDotaElement("ShuffleTeamAssignmentButton");
 
 	SubscribeToNetTableKey("game_state", "game_options", (gameOptions) => {
 		for (var id in gameOptions) {

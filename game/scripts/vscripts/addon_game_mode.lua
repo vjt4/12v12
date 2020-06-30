@@ -850,6 +850,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
             ursa_fury_swipes_fountain = 1,
         }
 		Timers:RemoveTimer("game_options_unpause")
+		Convars:SetFloat("host_timescale", 1)
 		Convars:SetFloat("host_timescale", 0.07)
 		Timers:CreateTimer({
 			useGameTime = false,
@@ -913,6 +914,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	end
 
 	if newState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+		Convars:SetFloat("host_timescale", 1)
 		CheckTeamBalance()
 		if game_start then
 			game_start = false
@@ -3085,6 +3087,19 @@ function ChangeTeamForPlayer(playerID, newTeam)
 	PlayerResource:SetCustomTeamAssignment(playerID, newTeam)
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 	if IsValidEntity(hero) then
+
+		if _G.PlayersPatreonsPerk[playerID] then
+			local perkName = _G.PlayersPatreonsPerk[playerID]
+			local perkStacks = hero:GetModifierStackCount(perkName, hero)
+			hero:RemoveModifierByName(perkName)
+			Timers:CreateTimer(4, function()
+				hero:AddNewModifier(hero, nil, perkName, {duration = -1})
+				if perkStacks > 0 then
+					hero:SetModifierStackCount(perkName, nil, perkStacks)
+				end
+			end)
+		end
+
 		hero:SetTeam(newTeam)
 		hero:Kill(nil, hero)
 
@@ -3159,12 +3174,6 @@ function ChangeTeamForPlayer(playerID, newTeam)
 					courier:SetTeam(newTeam)
 					FindClearSpaceForUnit(courier, vNewCourierPount, false)
 				end
-			end
-			if _G.PlayersPatreonsPerk[playerID] then
-				hero:RemoveModifierByName(_G.PlayersPatreonsPerk[playerID])
-				Timers:CreateTimer(2, function()
-					hero:AddNewModifier(hero, nil, _G.PlayersPatreonsPerk[playerID], {duration = -1})
-				end)
 			end
 		end
 	end
