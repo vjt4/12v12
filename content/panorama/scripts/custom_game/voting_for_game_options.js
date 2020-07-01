@@ -31,7 +31,7 @@ function VotingOptionsInit() {
 				element.DeleteAsync(0);
 			}
 		} else {
-			$.Schedule(0.1, deleteDotaElement);
+			$.Schedule(0.1, deleteDotaElement(sID));
 		}
 	};
 
