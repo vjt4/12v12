@@ -11,5 +11,6 @@ function HighlightByParty(player_id, label) {
 }
 
 SubscribeToNetTableKey("game_state", "parties", (value) => {
+	$.Msg("Received party data: ", value);
 	parties = value;
 });

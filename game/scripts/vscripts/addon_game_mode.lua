@@ -826,12 +826,19 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 		end
 
 		local parties = {}
+		local party_indicies = {}
+		local party_index = 1
 		-- Set up player colors
 		for id = 0, 23 do
 			if PlayerResource:IsValidPlayer(id) then
+				-- {"0":26703929098108930,"1":26703929098108930}
 				local party_id = tonumber(tostring(PlayerResource:GetPartyID(id)))
 				if party_id and party_id > 0 then
-					parties[id] = party_id
+					if not party_indicies[party_id] then
+						party_indicies[party_id] = party_index
+						party_index = party_index + 1
+					end
+					parties[id] = party_indicies[party_id]
 				end
 			end
 		end
