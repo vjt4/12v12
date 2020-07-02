@@ -27,16 +27,18 @@ function VotingOptionsInit() {
 	const deleteDotaElement = (sID) => {
 		const element = FindDotaHudElement(sID);
 		if (element) {
-			if (!Game.IsInToolsMode()) {
-				element.DeleteAsync(0);
-			}
+			// if (!Game.IsInToolsMode()) {
+			element.DeleteAsync(0);
+			// }
 		} else {
-			$.Schedule(0.1, deleteDotaElement(sID));
+			$.Schedule(0.03, deleteDotaElement(sID));
 		}
 	};
 
-	deleteDotaElement("CancelAndUnlockButton");
-	deleteDotaElement("ShuffleTeamAssignmentButton");
+	$.Schedule(0.03, () => {
+		deleteDotaElement("CancelAndUnlockButton");
+		deleteDotaElement("ShuffleTeamAssignmentButton");
+	});
 
 	SubscribeToNetTableKey("game_state", "game_options", (gameOptions) => {
 		for (var id in gameOptions) {

@@ -820,7 +820,6 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 		if GameOptions:OptionsIsActive("super_towers") then
 			local towers = Entities:FindAllByClassname('npc_dota_tower')
 			for _, tower in pairs(towers) do
-				print("GO SUPER TOWER")
 				tower:AddNewModifier(tower, nil, "modifier_super_tower", {duration = -1})
 			end
 		end

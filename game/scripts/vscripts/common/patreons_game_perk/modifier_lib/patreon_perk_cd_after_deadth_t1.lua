@@ -17,7 +17,7 @@ function patreon_perk_cd_after_deadth_t1:IsPurgable()
 end
 --------------------------------------------------------------------------------
 function patreon_perk_cd_after_deadth_t1:OnCreated()
-	self:GetParent().reduceCooldownAfterRespawn = GetPerkValue(50, self, 1, 0)
+	self:GetParent().reduceCooldownAfterRespawn = GetPerkValue(35, self, 1, 0)
 end
 ----------------------------------------------------------------------------------
 function patreon_perk_cd_after_deadth_t1:RemoveOnDeath()
