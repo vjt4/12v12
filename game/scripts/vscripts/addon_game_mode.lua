@@ -62,9 +62,6 @@ _G.tableRadiantHeroes = {}
 _G.tableDireHeroes = {}
 _G.newRespawnTimes = {}
 
-_G.itemsIsBuy = {}
-_G.lastTimeBuyItemWithCooldown = {}
-
 _G.tPlayersMuted = {}
 
 if CMegaDotaGameMode == nil then
@@ -1087,34 +1084,24 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		end
 
 		local purchaser = hItem:GetPurchaser()
-		local itemCost = hItem:GetCost()
-
 		if purchaser then
 			local prshID = purchaser:GetPlayerID()
-			local psets = Patreons:GetPlayerSettings(prshID)
 			local correctInventory = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
 
-			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and (ItemIsFastBuying(hItem:GetName()) or psets.level > 0) then
-				if hItem:TransferToBuyer(hInventoryParent) == false then
+			if (filterTable["item_parent_entindex_const"] > 0) and hItem and correctInventory then
+				if not purchaser:CheckPersonalCooldown(hItem) then
+					purchaser:RefundItem(hItem)
 					return false
 				end
-				local unique_key_cd = itemName .. "_" .. purchaser:GetEntityIndex()
-				if _G.lastTimeBuyItemWithCooldown[unique_key_cd] and (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) < _G.itemsCooldownForPlayer[itemName]) then
-					local checkMaxCount = CheckMaxItemCount(hItem, unique_key_cd, prshID, false)
-					if checkMaxCount then
-						MessageToPlayerItemCooldown(itemName, prshID)
-					end
-					Timers:CreateTimer(0.08, function()
-						UTIL_Remove(hItem)
-					end)
-					return false
-				end
-			end
 
-			if (filterTable["item_parent_entindex_const"] > 0) and hItem and correctInventory and (not purchaser:CheckPersonalCooldown(hItem)) then
-				purchaser:ModifyGold(itemCost, false, 0)
-				UTIL_Remove(hItem)
-				return false
+				if not purchaser:IsMaxItemsForPlayer(hItem) then
+					purchaser:RefundItem(hItem)
+					return false
+				end
+
+				if hItem:ItemIsFastBuying(prshID) then
+					return hItem:TransferToBuyer(hInventoryParent)
+				end
 			end
 		end
 	end
