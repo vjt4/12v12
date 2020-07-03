@@ -2,7 +2,7 @@
     <styles>
  		<include src="file://{resources}/styles/dotastyles.css" />
         <include src="file://{resources}/styles/custom_game/multiteam_end_screen.css" />
-        <include src="file://{resources}/layout/custom_game/common/party_highlighter/party_highlighter.js" />
+        <include src="file://{resources}/layout/custom_game/common/party_highlighter/party_highlighter.css" />
     </styles>
 
     <scripts>
