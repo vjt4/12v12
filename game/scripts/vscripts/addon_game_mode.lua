@@ -975,6 +975,16 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 	local hItem = EntIndexToHScript( filterTable["item_entindex_const"] )
 	if hItem ~= nil and hInventoryParent ~= nil then
 		local itemName = hItem:GetName()
+
+		if itemName == "item_banhammer" and GameOptions:OptionsIsActive("no_trolls_kick") then
+			local playerId = hItem:GetPurchaser():GetPlayerID()
+			if playerId then
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#you_cannot_buy_it" })
+			end
+			UTIL_Remove(hItem)
+			return false
+		end
+
 		if hInventoryParent:IsRealHero() then
 			local plyID = hInventoryParent:GetPlayerID()
 			if not plyID then return true end
@@ -3011,6 +3021,9 @@ _G.changeTeamProgress = false
 _G.changeTeamTimes = {}
 
 function CheckTeamBalance()
+	if GameOptions:OptionsIsActive("no_switch_team") then
+		return
+	end
 	_G.changeTeamProgress = false
 	local radiantPlayers = 0
 	local direPlayers = 0

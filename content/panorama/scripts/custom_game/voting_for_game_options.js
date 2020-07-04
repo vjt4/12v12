@@ -1,4 +1,4 @@
-const gameOptions = ["game_option_super_towers"];
+const gameOptions = ["game_option_super_towers", "game_option_no_trolls_kick", "game_option_no_switch_team"];
 const votesForInitOption = 12;
 
 function VotingOptionsInit() {
@@ -27,9 +27,9 @@ function VotingOptionsInit() {
 	const deleteDotaElement = (sID) => {
 		const element = FindDotaHudElement(sID);
 		if (element) {
-			// if (!Game.IsInToolsMode()) {
-			element.DeleteAsync(0);
-			// }
+			if (!Game.IsInToolsMode()) {
+				element.DeleteAsync(0);
+			}
 		} else {
 			$.Schedule(0.03, deleteDotaElement(sID));
 		}

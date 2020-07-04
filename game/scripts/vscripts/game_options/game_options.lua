@@ -3,15 +3,19 @@ if GameOptions == nil then GameOptions = class({}) end
 local votesForInitOption = 12
 
 local gameOptions = {
-	[0] = {
-		name = "super_towers",
-		votes = 0,
-		players = {}
-	},
+	[0] = {name = "super_towers"},
+	[1] = {name = "no_trolls_kick"},
+	[2] = {name = "no_switch_team"},
 }
 
 function GameOptions:Init()
 	self.pauseTime = 0
+
+	for _, option in pairs(gameOptions) do
+		option.votes = 0
+		option.players = {}
+	end
+
 	CustomGameEventManager:RegisterListener("PlayerVoteForGameOption",function(_, data)
 		self:PlayerVoteForGameOption(data)
 	end)
@@ -67,7 +71,6 @@ function GameOptions:PlayerVoteForGameOption(data)
 end
 
 function GameOptions:OptionsIsActive(name)
-	print("option check ", name)
 	for _, option in pairs(gameOptions) do
 		if option.name == name then return option.votes >= votesForInitOption end
 	end
