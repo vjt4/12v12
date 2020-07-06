@@ -26,8 +26,12 @@ local NET_WORSE_FOR_RAPIER_MIN = 20000
 
 --Change team system
 local ts_entities = LoadKeyValues('scripts/kv/ts_entities.kv')
-local COOLDOWN_FOR_CHANGE_TEAM = (60*3) -- 3 minutes
+local COOLDOWN_FOR_CHANGE_TEAM = (60 * 3) -- 3 minutes
 local MIN_DIFFERNCE_PLAYERS_IN_TEAM = 2 -- Player can change team if they're playing 10vs12, not 11vs12
+local TIME_LIMIT_FOR_CHANGE_TEAM = (60 * 20) -- Players cannot change team after this time
+_G.changeTeamProgress = false
+_G.changeTeamTimes = {}
+_G.isChangeTeamAvailable = false
 
 --Max neutral items for each player (hero/stash/courier)
 _G.MAX_NEUTRAL_ITEMS_FOR_PLAYER = 3
@@ -926,6 +930,11 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 			game_start = false
 			Timers:CreateTimer(0.1, function()
 				GPM_Init()
+				return nil
+			end)
+
+			Timers:CreateTimer(TIME_LIMIT_FOR_CHANGE_TEAM, function()
+				CheckTeamBalance()
 				return nil
 			end)
 		end
@@ -3017,13 +3026,52 @@ RegisterCustomEventListener("set_mute_player", function(data)
 		_G.tPlayersMuted[fromId][toId] = true
 	end
 end)
-_G.changeTeamProgress = false
-_G.changeTeamTimes = {}
+
+function GetTopPlayersList(fromTopCount, team, sortFunction)
+	local focusTableHeroes
+
+	if team == DOTA_TEAM_GOODGUYS then
+		focusTableHeroes = _G.tableRadiantHeroes
+	elseif team == DOTA_TEAM_BADGUYS then
+		focusTableHeroes = _G.tableDireHeroes
+	end
+	local playersSortInfo = {}
+
+	for _, focusHero in pairs(focusTableHeroes) do
+		playersSortInfo[focusHero:GetPlayerOwnerID()] = sortFunction(focusHero)
+	end
+
+	local topPlayers = {}
+
+	local countPlayers = 0
+	while(countPlayers < fromTopCount or countPlayerss == 12) do
+		local bestPlayerValue = -1
+		local bestPlayer
+		for playerID, playerInfo in pairs(playersSortInfo) do
+			if not topPlayers[playerID] then
+				if bestPlayerValue < playerInfo then
+					bestPlayerValue = playerInfo
+					bestPlayer = playerID
+				end
+			end
+		end
+		countPlayers = countPlayers + 1
+		if bestPlayer and bestPlayerValue > -1 then
+			topPlayers[bestPlayer] = bestPlayerValue
+		end
+	end
+	return topPlayers
+end
 
 function CheckTeamBalance()
 	if GameOptions:OptionsIsActive("no_switch_team") then
 		return
 	end
+	if GameRules:GetDOTATime(false, true) >= TIME_LIMIT_FOR_CHANGE_TEAM then
+		CustomGameEventManager:Send_ServerToAllClients("HideTeamChangePanel", {} )
+		return
+	end
+
 	_G.changeTeamProgress = false
 	local radiantPlayers = 0
 	local direPlayers = 0
@@ -3046,6 +3094,7 @@ function CheckTeamBalance()
 			highTeam = DOTA_TEAM_BADGUYS
 		end
 		Timers:CreateTimer(0.5, function()
+			_G.isChangeTeamAvailable = true
 			CustomGameEventManager:Send_ServerToTeam(highTeam, "ShowTeamChangePanel", {} )
 		end)
 	else
@@ -3075,7 +3124,20 @@ function PlayerForFeedBack(team)
 end
 
 function ChangeTeam(playerID, newTeam)
-	if _G.changeTeamProgress then return end
+	if GameRules:GetDOTATime(false, true) >= TIME_LIMIT_FOR_CHANGE_TEAM then
+		return
+	end
+	if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), GetHeroKD)[playerID] then
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_kda_for_change_team" })
+		return
+	end
+	if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), function(hero) return PlayerResource:GetNetWorth(hero:GetPlayerOwnerID())end)[playerID] then
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_nw_for_change_team" })
+		return
+	end
+
+	if _G.changeTeamProgress or (not _G.isChangeTeamAvailable) then return end
+
 	if _G.changeTeamTimes[playerID] and (GameRules:GetGameTime() - _G.changeTeamTimes[playerID]) < COOLDOWN_FOR_CHANGE_TEAM then
 		DisplayError(playerID, "Cooldown for change team")
 		return
@@ -3084,7 +3146,7 @@ function ChangeTeam(playerID, newTeam)
 	if not feedbackChangeTeamPlayer then return end
 	_G.changeTeamTimes[playerID] = GameRules:GetGameTime()
 	_G.changeTeamProgress = true
-
+	_G.isChangeTeamAvailable = false
 	CustomGameEventManager:Send_ServerToAllClients("HideTeamChangePanel", {} )
 	CustomGameEventManager:Send_ServerToAllClients("PlayerChangedTeam", {playerId = playerID} )
 

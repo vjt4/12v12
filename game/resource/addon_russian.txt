@@ -543,5 +543,8 @@
 
 
 		"custom_rating_text"					"Рейтинг"
+
+		"too_huge_kda_for_change_team"			"Слишком большая статистика убийста для смены команды"
+		"too_huge_nw_for_change_team"			"Слишком большая общая ценность для смены команды"
 	}
 }
