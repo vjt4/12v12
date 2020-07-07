@@ -830,19 +830,30 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 
 		local parties = {}
 		local party_indicies = {}
+		local party_members_count = {}
 		local party_index = 1
 		-- Set up player colors
 		for id = 0, 23 do
 			if PlayerResource:IsValidPlayer(id) then
-				-- {"0":26703929098108930,"1":26703929098108930}
 				local party_id = tonumber(tostring(PlayerResource:GetPartyID(id)))
 				if party_id and party_id > 0 then
 					if not party_indicies[party_id] then
 						party_indicies[party_id] = party_index
 						party_index = party_index + 1
 					end
-					parties[id] = party_indicies[party_id]
+					local party_index = party_indicies[party_id]
+					parties[id] = party_index
+					if not party_members_count[party_index] then
+						party_members_count[party_index] = 0
+					end
+					party_members_count[party_index] = party_members_count[party_index] + 1
 				end
+			end
+		end
+		for id, party in pairs(parties) do
+			 -- at least 2 ppl in party!
+			if party_members_count[party] and party_members_count[party] < 2 then
+				parties[id] = nil
 			end
 		end
 		if parties then
