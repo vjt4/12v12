@@ -932,11 +932,6 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 				GPM_Init()
 				return nil
 			end)
-
-			Timers:CreateTimer(TIME_LIMIT_FOR_CHANGE_TEAM, function()
-				CheckTeamBalance()
-				return nil
-			end)
 		end
 	end
 end
@@ -3067,10 +3062,6 @@ function CheckTeamBalance()
 	if GameOptions:OptionsIsActive("no_switch_team") then
 		return
 	end
-	if GameRules:GetDOTATime(false, true) >= TIME_LIMIT_FOR_CHANGE_TEAM then
-		CustomGameEventManager:Send_ServerToAllClients("HideTeamChangePanel", {} )
-		return
-	end
 
 	_G.changeTeamProgress = false
 	local radiantPlayers = 0
@@ -3125,15 +3116,14 @@ end
 
 function ChangeTeam(playerID, newTeam)
 	if GameRules:GetDOTATime(false, true) >= TIME_LIMIT_FOR_CHANGE_TEAM then
-		return
-	end
-	if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), GetHeroKD)[playerID] then
-		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_kda_for_change_team" })
-		return
-	end
-	if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), function(hero) return PlayerResource:GetNetWorth(hero:GetPlayerOwnerID())end)[playerID] then
-		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_nw_for_change_team" })
-		return
+		if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), GetHeroKD)[playerID] then
+			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_kda_for_change_team" })
+			return
+		end
+		if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), function(hero) return PlayerResource:GetNetWorth(hero:GetPlayerOwnerID())end)[playerID] then
+			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_nw_for_change_team" })
+			return
+		end
 	end
 
 	if _G.changeTeamProgress or (not _G.isChangeTeamAvailable) then return end
