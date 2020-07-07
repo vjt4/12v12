@@ -67,7 +67,7 @@ function patreon_perk_cleave_t1:OnAttackLanded(params)
 		if self:GetParent() == params.attacker then
 			if params.attacker:IsRealHero() and params.attacker:GetTeam() ~= params.target:GetTeam() and (not params.target:IsBuilding()) then
 				local target_loc = params.target:GetAbsOrigin()
-				local cleavePercent = params.attacker:IsRangedAttacker() and 0.2 or 0.4
+				local cleavePercent = params.attacker:IsRangedAttacker() and 0.125 or 0.25
 				local flagsForSearch = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
 				local damage = params.original_damage * cleavePercent
 				local enemies = FindUnitsInCone(

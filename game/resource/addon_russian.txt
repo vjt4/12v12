@@ -456,13 +456,13 @@
 		"DOTA_Tooltip_patreon_perk_int_for_kill_t2_Description"	"Интеллект увеличен на %dMODIFIER_PROPERTY_STATS_INTELLECT_BONUS%"
 
 		"patreon_perk_cleave_t0"								"Легкое Оружие"
-		"patreon_perk_cleave_t0_tooltip"						"Наносит 20% (10% для героев дальнего боя) урона от атак противникам вокруг основной цели"
+		"patreon_perk_cleave_t0_tooltip"						"Наносит 15% (7.5% для героев дальнего боя) урона от атак противникам вокруг основной цели"
 		"DOTA_Tooltip_patreon_perk_cleave_t0"					"Талант: Тяжелое Оружие"
 		"patreon_perk_cleave_t1"								"Тяжелое Оружие"
-		"patreon_perk_cleave_t1_tooltip"						"Наносит 40% (20% для героев дальнего боя) урона от атак противникам вокруг основной цели"
+		"patreon_perk_cleave_t1_tooltip"						"Наносит 25% (12.5% для героев дальнего боя) урона от атак противникам вокруг основной цели"
 		"DOTA_Tooltip_patreon_perk_cleave_t1"					"Талант: Тяжелое Оружие"
 		"patreon_perk_cleave_t2"								"Ужасающее Оружие"
-		"patreon_perk_cleave_t2_tooltip"						"Наносит 60% (30% для героев дальнего боя) урона от атак противникам вокруг основной цели"
+		"patreon_perk_cleave_t2_tooltip"						"Наносит 45% (22.5% для героев дальнего боя) урона от атак противникам вокруг основной цели"
 		"DOTA_Tooltip_patreon_perk_cleave_t2"					"Талант: Тяжелое Оружие"
 
 		"patreon_perk_cd_after_deadth_t0"						"Базовая Боевая Подготовка"
