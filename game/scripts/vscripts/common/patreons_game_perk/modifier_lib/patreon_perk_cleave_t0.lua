@@ -65,6 +65,19 @@ end
 function patreon_perk_cleave_t0:OnAttackLanded(params)
 	if IsServer() then
 		if self:GetParent() == params.attacker then
+
+			local forbidden_modifiers = {
+				"modifier_pangolier_swashbuckle_stunned",
+				"modifier_pangolier_swashbuckle",
+				"modifier_pangolier_swashbuckle_attack",
+				"modifier_monkey_king_boundless_strike_crit",
+				"modifier_tidehunter_anchor_smash_caster",
+				"modifier_mars_gods_rebuke_crit",
+			}
+			for _, modifier_name in pairs(forbidden_modifiers) do
+				if params.attacker:HasModifier(modifier_name) then return end
+			end
+
 			if params.attacker:IsRealHero() and params.attacker:GetTeam() ~= params.target:GetTeam() and (not params.target:IsBuilding()) then
 				local target_loc = params.target:GetAbsOrigin()
 				local cleavePercent = params.attacker:IsRangedAttacker() and 0.075 or 0.15

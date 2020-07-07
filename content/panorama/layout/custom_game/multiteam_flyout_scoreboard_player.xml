@@ -43,7 +43,7 @@
 				}
 			}
 		}
-    
+
 		function RefreshMuteAndDisableHelpList()
 		{
 			var playerId = $.GetContextPanel().GetAttributeInt( "player_id", -1 );
@@ -59,7 +59,7 @@
 				GameEvents.SendCustomGameEventToServer("set_mute_player", { disable: Game.IsPlayerMuted(key), toPlayerId: key } );
 			}
 		}
-    
+
 		RefreshMuteAndDisableHelpList();
 
 		function ToggleMuteItem( event_data )
@@ -72,11 +72,26 @@
 				$.GetContextPanel().SetHasClass( "player_muted", newIsMuted );
 			}
 		}
-    
+
+		function ShowPlayerPerk( event_data )
+		{
+			var playerId = $.GetContextPanel().GetAttributeInt( "player_id", -1 );
+			if (playerId == event_data.playerId){
+				const perkImage = $("#PerkForPlayer");
+				const perkName = event_data.perkName + "_t0";
+				perkImage.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/icons/"+perkName+".png");
+				perkImage.SetPanelEvent( "onmouseover", function() {
+					$.DispatchEvent( 'DOTAShowTextTooltip', perkImage, $.Localize("DOTA_Tooltip_"+perkName));
+				} )
+			}
+		}
+
     	GameEvents.Subscribe("change_leave_status", ChangeLeaveStatus);
 		GameEvents.Subscribe("set_disable_help_refresh", RefreshMuteAndDisableHelpList);
 		GameEvents.Subscribe("set_mute_refresh", ToggleMuteItem);
-    
+		GameEvents.Subscribe("show_player_perk", ShowPlayerPerk);
+
+		GameEvents.SendCustomGameEventToServer("check_perks_for_players", {} );
 	</script>
 	<Panel class="PlayerRow">
 		<Panel id="PlayerRowContainer">
@@ -105,6 +120,9 @@
 			</Panel>
 			<Panel id="NeutralItemWrap" class="ScoreboardPanel">
 				<DOTAItemImage id="NeutralItem"/>
+			</Panel>
+			<Panel id="PerkForPlayerWrap" class="ScoreboardPanel">
+				<Image id="PerkForPlayer" onmouseover="DOTAShowTextTooltip(For now u don't know this player's perk)" onmouseout="DOTAHideTextTooltip()"/>
 			</Panel>
 			<Panel id="RankForPlayerWrap" class="ScoreboardPanel">
 				<Label id="RankForPlayerText" text="-----" />

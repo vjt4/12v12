@@ -10,10 +10,10 @@
     flow-children: down;
     padding: 0px;
 	background-color: #666666CC;
-	
-    transform: translatex( -600px );
+
+    transform: translatex( -670px );
     transition-property: transform;
-    transition-duration: 0.1s;
+    transition-duration: 0.2s;
 }
 
 .FlyoutScoreboardRoot.flyout_scoreboard_visible
@@ -243,7 +243,7 @@
 
 #Kills,
 #Deaths,
-#Assists,
+#Assists
 {
 	vertical-align: center;
 	font-size: 18px;
@@ -455,15 +455,22 @@
 .NoParty {
 	color: white;
 }
-#NeutralItemWrap{
+#NeutralItemWrap,
+#PerkForPlayerWrap {
 	height: 100%;
 	width: 29px;
 }
-#NeutralItem{
+#NeutralItem,
+#PerkForPlayer {
 	width: 25px;
 	height: 25px;
 	border-radius: 100%;
 	align: center center;
+}
+#PerkForPlayer {
+	background-image: url("s2r://panorama/images/items/emptyitembg_png.vtex");
+	background-repeat: no-repeat;
+	background-size: 100% 99%;
 }
 
 #RankForPlayerWrap{

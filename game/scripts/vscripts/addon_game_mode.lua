@@ -921,6 +921,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 --				end
 --			end
 --		end)
+		StartTrackPerks()
 	end
 
 	if newState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then

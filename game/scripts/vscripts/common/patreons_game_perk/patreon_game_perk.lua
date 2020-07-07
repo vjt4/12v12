@@ -90,6 +90,8 @@ for name in pairs(perksTierPatreon) do
 end
 
 _G.PlayersPatreonsPerk = {}
+_G.VisiblePerksForEnemyTeam = {}
+_G.timerForCheckerPerks = false
 
 RegisterCustomEventListener("check_patreon_level_and_perks", function(data)
 	local patreon = Patreons:GetPlayerSettings(data.PlayerID)
@@ -133,9 +135,68 @@ RegisterCustomEventListener("set_patreon_game_perk", function(data)
 			if hero then
 				hero:AddNewModifier(hero, nil, newModifierName, {duration = -1})
 				return nil
-			else 
+			else
 				return 1
 			end
 		end)
+	end
+end)
+
+function StartTrackPerks()
+	local teamlist = {
+		DOTA_TEAM_GOODGUYS,
+		DOTA_TEAM_BADGUYS,
+	}
+	local maxPlayerForThisMode = 0
+	for _, teamId in pairs(teamlist) do
+		maxPlayerForThisMode = maxPlayerForThisMode + GameRules:GetCustomGameTeamMaxPlayers(teamId)
+	end
+	local beaconPlayers = {}
+	for _, teamId in pairs(teamlist) do
+		for playerId = 0, maxPlayerForThisMode do
+			if not beaconPlayers[teamId] and PlayerResource:GetTeam(playerId) == teamId then
+				_G.VisiblePerksForEnemyTeam[teamId] = {}
+				beaconPlayers[teamId] = playerId
+			end
+		end
+	end
+
+	Timers:CreateTimer(0, function()
+		local anyUntrack = false
+		for _, teamId in pairs(teamlist) do
+			for playerId = 0, maxPlayerForThisMode do
+				if _G.PlayersPatreonsPerk[playerId] then
+					if PlayerResource:GetTeam(playerId) == teamId then
+						for insepctionTeamId, beaconPlayerIdFromEnemyTeam in pairs(beaconPlayers) do
+							if not table.contains(_G.VisiblePerksForEnemyTeam[insepctionTeamId], playerId) and beaconPlayers[insepctionTeamId] then
+								if PlayerResource:GetSelectedHeroEntity(beaconPlayerIdFromEnemyTeam):CanEntityBeSeenByMyTeam(PlayerResource:GetSelectedHeroEntity(playerId)) then
+									CustomGameEventManager:Send_ServerToTeam(insepctionTeamId, "show_player_perk", { playerId = playerId, perkName = _G.PlayersPatreonsPerk[playerId]:gsub("_t%d*", "")})
+									table.insert(_G.VisiblePerksForEnemyTeam[insepctionTeamId], playerId)
+								else
+									anyUntrack = true
+								end
+							end
+						end
+					end
+				else
+					anyUntrack = true
+				end
+			end
+		end
+		if anyUntrack then
+			return 1
+		else
+			return nil
+		end
+	end)
+end
+RegisterCustomEventListener("check_perks_for_players", function(data)
+	if not data.PlayerID then return end
+	local playerTeam = PlayerResource:GetTeam(data.PlayerID)
+	if not _G.VisiblePerksForEnemyTeam[playerTeam] then return end
+	for _, playerId in pairs(_G.VisiblePerksForEnemyTeam[playerTeam]) do
+		if _G.PlayersPatreonsPerk[playerId] then
+			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.PlayerID), "show_player_perk", { playerId = playerId, perkName = _G.PlayersPatreonsPerk[playerId]:gsub("_t%d*", "")})
+		end
 	end
 end)
