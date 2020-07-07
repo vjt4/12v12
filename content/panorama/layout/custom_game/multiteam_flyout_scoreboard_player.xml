@@ -122,7 +122,7 @@
 				<DOTAItemImage id="NeutralItem"/>
 			</Panel>
 			<Panel id="PerkForPlayerWrap" class="ScoreboardPanel">
-				<Image id="PerkForPlayer" onmouseover="DOTAShowTextTooltip(For now u don't know this player's perk)" onmouseout="DOTAHideTextTooltip()"/>
+				<Image id="PerkForPlayer" onmouseover="DOTAShowTextTooltip(#cannot_see_perk_now)" onmouseout="DOTAHideTextTooltip()"/>
 			</Panel>
 			<Panel id="RankForPlayerWrap" class="ScoreboardPanel">
 				<Label id="RankForPlayerText" text="-----" />
