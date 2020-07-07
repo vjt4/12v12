@@ -78,10 +78,9 @@
 			var playerId = $.GetContextPanel().GetAttributeInt( "player_id", -1 );
 			if (playerId == event_data.playerId){
 				const perkImage = $("#PerkForPlayer");
-				const perkName = event_data.perkName + "_t0";
-				perkImage.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/icons/"+perkName+".png");
+				perkImage.SetImage("file://{resources}/layout/custom_game/common/patreon/game_perk/icons/"+event_data.perkName+".png");
 				perkImage.SetPanelEvent( "onmouseover", function() {
-					$.DispatchEvent( 'DOTAShowTextTooltip', perkImage, $.Localize("DOTA_Tooltip_"+perkName));
+					$.DispatchEvent( 'DOTAShowTextTooltip', perkImage, $.Localize("DOTA_Tooltip_"+event_data.perkName));
 				} )
 			}
 		}

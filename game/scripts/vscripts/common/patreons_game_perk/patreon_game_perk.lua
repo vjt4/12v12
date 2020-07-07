@@ -170,7 +170,7 @@ function StartTrackPerks()
 						for insepctionTeamId, beaconPlayerIdFromEnemyTeam in pairs(beaconPlayers) do
 							if not table.contains(_G.VisiblePerksForEnemyTeam[insepctionTeamId], playerId) and beaconPlayers[insepctionTeamId] then
 								if PlayerResource:GetSelectedHeroEntity(beaconPlayerIdFromEnemyTeam):CanEntityBeSeenByMyTeam(PlayerResource:GetSelectedHeroEntity(playerId)) then
-									CustomGameEventManager:Send_ServerToTeam(insepctionTeamId, "show_player_perk", { playerId = playerId, perkName = _G.PlayersPatreonsPerk[playerId]:gsub("_t%d*", "")})
+									CustomGameEventManager:Send_ServerToTeam(insepctionTeamId, "show_player_perk", { playerId = playerId, perkName = _G.PlayersPatreonsPerk[playerId]:gsub("_t%d*", "_t0")})
 									table.insert(_G.VisiblePerksForEnemyTeam[insepctionTeamId], playerId)
 								else
 									anyUntrack = true
