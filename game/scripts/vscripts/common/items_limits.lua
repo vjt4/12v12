@@ -119,14 +119,14 @@ function CDOTA_Item:TransferToBuyer(unit)
 
 	Timers:CreateTimer(0.0000000000000000000001, function()
 		buyer:TakeItem(self)
-		local container = self:GetContainer()self:GetContainer()
+		local container = self:GetContainer()
 		if container then
 			UTIL_Remove(container)
 		end
 		Timers:CreateTimer(0.04, function()
 			local dummyInventory = buyer:GetOwner().dummyInventory
 			dummyInventory:AddItem(self)
-			Timers:CreateTimer(0.6, function()
+			Timers:CreateTimer(0.2, function()
 				for i = 0, 15 do
 					local item = dummyInventory:GetItemInSlot(i)
 					if item then
