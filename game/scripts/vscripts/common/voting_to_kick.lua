@@ -91,7 +91,7 @@ RegisterCustomEventListener("voting_to_kick_vote_no", function(data)
 end)
 
 RegisterCustomEventListener("voting_to_kick_check_voting_state", function(data)
-	if _G.votingForKick then
+	if _G.votingForKick and _G.votingForKick.target and data.PlayerID and (PlayerResource:GetTeam(_G.votingForKick.target) == PlayerResource:GetTeam(data.PlayerID)) then
 		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(data.PlayerID), "voting_to_kick_show_voting", {
 			playerId = _G.votingForKick.target,
 			reason = _G.votingForKick.reason,
