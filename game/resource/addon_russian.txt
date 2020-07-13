@@ -544,5 +544,8 @@
 		"too_huge_nw_for_change_team"			"Слишком большая общая ценность для смены команды"
 
 		"cannot_see_perk_now"					"Вы пока не знаете какой персональный талант выбрал этот игрок"
+
+		"summer_feedback_link_header"			"Летний опрос о Dota 12v12 в 2020"
+		"summer_feedback_open_in_browser"		"Открыть в браузере"
 	}
 }

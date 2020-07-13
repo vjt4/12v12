@@ -15,7 +15,7 @@
 			<Panel id="LoadingTipTextWrap">
 				<Label id="LoadingTipText"/>
 			</Panel>
-		
+
 			<Panel class="NextTip" onactivate="nextHint()"/>
 		</Panel>
 		<Panel style="visibility: collapse;">
@@ -32,6 +32,13 @@
 			<Image src="file://{resources}/images/custom_game/tips_icon/raxes.png"/>
 			<Image src="file://{resources}/images/custom_game/tips_icon/respawn.png"/>
 			<Image src="file://{resources}/images/custom_game/tips_icon/savefavs.png"/>
+		</Panel>
+
+		<Panel class="FormLinkContainer">
+			<Label class="LinkHeader" text="#summer_feedback_link_header"/>
+			<Button class="LinkButton" onactivate="$.DispatchEvent('ExternalBrowserGoToURL', 'https://docs.google.com/forms/d/e/1FAIpQLSfbTJEOCE5D7nCvRaP8jn_JdC1tvq6O4TE2PjiUpS9fcOIL1Q/viewform')">
+				<Label class="LinkButtonText" text="#summer_feedback_open_in_browser"/>
+			</Button>
 		</Panel>
 	</Panel>
 </root>
