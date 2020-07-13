@@ -44,8 +44,6 @@ end
 function Patreons:GiveOnSpawnBonus(playerId)
 	local hero = PlayerResource:GetSelectedHeroEntity(playerId)
 	local patreonSettings = Patreons:GetPlayerSettings(playerId)
-
-	hero:AddItemByName("item_patreon_mango")
 end
 
 RegisterCustomEventListener("patreon_toggle_boots", function(data)

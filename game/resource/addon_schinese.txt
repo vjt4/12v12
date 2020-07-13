@@ -140,10 +140,6 @@
 		"DOTA_Tooltip_ability_item_banhammer_Description"            "<h1>使用：发起踢人投票</h1>发起从游戏中踢出钓鱼玩家的投票。仅可在确实存在钓鱼现象时使用。支持者可免疫钓鱼踢出物品的影响。"
 		"DOTA_Tooltip_ability_item_banhammer_Lore"					"拥有权利也是一项重大责任。"
 
-		"DOTA_Tooltip_ability_item_patreon_mango"                        "感恩芒果之心"
-        "DOTA_Tooltip_ability_item_patreon_mango_Description"            "为了更平衡的考虑和更好的游戏性。我们决定将赞助者开局的鞋子移除，希望您不要太悲伤。我们真诚的再次感谢您对本地图的支持和赞助，请收下这个芒果作为我们的感恩之心."
-        "DOTA_Tooltip_ability_item_patreon_mango_Lore"                    "如果你赞助了一位贫穷的艺术家，那么你自己也变成了艺术家. 因为你们共同的努力，让这个想象中的世界变得更美好了."
-
 		"DOTA_Tooltip_modifier_silencer_new_int_steal"					"所窃取智力"
 		"DOTA_Tooltip_modifier_silencer_new_int_steal_Description"		"沉默术士在完成击杀或者辅助击杀后会偷取目标智力."
 

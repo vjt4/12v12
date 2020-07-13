@@ -56,7 +56,7 @@
     {
         // General
         //-------------------------------------------------------------------------------------------------------------
-        "BaseClass"                            "item_monkey_king_bar"                                                       
+        "BaseClass"                            "item_monkey_king_bar"
         "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_PASSIVE"
 
         // Item Info
@@ -67,8 +67,8 @@
         "ItemAliases"                   "mkb;monkey king bar"
         "ItemDeclarations"              "DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
         "ShouldBeSuggested"             "1"
-        
-        // Special  
+
+        // Special
         //-------------------------------------------------------------------------------------------------------------
         "AbilitySpecial"
         {
@@ -416,59 +416,6 @@
 		}
 	}
 
-	"item_patreon_mango"
-	{
-		"BaseClass"						"item_datadriven"
-		"AbilityTextureName"			"custom/item_patreon_mango"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-        "ItemCost"                      "2"
-		"ItemHideCharges"				"1"
-		"ItemInitialCharges"			"1"
-		"ItemQuality"					"artifact"
-		"ItemStackable"					"0"
-        "ItemKillable"                  "1"
-        "ItemShareability"              "ITEM_FULLY_SHAREABLE"
-        "ItemSellable"                  "1"
-        "ItemDroppable"                 "1"
-        "ItemPurchasable"				"0"
-        "IsTempestDoubleClonable"		"0"
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"restore_mana"		"110"
-			}
-			"02"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"hp_regen"				"0.6"
-			}
-		}
-		"Modifiers"
-		{
-			"modifier_item_patreon_mango_regen"
-			{
-				"Passive"	"1"
-				"IsHidden"	"1"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT" 		"%hp_regen"
-				}
-			}
-		}
-		"OnSpellStart"
-		{
-			"RunScript"
-			{
-				"mana"			"%restore_mana"
-				"ScriptFile"	"item_patreon.lua"
-				"Function"	    "OnSpellStartCustomMango"
-			}
-		}
-	}
-
 	"item_tome_of_knowledge"
 	{
 		"AbilityCooldown"				"300.0"
@@ -481,323 +428,323 @@
     "item_ward_sentry"
     {
         "ItemStockTime"                 "60.0"
-    }    
+    }
 
     "item_gem"
     {
         "ItemStockTime"                 "360.0"
-    }   
+    }
 
     // TIER 1
     "item_elixer"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                     
+    }
     "item_keen_optic"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_poor_mans_shield"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_iron_talon"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
-    "item_recipe_ironwood_tree" 
+    }
+    "item_recipe_ironwood_tree"
     {
             "ItemCost"                      "420"
             "ItemPurchasable"               "1"
-    }     
+    }
     "item_royal_jelly"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_mango_tree"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_ocean_heart"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_broom_handle"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_trusty_shovel"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
-    "item_faded_broach" 
+    }
+    "item_faded_broach"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_arcane_ring"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }        
+    }
 
     //TIER 2
     "item_grove_bow"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_vampire_fangs"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_ring_of_aquila"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_pupils_gift"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
-    "item_imp_claw" 
+    }
+    "item_imp_claw"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_philosophers_stone"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }         
+    }
     "item_nether_shawl"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
-    "item_dragon_scale" 
+    }
+    "item_dragon_scale"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_essence_ring"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
-    "item_recipe_vambrace"  
+    }
+    "item_recipe_vambrace"
     {
             "ItemCost"                      "1"
             "ItemPurchasable"               "0"
-    }         
+    }
     "item_clumsy_net"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }              
+    }
 
-    // TIER 3   
+    // TIER 3
     "item_helm_of_the_undying"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }         
+    }
     "item_repair_kit"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
-    "item_craggy_coat"  
+    }
+    "item_craggy_coat"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_greater_faerie_fire"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }         
-    "item_quickening_charm" 
+    }
+    "item_quickening_charm"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }         
-    "item_mind_breaker" 
+    }
+    "item_mind_breaker"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_spider_legs"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
-    "item_enchanted_quiver" 
+    }
+    "item_enchanted_quiver"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }         
+    }
     "item_paladin_sword"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_orb_of_destruction"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }         
+    }
     "item_third_eye"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_titan_sliver"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }              
+    }
 
-    TIER 4     
+    TIER 4
     "item_witless_shako"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_timeless_relic"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_spell_prism"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_princes_knife"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_flicker"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                     
+    }
     "item_spy_gadget"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_ninja_gear"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_illusionsts_cape"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_havoc_hammer"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
-    "item_panic_button" 
+    }
+    "item_panic_button"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_the_leveller"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_minotaur_horn"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }     
+    }
 
     TIER 5
     "item_force_boots"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_desolator_2"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_phoenix_ash"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_seer_stone"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_mirror_shield"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_fusion_rune"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_apex"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                         
-    "item_ballista"     
+    }
+    "item_ballista"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_woodland_striders"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }         
+    }
     "item_recipe_trident"
     {
             "ItemCost"                      "1"
             "ItemPurchasable"               "0"
-    }             
+    }
     "item_demonicon"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
+    }
     "item_recipe_fallen_sky"
     {
             "ItemCost"                      "1"
             "ItemPurchasable"               "0"
-    }         
+    }
     "item_pirate_hat"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
-    }                 
-    "item_ex_machina"                 
+    }
+    "item_ex_machina"
     {
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
