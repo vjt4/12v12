@@ -34,11 +34,14 @@ function VotingOptionsInit() {
 			$.Schedule(0.03, deleteDotaElement(sID));
 		}
 	};
+	const mapName = Game.GetMapInfo().map_display_name;
 
-	$.Schedule(0.03, () => {
-		deleteDotaElement("CancelAndUnlockButton");
-		deleteDotaElement("ShuffleTeamAssignmentButton");
-	});
+	if (mapName != "dota_tourtament") {
+		$.Schedule(0.03, () => {
+			deleteDotaElement("CancelAndUnlockButton");
+			deleteDotaElement("ShuffleTeamAssignmentButton");
+		});
+	}
 
 	SubscribeToNetTableKey("game_state", "game_options", (gameOptions) => {
 		for (var id in gameOptions) {

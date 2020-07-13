@@ -3075,6 +3075,10 @@ function CheckTeamBalance()
 		return
 	end
 
+	if GetMapName() == "dota_tourtament" then
+		return
+	end
+
 	_G.changeTeamProgress = false
 	local radiantPlayers = 0
 	local direPlayers = 0
