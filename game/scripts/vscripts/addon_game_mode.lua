@@ -138,7 +138,7 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:LockCustomGameSetupTeamAssignment(true)
 
 	if GetMapName() == "dota_tournament" then
-		GameRules:SetCustomGameSetupAutoLaunchDelay(45)
+		GameRules:SetCustomGameSetupAutoLaunchDelay(20)
 	else
 		GameRules:SetCustomGameSetupAutoLaunchDelay(10)
 	end
