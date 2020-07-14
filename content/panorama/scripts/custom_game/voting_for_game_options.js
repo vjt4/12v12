@@ -36,7 +36,7 @@ function VotingOptionsInit() {
 	};
 	const mapName = Game.GetMapInfo().map_display_name;
 
-	if (mapName != "dota_tourtament") {
+	if (mapName != "dota_tournament") {
 		$.Schedule(0.03, () => {
 			deleteDotaElement("CancelAndUnlockButton");
 			deleteDotaElement("ShuffleTeamAssignmentButton");

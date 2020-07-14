@@ -136,7 +136,13 @@ function CMegaDotaGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetPauseEnabled(IsInToolsMode())
 	GameRules:SetGoldTickTime( 0.3 ) -- default is 0.6
 	GameRules:LockCustomGameSetupTeamAssignment(true)
-	GameRules:SetCustomGameSetupAutoLaunchDelay(10)
+
+	if GetMapName() == "dota_tournament" then
+		GameRules:SetCustomGameSetupAutoLaunchDelay(45)
+	else
+		GameRules:SetCustomGameSetupAutoLaunchDelay(10)
+	end
+
 	GameRules:GetGameModeEntity():SetKillableTombstones( true )
 	GameRules:GetGameModeEntity():SetFreeCourierModeEnabled(true)
 
