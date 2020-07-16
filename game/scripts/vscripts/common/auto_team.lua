@@ -207,11 +207,6 @@ function AutoTeam:Index()
 end
 
 function AutoTeam:EnableFreePatreonForBalance()
-	local settings = Patreons:GetPlayerSettings(0)
-	settings.level = 2
-	Patreons:SetPlayerSettings(0, settings)
-	print("player 0 got level 2")
-
 	local highPatreonsTest = 93913347
 
 	local getMaxLevelAllTeam = function()
