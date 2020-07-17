@@ -87,7 +87,7 @@ function AutoTeam:getTeamMinPlayers(teams)
 	return _teamID
 end
 
-function AutoTeam:GetLevelByTeam(teamID)
+function AutoTeam:GetLevelByTeam(teamID, teams)
 	local amount = 0;
 	for __,pID in pairs(teams[teamID]) do
 		amount = amount + AutoTeam:GetPatreonLevel(pID)
@@ -132,15 +132,13 @@ function AutoTeam:Index()
 		end
 	end
 
-	self.teams = teams
-
 	local playersIsParty_length = table.length(playersIsParty)
 
 	local getTeamMinLevelAllTeam = function()
 		local min = (sumHighPatreons + sumLowPatreons)
 		local _teamID = -1
 		for teamID,__ in pairs(teams) do
-			local lvl = AutoTeam:GetLevelByTeam(teamID)
+			local lvl = AutoTeam:GetLevelByTeam(teamID, teams)
 			if lvl < min then
 				min = lvl
 				_teamID = teamID
@@ -183,7 +181,7 @@ function AutoTeam:Index()
 	end
 
 	for teamID,players in pairs(teams) do
-		AutoTeam:Debug('Team id: ' .. teamID .. ' sum lvl: ' .. AutoTeam:GetLevelByTeam(teamID) .. ' Amount Hero: ' .. #players)
+		AutoTeam:Debug('Team id: ' .. teamID .. ' sum lvl: ' .. AutoTeam:GetLevelByTeam(teamID, teams) .. ' Amount Hero: ' .. #players)
 	end
 	for teamID,players in pairs(teams) do
 		for __,pID in pairs(players) do
@@ -208,19 +206,6 @@ end
 
 function AutoTeam:EnableFreePatreonForBalance()
 	local highPatreonsTest = 93913347
-
-	local getMaxLevelAllTeam = function()
-		local max = -1
-		local _teamID = -1
-		for teamID,__ in pairs(teams) do
-			local lvl = AutoTeam:GetLevelByTeam(teamID)
-			if lvl > max then
-				max = lvl
-				_teamID = teamID
-			end
-		end
-		return max
-	end
 	local teams = {}
 
 	for _,v in ipairs(AutoTeam:GetValidTeam()) do teams[v] = {} end
@@ -232,10 +217,23 @@ function AutoTeam:EnableFreePatreonForBalance()
 		end
 	end
 
+	local getMaxLevelAllTeam = function()
+		local max = -1
+		local _teamID = -1
+		for teamID,__ in pairs(teams) do
+			local lvl = AutoTeam:GetLevelByTeam(teamID, teams)
+			if lvl > max then
+				max = lvl
+				_teamID = teamID
+			end
+		end
+		return max
+	end
+
 	if GetMapName() == "dota_tournament" then
 		local maxLevelInTeams = getMaxLevelAllTeam()
 		for teamID,players in pairs(teams) do
-			local lvlTeam = AutoTeam:GetLevelByTeam(teamID)
+			local lvlTeam = AutoTeam:GetLevelByTeam(teamID, teams)
 			if lvlTeam < maxLevelInTeams then
 				local playersNotDonate = AutoTeam:filter(function(pID) return AutoTeam:GetPatreonLevel(pID) == 0 end,players)
 				while (lvlTeam < maxLevelInTeams and #playersNotDonate > 0) do
