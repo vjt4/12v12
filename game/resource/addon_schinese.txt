@@ -465,7 +465,7 @@
 
 		"LoadingTip_1"				"您可以在游戏中使用自定义聊天轮（按L）。 它有一些使用冷却时间。"
 
-		"summer_feedback_link_header"			"Dota 12v12反馈2020年夏季"
-		"summer_feedback_open_in_browser"		"在浏览器中打开"
+		"12v12_china_tournament"					"比赛 Dota 12v12"
+		"12v12_china_tournament_open_in_browser"	"在浏览器中打开 (提取码: e37w)"
 	}
 }
