@@ -25,10 +25,12 @@ end
 function patreon_perk_cd_after_deadth_t0:OnDeath(params)
 	if not IsServer() then return end
 	local parent = self:GetParent()
-	if not parent:IsReincarnating() then
-		parent.reduceCooldownAfterRespawn = GetPerkValue(25, self, 1, 0)
-	else
-		parent.reduceCooldownAfterRespawn = false
+	if params.unit == parent then
+		if not parent:IsReincarnating() then
+			parent.reduceCooldownAfterRespawn = GetPerkValue(25, self, 1, 0)
+		else
+			parent.reduceCooldownAfterRespawn = false
+		end
 	end
 end
 ----------------------------------------------------------------------------------
