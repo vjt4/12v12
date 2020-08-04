@@ -84,7 +84,7 @@ function VotingToKickInitVoting(reason){
 }
 function VotingToKickDebugPring(data){
 	var playerVoted = Game.GetPlayerInfo( data.playerVotedId );
-	print(playerVoted.player_name + " VOTE: " + data.vote)
+	print(playerVoted.player_name + " VOTE: " + data.vote + "NEED TOTAL: " + data.total)
 }
 function VotingToKickInit(){
 	GameEvents.SendCustomGameEventToServer("voting_to_kick_check_voting_state", {});

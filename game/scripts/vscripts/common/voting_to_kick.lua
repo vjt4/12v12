@@ -33,6 +33,7 @@ RegisterCustomEventListener("voting_to_kick_reason_is_picked", function(data)
 		_G.votingForKick.target = playerTarget:GetPlayerID()
 		_G.votingForKick.votes = 1
 		_G.votingForKick.playersVoted[data.PlayerID] = true
+		UpdateVotingForKick()
 		local all_heroes = HeroList:GetAllHeroes()
 		for _, hero in pairs(all_heroes) do
 			if hero:IsRealHero() and hero:IsControllableByAnyPlayer() and (hero:GetTeam() == playerInit:GetTeam())then
@@ -65,9 +66,20 @@ function SendDegugResult(data, text)
 	local all_heroes = HeroList:GetAllHeroes()
 	for _, hero in pairs(all_heroes) do
 		if hero:IsRealHero() and hero:IsControllableByAnyPlayer() and steamIDsToDebugg[PlayerResource:GetSteamAccountID(hero:GetPlayerID())] then
-			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(hero:GetPlayerID()), "voting_to_kick_debug_print", {playerVotedId = data.PlayerID, vote=text})
+			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(hero:GetPlayerID()), "voting_to_kick_debug_print", {playerVotedId = data.PlayerID, vote=text, total=votesToKick})
 		end
 	end
+end
+
+function UpdateVotingForKick()
+	local totalPlayersInVotingTeam = 0
+	for playerId = 0, 24 do
+		local connectionState = PlayerResource:GetConnectionState(playerId)
+		if PlayerResource:GetTeam(_G.votingForKick.target) == PlayerResource:GetTeam(playerId) and (connectionState == DOTA_CONNECTION_STATE_CONNECTED or connectionState == DOTA_CONNECTION_STATE_NOT_YET_CONNECTED) then
+			totalPlayersInVotingTeam = totalPlayersInVotingTeam + 1
+		end
+	end
+	votesToKick = math.floor(totalPlayersInVotingTeam/2+1)
 end
 
 RegisterCustomEventListener("voting_to_kick_vote_yes", function(data)
@@ -83,6 +95,7 @@ RegisterCustomEventListener("voting_to_kick_vote_yes", function(data)
 			GameRules:SendCustomMessage("#voting_to_kick_player_kicked", _G.votingForKick.target, 0)
 			_G.votingForKick = nil
 		end
+		UpdateVotingForKick()
 	end
 end)
 
