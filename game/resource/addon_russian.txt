@@ -551,5 +551,6 @@
 		"less_mmr_bonus_header"		"Средний рейтинг Вашей команды ниже на {s:mmr_diff}. Вы получите бонусы в текущей игре"
 		"less_mmr_bonus_exp"		"{s:exp_pct}% Опыта"
 		"less_mmr_bonus_gold"		"{s:gold_pct}% Золота"
+		"show_chat" "Показать Чат"
 	}
 }
