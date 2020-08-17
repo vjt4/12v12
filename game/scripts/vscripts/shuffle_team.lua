@@ -9,17 +9,17 @@ MAX_PLAYERS_IN_TEAM = 12
 LinkLuaModifier("modifier_bonus_for_weak_team_in_mmr", "modifier_bonus_for_weak_team_in_mmr", LUA_MODIFIER_MOTION_NONE)
 
 function ShuffleTeam:SortInMMR()
-	if IsInToolsMode() then
-		--TEST PART. NEED REMOVE IT AFTER TEST
-		SendToServerConsole('dota_bot_populate')
-		local publicStats = {}
-		for playerId = 0, 23 do
-			publicStats[playerId] = {
-				rating = playerId == 0 and -20000 or RandomInt(500,4000),
-			}
-		end
-		CustomNetTables:SetTableValue("game_state", "player_stats", publicStats)
-	end
+	--if IsInToolsMode() then
+	--	--TEST PART. NEED REMOVE IT AFTER TEST
+	--	SendToServerConsole('dota_bot_populate')
+	--	local publicStats = {}
+	--	for playerId = 0, 23 do
+	--		publicStats[playerId] = {
+	--			rating = playerId == 0 and -20000 or RandomInt(500,4000),
+	--		}
+	--	end
+	--	CustomNetTables:SetTableValue("game_state", "player_stats", publicStats)
+	--end
 
 	self.multGold = 1
 	self.weakTeam = 0
