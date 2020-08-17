@@ -1,0 +1,32 @@
+<root>
+	<styles>
+		<include src="file://{resources}/layout/custom_game/notifications_ui/notifications_ui.css" />
+	</styles>
+
+	<scripts>
+		<include src="file://{resources}/layout/custom_game/notifications_ui/notifications_ui.js" />
+	</scripts>
+
+	<snippets>
+		<snippet name="WeakTeamBonus">
+			<Panel class="WeakTeamBonus">
+				<Label id="WeakHeader" text="less_mmr_bonus_header"/>
+				<Panel id="WeakBonusesWrap">
+					<Panel class="WeakBonus">
+						<Label id="WeakBonusExpText" class="WeakBonusText" text="#less_mmr_bonus_exp"/>
+					</Panel>
+					<Panel class="WeakBonus">
+						<Label id="WeakBonusGoldText" class="WeakBonusText" text="#less_mmr_bonus_gold"/>
+					</Panel>
+				</Panel>
+				<Button id="WeakClose">
+					<Label id="WeakCloseText" class="WeakBonusText" text="OK"/>
+				</Button>
+			</Panel>
+		</snippet>
+	</snippets>
+
+	<Panel style="width:100%;height:100%;">
+		<Panel id="Norifications_TOP"/>
+	</Panel>
+</root>

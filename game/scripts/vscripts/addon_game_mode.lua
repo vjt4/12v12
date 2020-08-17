@@ -41,6 +41,7 @@ require("util")
 require("neutral_items_drop_choice")
 require("gpm_lib")
 require("game_options/game_options")
+require("shuffle_team")
 
 WebApi.customGame = "Dota12v12"
 
@@ -732,6 +733,9 @@ function CMegaDotaGameMode:FilterModifyGold( filterTable )
 --	print( "FilterModifyGold" )
 --	print( self.m_CurrentGoldScaleFactor )
 	filterTable["gold"] = self.m_CurrentGoldScaleFactor * filterTable["gold"]
+	if PlayerResource:GetTeam(filterTable.player_id_const) == ShuffleTeam.weakTeam then
+		filterTable["gold"] = ShuffleTeam.multGold * filterTable["gold"]
+	end
 	return true
 end
 
@@ -747,6 +751,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 
 	if newState ==  DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP then
 		AutoTeam:Init()
+		ShuffleTeam:SortInMMR()
 	end
 	if newState ==  DOTA_GAMERULES_STATE_HERO_SELECTION then
 		AutoTeam:EnableFreePatreonForBalance()
@@ -830,6 +835,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 	end
 
 	if newState == DOTA_GAMERULES_STATE_PRE_GAME then
+		ShuffleTeam:GiveBonusToWeakTeam()
 		if GameOptions:OptionsIsActive("super_towers") then
 			local towers = Entities:FindAllByClassname('npc_dota_tower')
 			for _, tower in pairs(towers) do
@@ -868,13 +874,12 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 		if parties then
 			CustomNetTables:SetTableValue("game_state", "parties", parties)
 		end
-
-		if not IsDedicatedServer() then
-			Timers:CreateTimer(3, function()
+		Timers:CreateTimer(3, function()
+			if not IsDedicatedServer() then
 				CustomGameEventManager:Send_ServerToAllClients("is_local_server", {})
-			end)
-		end
-
+			end
+			ShuffleTeam:SendNotificationForWeakTeam()
+		end)
         local toAdd = {
             luna_moon_glaive_fountain = 4,
             ursa_fury_swipes_fountain = 1,

@@ -547,5 +547,9 @@
 
 		"12v12_china_tournament"					"Турнир Dota 12v12"
 		"12v12_china_tournament_open_in_browser"	"Открыть в браузере (пароль: e37w)"
+
+		"less_mmr_bonus_header"		"Средний рейтинг Вашей команды ниже на {s:mmr_diff}. Вы получите бонусы в текущей игре"
+		"less_mmr_bonus_exp"		"{s:exp_pct}% Опыта"
+		"less_mmr_bonus_gold"		"{s:gold_pct}% Золота"
 	}
 }
