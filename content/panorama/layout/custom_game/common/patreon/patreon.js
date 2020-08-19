@@ -92,13 +92,13 @@ function setPaymentWindowVisible(visible) {
 	GameEvents.SendCustomGameEventToServer('patreon:payments:window', { visible: visible });
 	$('#PaymentWindow').visible = visible;
 	$('#SupportButtonPaymentWindow').checked = visible;
-	$('#PaymentConfirmationContainer').visible = visible;
 	lastConfirmedDonationTarget = Game.GetLocalPlayerID();
+
 	if (visible) {
 		updatePaymentWindow();
 		donation_target_dropdown.enabled = true;
 	} else {
-		$('#PaymentConfirmationContainer').visible = visible;
+		ResetPaymentTarget()
 		donation_target_dropdown.enabled = false;
 	}
 }
@@ -121,17 +121,19 @@ function togglePaymentWindowVisible() {
 function ShowPaymentConfirmationWindow() {
 	$('#PaymentConfirmationAvatar').steamid = Game.GetPlayerInfo(paymentTargetID).player_steamid;
 	$('#PaymentConfirmationAvatarLabel').text = Players.GetPlayerName(paymentTargetID);
-	$('#PaymentConfirmationContainer').style.visibility = 'visible';
+	$('#PaymentConfirmationGhostHitbox').visible = true;
 }
 
 function ConfirmPaymentTarget() {
-	$('#PaymentConfirmationContainer').style.visibility = 'collapse';
+	$('#PaymentConfirmationGhostHitbox').visible = false;
 	lastConfirmedDonationTarget = paymentTargetID;
 	updatePaymentWindow()
 }
 
 function ResetPaymentTarget() {
-	$('#PaymentConfirmationContainer').style.visibility = 'collapse';
+	donation_target_dropdown.SetSelected("PatreonOption" + Game.GetLocalPlayerID());
+	UpdatePaymentTarget(Game.GetLocalPlayerID())
+	$('#PaymentConfirmationGhostHitbox').visible = false;
 }
 
 var createPaymentRequest = createEventRequestCreator('patreon:payments:create');
