@@ -3192,7 +3192,10 @@ function ChangeTeam(playerID, newTeam)
 end
 
 function ChangeTeamForPlayer(playerID, newTeam)
+	local maxPlayerInTeam = GameRules:GetCustomGameTeamMaxPlayers(newTeam)
+	GameRules:SetCustomGameTeamMaxPlayers( newTeam, maxPlayerInTeam + 1)
 	PlayerResource:SetCustomTeamAssignment(playerID, newTeam)
+
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 	if IsValidEntity(hero) then
 
@@ -3285,4 +3288,5 @@ function ChangeTeamForPlayer(playerID, newTeam)
 			end
 		end
 	end
+	GameRules:SetCustomGameTeamMaxPlayers( newTeam, maxPlayerInTeam)
 end
