@@ -39,7 +39,7 @@ function ShuffleTeam:SortInMMR()
 		end
 		local playerRating = playersStats[tostring(playerId)].rating and playersStats[tostring(playerId)].rating or 0
 		local partyID =  tonumber(tostring(PlayerResource:GetPartyID(playerId)))
-		if PlayerResource:GetConnectionState(playerId) == DOTA_CONNECTION_STATE_NOT_YET_CONNECTED then
+		if PlayerResource:GetConnectionState(playerId) == DOTA_CONNECTION_STATE_NOT_YET_CONNECTED or partyID <= 0 then
 			phantomPartyID = phantomPartyID + 1
 			partyID = phantomPartyID
 		end
