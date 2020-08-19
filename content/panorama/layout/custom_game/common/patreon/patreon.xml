@@ -31,21 +31,23 @@
  			</Button>
  		</Panel>
 
- 		<Panel id="PaymentConfirmationContainer" >
- 			<Label id="PaymentConfirmationHeader" text="#purchase_confirmation_header" />
- 			<DOTAAvatarImage id="PaymentConfirmationAvatar" steamid="local" />
- 			<Label id="PaymentConfirmationAvatarLabel" text="Firetoad" />
- 			<Label id="PaymentConfirmationFooter" text="#purchase_confirmation_footer" />
- 			<Panel id="PaymentConfirmationButtonsContainer" >
- 				<Button id="PaymentConfirmationButtonYes" onactivate='ConfirmPaymentTarget()' >
-	 				<Label id="PaymentConfirmationLabelYes" text="#purchase_confirmation_yes" />
-	 			</Button>
+ 		<Panel id="PaymentConfirmationGhostHitbox" hittest="true" >
+	 		<Panel id="PaymentConfirmationContainer" >
+	 			<Label id="PaymentConfirmationHeader" text="#purchase_confirmation_header" />
+	 			<DOTAAvatarImage id="PaymentConfirmationAvatar" steamid="local" />
+	 			<Label id="PaymentConfirmationAvatarLabel" text="" />
+	 			<Label id="PaymentConfirmationFooter" text="#purchase_confirmation_footer" />
+	 			<Panel id="PaymentConfirmationButtonsContainer" >
+	 				<Button id="PaymentConfirmationButtonYes" onactivate='ConfirmPaymentTarget()' >
+		 				<Label id="PaymentConfirmationLabelYes" text="#purchase_confirmation_yes" />
+		 			</Button>
 
-	 			<Button id="PaymentConfirmationButtonNo" onactivate='ResetPaymentTarget()' >
-	 				<Label id="PaymentConfirmationLabelNo" text="#purchase_confirmation_no" />
-	 			</Button>
- 			</Panel>
- 		</Panel>
+		 			<Button id="PaymentConfirmationButtonNo" onactivate='ResetPaymentTarget()' >
+		 				<Label id="PaymentConfirmationLabelNo" text="#purchase_confirmation_no" />
+		 			</Button>
+	 			</Panel>
+	 		</Panel>
+	 	</Panel>
 
  		<Panel id="PatreonButtonPanel">
 			<!--<Image src="file://{resources}/layout/custom_game/common/patreon/perks/unlimited_chat_wheel.png" />-->
@@ -110,9 +112,9 @@
 			</Panel>
 		</Panel>
 		<Panel hittest="true" id="PaymentWindow">
-			<Button id="BackgroundCloseButton" style="width: 100%; height: 100%;" onactivate="setPaymentWindowVisible(false)" />
+			<Button id="BackgroundCloseButton" onactivate="setPaymentWindowVisible(false)" />
 			
-			<Panel id="PaymentWindowContent">
+			<Panel id="PaymentWindowContent" hittest="true" onactivate="" >
 				<Button class="PatreonCloseButtonX" onactivate="setPaymentWindowVisible(false)" />
 
 				<HTML id="PaymentWindowBody" acceptsinput="true" />
