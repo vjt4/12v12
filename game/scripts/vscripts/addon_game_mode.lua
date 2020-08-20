@@ -3187,10 +3187,11 @@ function ChangeTeam(playerID, newTeam)
 end
 
 function ChangeTeamForPlayer(playerID, newTeam)
+	local maxPlayerInTeam = GameRules:GetCustomGameTeamMaxPlayers(newTeam)
+	GameRules:SetCustomGameTeamMaxPlayers( newTeam, maxPlayerInTeam + 1)
 	PlayerResource:SetCustomTeamAssignment(playerID, newTeam)
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 	if IsValidEntity(hero) then
-
 		if _G.PlayersPatreonsPerk[playerID] then
 			local perkName = _G.PlayersPatreonsPerk[playerID]
 			local perkStacks = hero:GetModifierStackCount(perkName, hero)
@@ -3205,79 +3206,74 @@ function ChangeTeamForPlayer(playerID, newTeam)
 
 		hero:SetTeam(newTeam)
 		hero:Kill(nil, hero)
-
-		if IsValidEntity(hero) then
-
-			hero:SetTimeUntilRespawn(1)
-			CreateDummyInventoryForPlayer(hero:GetPlayerOwnerID(), hero)
-			if hero:HasAbility('arc_warden_tempest_double') then
-				local clones = Entities:FindAllByName(hero:GetClassname())
-				for _,tempestDouble in pairs(clones) do
-					if tempestDouble:IsTempestDouble() and playerID == tempestDouble:GetPlayerID() then
-						tempestDouble:Kill(nil, nil)
-					end
-				end
-			end
-
-			if hero:HasAbility('meepo_divided_we_stand') then
-				local clones = Entities:FindAllByName(hero:GetClassname())
-
-				for _,meepoClone in pairs(clones) do
-					if meepoClone:IsClone() and playerID == meepoClone:GetPlayerID() then
-						meepoClone:SetTimeUntilRespawn(1)
-					end
-				end
-			end
-
-			for spell, name in pairs(ts_entities.Switch) do
-				if hero:HasAbility(spell) then
-					local units = Entities:FindAllByName(name)
-					if #units == 0 then
-						units = Entities:FindAllByModel(name)
-					end
-
-					for _, unit in pairs(units) do
-						print("found units")
-						if unit:GetPlayerOwnerID() == playerID then
-							unit:SetTeam(newTeam)
-						end
-					end
-				end
-			end
-
-			for spell, name in pairs(ts_entities.Kill) do
-				if hero:HasAbility(spell) then
-					local units = Entities:FindAllByName(name)
-					if #units == 0 then
-						units = Entities:FindAllByModel(name)
-					end
-
-					for _, unit in pairs(units) do
-						if unit:GetPlayerOwnerID() == playerID then
-							unit:Kill(nil, nil)
-						end
-					end
-				end
-			end
-
-			local couriers = Entities:FindAllByName("npc_dota_courier")
-			for _, courier in pairs(couriers) do
-				if courier:GetPlayerOwnerID() == playerID then
-					local fountain
-					local vMoveFromFountain
-					if newTeam == DOTA_TEAM_GOODGUYS then
-						fountain = Entities:FindByName( nil, "ent_dota_fountain_good" )
-						vMoveFromFountain = Vector(500,500,0)
-					elseif newTeam == DOTA_TEAM_BADGUYS then
-						fountain = Entities:FindByName( nil, "ent_dota_fountain_bad" )
-						vMoveFromFountain = Vector(-500,-500,0)
-					end
-					local vFountainPoint = fountain:GetAbsOrigin()
-					local vNewCourierPount = vFountainPoint + vMoveFromFountain + RandomVector(150)
-					courier:SetTeam(newTeam)
-					FindClearSpaceForUnit(courier, vNewCourierPount, false)
+		hero:SetTimeUntilRespawn(1)
+		CreateDummyInventoryForPlayer(hero:GetPlayerOwnerID(), hero)
+		if hero:HasAbility('arc_warden_tempest_double') then
+			local clones = Entities:FindAllByName(hero:GetClassname())
+			for _,tempestDouble in pairs(clones) do
+				if tempestDouble:IsTempestDouble() and playerID == tempestDouble:GetPlayerID() then
+					tempestDouble:Kill(nil, nil)
 				end
 			end
 		end
+
+		if hero:HasAbility('meepo_divided_we_stand') then
+			local clones = Entities:FindAllByName(hero:GetClassname())
+
+			for _,meepoClone in pairs(clones) do
+				if meepoClone:IsClone() and playerID == meepoClone:GetPlayerID() then
+					meepoClone:SetTimeUntilRespawn(1)
+				end
+			end
+		end
+
+		for spell, name in pairs(ts_entities.Switch) do
+			if hero:HasAbility(spell) then
+				local units = Entities:FindAllByName(name)
+				if #units == 0 then
+					units = Entities:FindAllByModel(name)
+				end
+				for _, unit in pairs(units) do
+					if unit:GetPlayerOwnerID() == playerID then
+						unit:SetTeam(newTeam)
+					end
+				end
+			end
+		end
+
+		for spell, name in pairs(ts_entities.Kill) do
+			if hero:HasAbility(spell) then
+				local units = Entities:FindAllByName(name)
+				if #units == 0 then
+					units = Entities:FindAllByModel(name)
+				end
+
+				for _, unit in pairs(units) do
+					if unit:GetPlayerOwnerID() == playerID then
+						unit:Kill(nil, nil)
+					end
+				end
+			end
+		end
+
+		local couriers = Entities:FindAllByName("npc_dota_courier")
+		for _, courier in pairs(couriers) do
+			if courier:GetPlayerOwnerID() == playerID then
+				local fountain
+				local vMoveFromFountain
+				if newTeam == DOTA_TEAM_GOODGUYS then
+					fountain = Entities:FindByName( nil, "ent_dota_fountain_good" )
+					vMoveFromFountain = Vector(500,500,0)
+				elseif newTeam == DOTA_TEAM_BADGUYS then
+					fountain = Entities:FindByName( nil, "ent_dota_fountain_bad" )
+					vMoveFromFountain = Vector(-500,-500,0)
+				end
+				local vFountainPoint = fountain:GetAbsOrigin()
+				local vNewCourierPount = vFountainPoint + vMoveFromFountain + RandomVector(150)
+				courier:SetTeam(newTeam)
+				FindClearSpaceForUnit(courier, vNewCourierPount, false)
+			end
+		end
 	end
+	GameRules:SetCustomGameTeamMaxPlayers( newTeam, maxPlayerInTeam )
 end
