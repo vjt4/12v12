@@ -71,6 +71,7 @@ function ShuffleTeam:SortInMMR()
 					local player = PlayerResource:GetPlayer(playerId)
 					if player then
 						player:SetTeam(teamId)
+						PlayerResource:SetCustomTeamAssignment(playerId,teamId)
 					end
 				end
 			end
