@@ -1,0 +1,91 @@
+#Norifications_TOP {
+	width: 100%;
+	height: 100%;
+}
+.WeakTeamBonus {
+	width: 600px;
+	height: 184px;
+	background-color: #373737;
+	align: center top;
+	margin-top: 78px;
+	background-image: url("s2r://panorama/images/hud/reborn/ability_bg_psd.vtex");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	border-radius: 5px;
+	border: 2px solid #151515;
+	flow-children: down;
+	transform: translatey(-150px);
+	opacity: 0;
+	transition: opacity 0.4s ease-in-out 0s, transform 0.4s ease-in-out 0s;
+}
+.WeakTeamBonus.show {
+	opacity: 1;
+	transform: translatey(0px);
+}
+#WeakHeader {
+	width: 100%;
+	padding-left: 5px;
+	padding-right: 5px;
+	height: 69px;
+	font-size: 28px;
+	text-align: center;
+	text-overflow: shrink;
+	color: #dddddd;
+	padding-top: 4px;
+	background-color: rgba(0, 0, 0, 0.25);
+	text-shadow: 2px 2px 2px black;
+}
+#WeakBonusesWrap {
+	height: 60px;
+	flow-children: right;
+	horizontal-align: center;
+	padding-right: -10px;
+	padding-left: 10px;
+}
+.WeakBonus {
+	background-color: gradient(linear, 0% 100%, 0% 0%, from(#303032), to(#6e6d77));
+	background-image: url("s2r://panorama/images/backgrounds/background_play_button_2x_png.vtex");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	width: 200px;
+	height: 40px;
+	align: center center;
+	margin-right: 20px;
+	border-radius: 3px;
+	border: 1px solid #000000;
+}
+.WeakBonusText {
+	font-size: 20px;
+	align: center center;
+	text-align: center;
+	color: #fcda05;
+	text-transform: uppercase;
+	text-overflow: shrink;
+	padding-top: 1px;
+	text-shadow: 0px 3px 2px black;
+}
+
+#WeakClose {
+	background-color: green;
+	background-image: url("s2r://panorama/images/backgrounds/background_play_button_2x_png.vtex");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	width: 200px;
+	height: 40px;
+	align: center center;
+	margin-right: 20px;
+	border-radius: 3px;
+	border: 1px solid black;
+	transition: brightness 0.2s ease-in-out 0s;
+}
+#WeakCloseText {
+	color: #ececec;
+	font-size: 23px;
+	padding-top: 2px;
+}
+#WeakClose:hover {
+	brightness: 1.8;
+}
+#WeakClose:active {
+	brightness: 1.2;
+}

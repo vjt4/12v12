@@ -40,10 +40,11 @@ var tipsGeneral = [
         img: 'file://{resources}/images/custom_game/tips_icon/savefavs.png',
         txt: '#LoadingTip_13'
     },
+	{
+		img: 'file://{resources}/images/custom_game/tips_icon/mmr_balance.png',
+		txt: '#LoadingTip_14'
+	},
 ];
-function print(q){
-	$.Msg(q)
-}
 // Start flag
 var isTipStarted = false;
 

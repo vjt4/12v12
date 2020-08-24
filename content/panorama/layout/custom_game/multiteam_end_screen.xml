@@ -59,9 +59,15 @@
 					</Panel>
 				</Panel>
 			</Panel>
-			<Button id="CloseButton" onactivate="Game.FinishGame();">
-				<Label text="#CustomEndScreenClose" />
-			</Button>
+
+			<Panel id="EndScreenButtons">
+				<Button id="ShowChatButton" class="FinalScoredoardButton" onactivate="ShowChatEndScreen()">
+					<Label text="#show_chat" />
+				</Button>
+				<Button id="CloseButton" onactivate="Game.FinishGame();" class="FinalScoredoardButton">
+					<Label text="#CustomEndScreenClose" />
+				</Button>
+			</Panel>
 		</Panel>
 	</Panel>
 </root>
