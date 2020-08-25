@@ -3012,7 +3012,8 @@ SelectVO = function(keys)
 				votimer[keys.PlayerID] = GameRules:GetGameTime()
 				vousedcol[keys.PlayerID] = vousedcol[keys.PlayerID] + 1
 			else
-				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(keys.PlayerID), "display_custom_error", { message = "#wheel_cooldown" })
+				local remaining_cd = " ("..string.format("%.1f", 5 + vousedcol[keys.PlayerID] - (GameRules:GetGameTime() - votimer[keys.PlayerID])).."s)"
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(keys.PlayerID), "display_custom_error", { message = "#wheel_cooldown"..remaining_cd })
 			end
 		else
 			local chat = LoadKeyValues("scripts/hero_chat_wheel_english.txt")
