@@ -112,11 +112,14 @@
 	background-image: url( "s2r://panorama/images/hud/reborn/item_purchase_bg_psd.vtex" );
 	background-size: cover;
 	transform: translatex( 1000px );
-	transition-property: transform;
-	transition-duration: 0.3s;
+	transition: opacity 0.2s ease-in-out 0s, transform 0.3s ease-in-out 0s;
+	opacity: 1;
 }
 #VotingToKickVoting.Slide {
 	transform: translatex( 0px );
+}
+#VotingToKickVoting.Hide{
+	opacity: 0;
 }
 
 .VotingToKickVotingHeadPanel{
@@ -218,4 +221,35 @@
 	text-shadow: 1px -1px 2px 2.0 #000000FF;
 	color: rgb(240,240,240);
 	font-size: 19px;
+}
+#HideVotingWrap{
+	width: 35px;
+	height: 25px;
+	align: right center;
+	margin-bottom: 380px;
+	margin-right: 3px;
+	padding-left: 5px;
+	transition:transform 0.2s ease-in-out 0s;
+}
+#HideVoting {
+	width: 25px;
+	height: 25px;
+	background-image: url("s2r://panorama/images/control_icons/arrow_solid_right_png.vtex");
+	background-size: 100%;
+	wash-color: #e3e3e3;
+	transition: brightness 0.2s ease-in-out 0s, transform 0.2s ease-in-out 0s;
+}
+
+#HideVotingWrap:hover #HideVoting{
+	brightness: 2;
+	transform: translatex(5px);
+}
+#HideVotingWrap.Reverse {
+	transform: rotateY(180deg);
+}
+#HideVotingWrap.Reverse #HideVoting{
+	wash-color: #ffffff;
+}
+#HideVotingWrap.Reverse:hover #HideVoting{
+	brightness: 2;
 }
