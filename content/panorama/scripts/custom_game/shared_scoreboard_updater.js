@@ -1,8 +1,6 @@
 "use strict";
 
-var isEndScreen = false
-
-var newStatsInEndScreen = [
+var isEndScreen = falsevar newStatsInEndScreen = [
 	{
 		name: "new_stat_gpm",
 		func: function( pId, cont ) {
@@ -241,7 +239,12 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
 		{
 			if ( playerInfo.player_selected_hero !== "" )
 			{
-				playerPortrait.SetImage( "file://{images}/heroes/" + playerInfo.player_selected_hero + ".png" );
+				const uniquePortraits = CustomNetTables.GetTableValue("game_state", "portraits");
+				if(uniquePortraits && uniquePortraits[playerId]){
+					playerPortrait.SetImage( "file://{images}/heroes/" + uniquePortraits[playerId] + ".png");
+				}else{
+					playerPortrait.SetImage( "file://{images}/heroes/" + playerInfo.player_selected_hero + ".png" );
+				}
 			}
 			else
 			{
