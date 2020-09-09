@@ -129,7 +129,5 @@ function VotingToKickInit() {
 	GameEvents.Subscribe("voting_to_kick_hide_voting", VotingToKickHideVoting);
 
 	GameEvents.Subscribe("voting_to_kick_debug_$.Msg", VotingToKickDebugPring);
-
-	VotingToKickShowVoting({ reason: "feeding", playerId: 1, playerIdInit: 0 });
 }
 VotingToKickInit();
