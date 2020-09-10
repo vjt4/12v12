@@ -42,14 +42,10 @@
 			<Panel class="VotingToKickVotingHeadPanel">
 				<Label id="VotingToKickVotingHeadText" text=""/>
 			</Panel>
-
 			<Panel class="VotingToKickVotingReasonPanel">
 				<Label id="VotingToKickVotingReasonText" text=""/>
 			</Panel>
-
-			<Panel id="VotingToKickModelPanel" style="width:210px;height:210px;horizontal-align:center;" hittest="false">
-			</Panel>
-
+			<Panel id="VotingToKickModelPanel" style="width:210px;height:210px;horizontal-align:center;" hittest="false"/>
 			<Label id="VotingToKickKDA" text=""/>
 
 			<Panel class="VotingToKickVotingButtons">
@@ -57,6 +53,8 @@
 				<Label class="VotingToKickVotingButton" id="VotingToKickVotingNo" text="#voting_to_kick_no" onactivate="VotingToKickVoteNo()"/>
 			</Panel>
 		</Panel>
-
+		<Panel id="HideVotingWrap" onactivate="ToggleVotingPanel()" onmouseover="DOTAShowTextTooltip(#hide_voting)" onmouseout="DOTAHideTextTooltip()">
+			<Button id="HideVoting"/>
+		</Panel>
 	</Panel>
 </root>

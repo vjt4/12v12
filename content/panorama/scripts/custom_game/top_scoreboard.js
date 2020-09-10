@@ -52,7 +52,14 @@ function Snippet_TopBarPlayerSlot_Update(panel) {
 	panel.SetDialogVariableInt('respawn_seconds', respawnSeconds + 1);
 	panel.SetHasClass('Dead', respawnSeconds >= 0);
 	panel.SetHasClass('Disconnected', connectionState === DOTAConnectionState_t.DOTA_CONNECTION_STATE_DISCONNECTED);
-	panel.FindChildTraverse('HeroImage').heroname = playerInfo.player_selected_hero;
+
+	const uniquePortraits = CustomNetTables.GetTableValue("game_state", "portraits");
+	const heroImage = panel.FindChildTraverse('HeroImage');
+	if(uniquePortraits && uniquePortraits[playerId]){
+		heroImage.SetImage( "file://{images}/heroes/" + uniquePortraits[playerId] + ".png");
+	}else{
+		heroImage.heroname = playerInfo.player_selected_hero;
+	}
 	panel.FindChildTraverse('PlayerColor').style.backgroundColor = GetHEXPlayerColor(playerId);
 	var ultStateOrTime = isAlly ? Game.GetPlayerUltimateStateOrTime(playerId) : PlayerUltimateStateOrTime_t.PLAYER_ULTIMATE_STATE_HIDDEN;
 	panel.SetHasClass('UltLearned', ultStateOrTime !== PlayerUltimateStateOrTime_t.PLAYER_ULTIMATE_STATE_NOT_LEVELED);

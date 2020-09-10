@@ -230,6 +230,7 @@ function CMegaDotaGameMode:InitGameMode()
 	end )
 
 	GameOptions:Init()
+	UniquePortraits:Init()
 end
 
 function IsInBugZone(pos)
@@ -610,6 +611,7 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 				spawnedUnit:RemoveModifierByName('modifier_silencer_int_steal')
 				spawnedUnit:AddNewModifier(spawnedUnit, nil, "modifier_silencer_new_int_steal", {})
 			end
+			UniquePortraits:UpdatePortraitsDataFromPlayer(playerId)
 		end)
 
 		if self.couriers[spawnedUnit:GetTeamNumber()] then

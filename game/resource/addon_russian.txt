@@ -554,5 +554,7 @@
 		"less_mmr_bonus_exp"		"{s:exp_pct}% Опыта"
 		"less_mmr_bonus_gold"		"{s:gold_pct}% Золота"
 		"show_chat" "Показать Чат"
+		"hide_voting"	"Скрыть голосование"
+		"show_voting"	"Показать голосование"
 	}
 }
