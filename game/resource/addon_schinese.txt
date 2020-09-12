@@ -467,5 +467,9 @@
 
 		"12v12_china_tournament"					"比赛 Dota 12v12"
 		"12v12_china_tournament_open_in_browser"	"在浏览器中打开 (提取码: e37w)"
+
+		"npc_dota_hero_chaos_knight"									"混沌骑士 （微调）"
+		"DOTA_Tooltip_ability_chaos_knight_phantasm"					"混沌之军 （微调）"
+		"DOTA_Tooltip_ability_chaos_knight_phantasm_Description"		"从另一维度内召唤若干个混沌骑士的幻象。幻象继承%outgoing_damage_tooltip%%%攻击力，但是承受%incoming_damage_tooltip%%%伤害。\n\n驱散类型：弱驱散在12v12中，此能力持续时间缩短"
 	}
 }

@@ -35,11 +35,11 @@
 			<Image src="file://{resources}/images/custom_game/tips_icon/mmr_balance.png"/>
 		</Panel>
 
-		<Panel class="FormLinkContainer">
-			<Label class="LinkHeader" text="#12v12_china_tournament"/>
-			<Button class="LinkButton" onactivate="$.DispatchEvent('ExternalBrowserGoToURL', 'https://pan.baidu.com/s/10oGRrmFt7KGfL3y-4bkwXg')">
-				<Label class="LinkButtonText" text="#12v12_china_tournament_open_in_browser"/>
-			</Button>
-		</Panel>
+<!--		<Panel class="FormLinkContainer">-->
+<!--			<Label class="LinkHeader" text="#12v12_china_tournament"/>-->
+<!--			<Button class="LinkButton" onactivate="$.DispatchEvent('ExternalBrowserGoToURL', 'https://pan.baidu.com/s/10oGRrmFt7KGfL3y-4bkwXg')">-->
+<!--				<Label class="LinkButtonText" text="#12v12_china_tournament_open_in_browser"/>-->
+<!--			</Button>-->
+<!--		</Panel>-->
 	</Panel>
 </root>

@@ -556,5 +556,9 @@
 		"show_chat" "Показать Чат"
 		"hide_voting"	"Скрыть голосование"
 		"show_voting"	"Показать голосование"
+
+		"npc_dota_hero_chaos_knight"									"Chaos Knight (Изм.)"
+		"DOTA_Tooltip_ability_chaos_knight_phantasm"					"Phantasm (Изм.)"
+		"DOTA_Tooltip_ability_chaos_knight_phantasm_Description"		"Призывает несколько копий героя из параллельных измерений. Копии являются сильными иллюзиями, наносят %outgoing_damage_tooltip%%% урона, а получают %incoming_damage_tooltip%%% урона.\n\nТИП РАЗВЕИВАНИЯ: нормальное\n\n<font color='#70EA72'>В 12v12 длительность этого умения уменьшена</font>"
 	}
 }
