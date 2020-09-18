@@ -1,6 +1,7 @@
 "use strict";
 
-var isEndScreen = falsevar newStatsInEndScreen = [
+var isEndScreen = false
+var newStatsInEndScreen = [
 	{
 		name: "new_stat_gpm",
 		func: function( pId, cont ) {
