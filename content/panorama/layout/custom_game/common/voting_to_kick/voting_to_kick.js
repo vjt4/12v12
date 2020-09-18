@@ -2,9 +2,10 @@ let bVotingIsNow = false;
 
 function VotingToKickShowVoting(data) {
 	$.Msg("SHOW VOTING");
-	let timerVoting = $.CreatePanel("Panel", $("#VotingToKickVoting"), "VotingToKickCountdown");
-	timerVoting.AddClass("Active");
+	$("#HideVotingWrap").SetHasClass("show", true);
 	let votingPanel = $("#VotingToKickVoting");
+	let timerVoting = $.CreatePanel("Panel", votingPanel, "VotingToKickCountdown");
+	timerVoting.AddClass("Active");
 	votingPanel.AddClass("Slide");
 	let targetPlayer = Game.GetPlayerInfo(data.playerId);
 
@@ -52,6 +53,7 @@ function VotingToKickShowVoting(data) {
 		$("#VotingToKickVotingNo").visible = false;
 	}
 }
+
 function ToggleVotingPanel() {
 	$("#VotingToKickVoting").ToggleClass("Hide");
 	const hideButton = $("#HideVotingWrap");
@@ -68,8 +70,9 @@ function ToggleVotingPanel() {
 		$.DispatchEvent("DOTAHideTextTooltip");
 	});
 }
-function VotingToKickHideVoting(data) {
+function VotingToKickHideVoting() {
 	$.Msg("HIDE VOTING");
+	$("#HideVotingWrap").SetHasClass("show", false);
 	$("#VotingToKickVotingYes").visible = false;
 	$("#VotingToKickVotingNo").visible = false;
 	$("#VotingToKickCountdown").DeleteAsync(0);
@@ -116,7 +119,7 @@ function VotingToKickInitVoting(reason) {
 	$.Msg("PICK REASON");
 	GameEvents.SendCustomGameEventToServer("voting_to_kick_reason_is_picked", { reason: reason });
 }
-function VotingToKickDebugPring(data) {
+function VotingToKickDebugPrint(data) {
 	let playerVoted = Game.GetPlayerInfo(data.playerVotedId);
 	$.Msg(playerVoted.player_name + " VOTE: " + data.vote + "NEED TOTAL: " + data.total);
 }
@@ -128,6 +131,6 @@ function VotingToKickInit() {
 	GameEvents.Subscribe("voting_to_kick_show_voting", VotingToKickShowVoting);
 	GameEvents.Subscribe("voting_to_kick_hide_voting", VotingToKickHideVoting);
 
-	GameEvents.Subscribe("voting_to_kick_debug_$.Msg", VotingToKickDebugPring);
+	GameEvents.Subscribe("voting_to_kick_debug_print", VotingToKickDebugPrint);
 }
 VotingToKickInit();

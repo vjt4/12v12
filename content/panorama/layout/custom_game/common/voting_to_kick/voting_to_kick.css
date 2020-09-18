@@ -1,5 +1,4 @@
-.VotingToKickRoot
-{
+.VotingToKickRoot {
 	width: 100%;
 	height: 100%;
 }
@@ -9,21 +8,21 @@
 	flow-children: down;
 	horizontal-align: right;
 	vertical-align: center;
-	background-image: url( "s2r://panorama/images/hud/reborn/item_purchase_bg_psd.vtex" );
+	background-image: url("s2r://panorama/images/hud/reborn/item_purchase_bg_psd.vtex");
 	background-size: cover;
-	transform: translatex( 1000px );
+	transform: translatex(1000px);
 	transition-property: transform;
 	transition-duration: 0.3s;
 }
 
 #VotingToKickReasonPanel.Slide {
-	transform: translatex( 0px );
+	transform: translatex(0px);
 }
 
 .VotingToKickReasonHeadPanel {
 	width: 100%;
 	height: 35px;
-	background-color: rgba(20,20,20,0.9);
+	background-color: rgba(20, 20, 20, 0.9);
 }
 
 .VotingToKickReasonHeadPanelTextGrid {
@@ -31,22 +30,21 @@
 	font-size: 30px;
 	height: 100%;
 	text-overflow: shrink;
-	text-shadow: 1px -1px 2px 2.0 #000000FF;
+	text-shadow: 1px -1px 2px 2 #000000ff;
 	horizontal-align: center;
 	max-width: 95%;
 	vertical-align: center;
 }
 
-
 #VotingToKickReasonHeadPanelText {
 	color: white;
 	font-size: 30px;
 	text-overflow: shrink;
-	text-shadow: 1px -1px 2px 2.0 #000000FF;
+	text-shadow: 1px -1px 2px 2 #000000ff;
 }
 
 .VotingToKickReasonClose {
-	horizontal-align:right;
+	horizontal-align: right;
 	width: 18px;
 	height: 18px;
 	background-size: 100%;
@@ -66,18 +64,17 @@
 .VotingToKickReason {
 	width: 120px;
 	height: 110px;
-	background-color: rgba(20,20,20,0.9);
+	background-color: rgba(20, 20, 20, 0.9);
 	flow-children: down;
 	margin-left: 15px;
 	margin-top: 10px;
 }
-.VotingToKickReason:hover{
+.VotingToKickReason:hover {
 	box-shadow: inset 0 0 5px rgba(220, 20, 20, 0.5);
 }
-.VotingToKickReason:hover .VotingToKickReasonButton{
+.VotingToKickReason:hover .VotingToKickReasonButton {
 	color: rgb(187, 240, 209);
 }
-
 
 .VotingToKickReasonIcon {
 	horizontal-align: center;
@@ -91,9 +88,9 @@
 	width: 100%;
 	text-align: center;
 	color: white;
-	background-image: url( "s2r://panorama/images/hud/reborn/shop_launcher_button_psd.vtex" );
+	background-image: url("s2r://panorama/images/hud/reborn/shop_launcher_button_psd.vtex");
 	background-size: 100%;
-	text-shadow: 1px -1px 2px 2.0 #000000FF;
+	text-shadow: 1px -1px 2px 2 #000000ff;
 	padding-top: 2px;
 	padding-right: 2px;
 	padding-left: 2px;
@@ -102,42 +99,42 @@
 	text-overflow: shrink;
 }
 
-#VotingToKickVoting{
+#VotingToKickVoting {
 	flow-children: down;
 	width: 250px;
 	height: 360px;
 	horizontal-align: right;
 	vertical-align: center;
 	margin-bottom: 200px;
-	background-image: url( "s2r://panorama/images/hud/reborn/item_purchase_bg_psd.vtex" );
+	background-image: url("s2r://panorama/images/hud/reborn/item_purchase_bg_psd.vtex");
 	background-size: cover;
-	transform: translatex( 1000px );
+	transform: translatex(1000px);
 	transition: opacity 0.2s ease-in-out 0s, transform 0.3s ease-in-out 0s;
 	opacity: 1;
 }
 #VotingToKickVoting.Slide {
-	transform: translatex( 0px );
+	transform: translatex(0px);
 }
-#VotingToKickVoting.Hide{
+#VotingToKickVoting.Hide {
 	opacity: 0;
 }
 
-.VotingToKickVotingHeadPanel{
+.VotingToKickVotingHeadPanel {
 	width: 100%;
 	height: 40px;
-	background-color: rgba(30,30,30,0.9);
+	background-color: rgba(30, 30, 30, 0.9);
 }
-#VotingToKickVotingHeadText{
+#VotingToKickVotingHeadText {
 	margin-top: 7px;
 	color: white;
 	text-align: center;
 	width: 100%;
 	height: 100%;
 	font-size: 22px;
-	text-shadow: 1px -1px 2px 2.0 #000000FF;
+	text-shadow: 1px -1px 2px 2 #000000ff;
 	text-overflow: shrink;
 }
-.VotingToKickVotingButtons{
+.VotingToKickVotingButtons {
 	flow-children: right;
 	horizontal-align: center;
 	vertical-align: center;
@@ -149,9 +146,9 @@
 	width: 80px;
 	text-align: center;
 	color: white;
-	background-image: url( "s2r://panorama/images/hud/reborn/shop_launcher_button_psd.vtex" );
+	background-image: url("s2r://panorama/images/hud/reborn/shop_launcher_button_psd.vtex");
 	background-size: 100%;
-	text-shadow: 1px -1px 2px 2.0 #000000FF;
+	text-shadow: 1px -1px 2px 2 #000000ff;
 	padding-top: 2px;
 	padding-right: 2px;
 	padding-left: 2px;
@@ -161,27 +158,27 @@
 	margin-right: 15px;
 	text-overflow: shrink;
 }
-#VotingToKickVotingYes:hover{
+#VotingToKickVotingYes:hover {
 	color: rgb(0, 255, 0);
 }
-#VotingToKickVotingNo:hover{
+#VotingToKickVotingNo:hover {
 	color: rgb(255, 0, 0);
 }
 
-.VotingToKickVotingReasonPanel{
+.VotingToKickVotingReasonPanel {
 	width: 100%;
 	height: 35px;
-	background-color: rgba(50,50,50,0.9);
+	background-color: rgba(50, 50, 50, 0.9);
 }
 
-#VotingToKickVotingReasonText{
+#VotingToKickVotingReasonText {
 	margin-top: 4px;
 	color: white;
 	text-align: center;
 	width: 100%;
 	height: 100%;
 	font-size: 22px;
-	text-shadow: 1px -1px 2px 2.0 #000000FF;
+	text-shadow: 1px -1px 2px 2 #000000ff;
 	text-overflow: shrink;
 }
 
@@ -191,45 +188,46 @@
 	height: 5px;
 	width: 100%;
 	background-color: white;
-    transition-property: width;
-    transition-duration: 40s;
+	transition-property: width;
+	transition-duration: 40s;
 }
 
 #VotingToKickCountdown.Active {
 	width: 0%;
 }
 
-.VotingToKickProgress{
+.VotingToKickProgress {
 	flow-children: right;
 	height: 15px;
 	margin-top: 3px;
 }
 
-#VotingToKickVotesCount{
-	color: rgb(220,20,20);
+#VotingToKickVotesCount {
+	color: rgb(220, 20, 20);
 	text-align: center;
 	height: 100%;
 	font-size: 22px;
 	text-align: center;
-	text-shadow: 1px -1px 2px 2.0 #000000FF;
+	text-shadow: 1px -1px 2px 2 #000000ff;
 	text-overflow: shrink;
 }
-#VotingToKickKDA{
+#VotingToKickKDA {
 	width: 100%;
 	text-align: center;
 	margin-top: 4px;
-	text-shadow: 1px -1px 2px 2.0 #000000FF;
-	color: rgb(240,240,240);
+	text-shadow: 1px -1px 2px 2 #000000ff;
+	color: rgb(240, 240, 240);
 	font-size: 19px;
 }
-#HideVotingWrap{
+#HideVotingWrap {
 	width: 35px;
 	height: 25px;
 	align: right center;
 	margin-bottom: 380px;
 	margin-right: 3px;
 	padding-left: 5px;
-	transition:transform 0.2s ease-in-out 0s;
+	transition: transform 0.2s ease-in-out 0s;
+	opacity: 0;
 }
 #HideVoting {
 	width: 25px;
@@ -240,16 +238,19 @@
 	transition: brightness 0.2s ease-in-out 0s, transform 0.2s ease-in-out 0s;
 }
 
-#HideVotingWrap:hover #HideVoting{
+#HideVotingWrap:hover #HideVoting {
 	brightness: 2;
 	transform: translatex(5px);
 }
 #HideVotingWrap.Reverse {
 	transform: rotateY(180deg);
 }
-#HideVotingWrap.Reverse #HideVoting{
+#HideVotingWrap.Reverse #HideVoting {
 	wash-color: #ffffff;
 }
-#HideVotingWrap.Reverse:hover #HideVoting{
+#HideVotingWrap.Reverse:hover #HideVoting {
 	brightness: 2;
+}
+#HideVotingWrap.show {
+	opacity: 1;
 }
