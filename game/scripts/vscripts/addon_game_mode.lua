@@ -522,6 +522,21 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 	local spawnedUnit = EntIndexToHScript(event.entindex)
 	local tokenTrollCouter = "modifier_troll_feed_token_couter"
 
+
+
+	Timers:CreateTimer(0.1, function()
+		if spawnedUnit:IsTempestDouble() or spawnedUnit:IsClone()then
+			local playerId = spawnedUnit:GetPlayerOwnerID()
+			if _G.PlayersPatreonsPerk[playerId] then
+				local perkName = _G.PlayersPatreonsPerk[playerId]
+				spawnedUnit:AddNewModifier(spawnedUnit, nil, perkName, {duration = -1})
+				local mainHero = PlayerResource:GetSelectedHeroEntity(playerId)
+				local perkStacks = mainHero:GetModifierStackCount(perkName, mainHero)
+				spawnedUnit:SetModifierStackCount(perkName, nil, perkStacks)
+			end
+		end
+	end)
+
 	if spawnedUnit and spawnedUnit.reduceCooldownAfterRespawn and _G.lastHeroKillers[spawnedUnit] then
 		local killersTeam = _G.lastHeroKillers[spawnedUnit]:GetTeamNumber()
 		if killersTeam ~=spawnedUnit:GetTeamNumber() and killersTeam~= DOTA_TEAM_NEUTRALS then
