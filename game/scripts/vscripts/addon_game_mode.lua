@@ -768,9 +768,10 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 
 	if newState ==  DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP then
 		AutoTeam:Init()
-		ShuffleTeam:SortInMMR()
 	end
+
 	if newState ==  DOTA_GAMERULES_STATE_HERO_SELECTION then
+		ShuffleTeam:SortInMMR()
 		AutoTeam:EnableFreePatreonForBalance()
 	end
 	if newState == DOTA_GAMERULES_STATE_POST_GAME then

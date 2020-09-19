@@ -1,4 +1,9 @@
-const gameOptions = ["game_option_super_towers", "game_option_no_trolls_kick", "game_option_no_switch_team"];
+const gameOptions = [
+	"game_option_super_towers",
+	"game_option_no_trolls_kick",
+	"game_option_no_switch_team",
+	"game_option_no_mmr_sort",
+];
 const votesForInitOption = 12;
 
 function VotingOptionsInit() {
@@ -44,7 +49,7 @@ function VotingOptionsInit() {
 	}
 
 	SubscribeToNetTableKey("game_state", "game_options", (gameOptions) => {
-		for (var id in gameOptions) {
+		for (let id in gameOptions) {
 			const optionPanel = $("#GameOption_" + id).FindChildTraverse("VoteOptionTotalVotesText");
 			optionPanel.text = gameOptions[id];
 			optionPanel.SetHasClass("init", gameOptions[id] >= votesForInitOption);
