@@ -6,7 +6,8 @@ local gameOptions = {
 	[0] = {name = "super_towers"},
 	[1] = {name = "no_trolls_kick"},
 	[2] = {name = "no_switch_team"},
-	[3] = {name = "no_bonus_for_weak_team"},
+	[3] = {name = "no_mmr_sort"},
+	[4] = {name = "no_bonus_for_weak_team"},
 }
 
 function GameOptions:Init()

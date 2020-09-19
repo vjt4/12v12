@@ -9,6 +9,9 @@ MAX_PLAYERS_IN_TEAM = 12
 LinkLuaModifier("modifier_bonus_for_weak_team_in_mmr", "modifier_bonus_for_weak_team_in_mmr", LUA_MODIFIER_MOTION_NONE)
 
 function ShuffleTeam:SortInMMR()
+	if GameOptions:OptionsIsActive("no_mmr_sort") then
+		return
+	end
 	self.multGold = 1
 	self.weakTeam = 0
 	self.mmrDiff = 0
@@ -98,7 +101,7 @@ function ShuffleTeam:SortInMMR()
 end
 
 function ShuffleTeam:SendNotificationForWeakTeam()
-	if GameOptions:OptionsIsActive("no_bonus_for_weak_team") then
+	if GameOptions:OptionsIsActive("no_bonus_for_weak_team") or GameOptions:OptionsIsActive("no_mmr_sort") then
 		return
 	end
 	if not self.bonusPct then return end
@@ -117,7 +120,7 @@ function ShuffleTeam:GiveBonusToHero(player)
 end
 
 function ShuffleTeam:GiveBonusToWeakTeam()
-	if GameOptions:OptionsIsActive("no_bonus_for_weak_team") then
+	if GameOptions:OptionsIsActive("no_bonus_for_weak_team") or GameOptions:OptionsIsActive("no_mmr_sort") then
 		return
 	end
 	if self.mmrDiff < MIN_DIFF then return end
