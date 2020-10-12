@@ -67,13 +67,14 @@ local disabledAbilities = {
 	snapfire_firesnap_cookie = true,
 	snapfire_gobble_up = true,
 	pudge_dismember = true,
+	lycan_wolf_bite = true,
 }
 
 function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderVector, units)
 	if not unit or not ability then
 		return
 	end
-
+	print(ability:GetAbilityName())
 	local caster_id = unit:GetPlayerOwnerID()
 	if ability:GetAbilityName() == "furion_sprout" then
 		if (
