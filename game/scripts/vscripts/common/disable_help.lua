@@ -66,6 +66,7 @@ local disabledAbilities = {
 	tiny_toss = true,
 	snapfire_firesnap_cookie = true,
 	snapfire_gobble_up = true,
+	pudge_dismember = true,
 }
 
 function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderVector, units)
@@ -74,7 +75,7 @@ function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderV
 	end
 
 	local caster_id = unit:GetPlayerOwnerID()
-
+	print(ability:GetAbilityName())
 	if ability:GetAbilityName() == "furion_sprout" then
 		if (
 			orderType == DOTA_UNIT_ORDER_CAST_TARGET and
