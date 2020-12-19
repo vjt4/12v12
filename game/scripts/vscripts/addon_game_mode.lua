@@ -522,10 +522,8 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 	local spawnedUnit = EntIndexToHScript(event.entindex)
 	local tokenTrollCouter = "modifier_troll_feed_token_couter"
 
-
-
 	Timers:CreateTimer(0.1, function()
-		if spawnedUnit:IsTempestDouble() or spawnedUnit:IsClone()then
+		if spawnedUnit and spawnedUnit:IsTempestDouble() or spawnedUnit:IsClone()then
 			local playerId = spawnedUnit:GetPlayerOwnerID()
 			if _G.PlayersPatreonsPerk[playerId] then
 				local perkName = _G.PlayersPatreonsPerk[playerId]
@@ -3252,34 +3250,26 @@ function ChangeTeamForPlayer(playerID, newTeam)
 			end
 		end
 
-		for spell, name in pairs(ts_entities.Switch) do
-			if hero:HasAbility(spell) then
-				local units = Entities:FindAllByName(name)
-				if #units == 0 then
-					units = Entities:FindAllByModel(name)
-				end
-				for _, unit in pairs(units) do
-					if unit:GetPlayerOwnerID() == playerID then
-						unit:SetTeam(newTeam)
+		local changeTeamForUnits = function(table, func)
+			for spell, data in pairs(table) do
+				if hero:HasAbility(spell) then
+					local name = data.Name
+					local units = Entities:FindAllByName(name)
+					if #units == 0 then
+						units = Entities:FindAllByModel(name)
+					end
+					for _, unit in pairs(units) do
+						if unit:GetPlayerOwnerID() == playerID and (not data.Modifier or unit:HasModifier(data.Modifier)) then
+							func(unit, newTeam)
+							unit:SetTeam(newTeam)
+						end
 					end
 				end
 			end
 		end
 
-		for spell, name in pairs(ts_entities.Kill) do
-			if hero:HasAbility(spell) then
-				local units = Entities:FindAllByName(name)
-				if #units == 0 then
-					units = Entities:FindAllByModel(name)
-				end
-
-				for _, unit in pairs(units) do
-					if unit:GetPlayerOwnerID() == playerID then
-						unit:Kill(nil, nil)
-					end
-				end
-			end
-		end
+		changeTeamForUnits(ts_entities.Switch, function(unit, team) unit:SetTeam(team) end)
+		changeTeamForUnits(ts_entities.Kill, function(unit) unit:Kill(nil, nil) end)
 
 		local couriers = Entities:FindAllByName("npc_dota_courier")
 		for _, courier in pairs(couriers) do
