@@ -755,8 +755,12 @@ function CMegaDotaGameMode:FilterModifyGold( filterTable )
 end
 
 function CMegaDotaGameMode:FilterModifyExperience( filterTable )
---	print( "FilterModifyExperience" )
---	print( self.m_CurrentXpScaleFactor )
+	local hero = EntIndexToHScript(filterTable.hero_entindex_const)
+
+	if hero and hero.IsTempestDouble and hero:IsTempestDouble() then
+		return false
+	end
+
 	filterTable["experience"] = self.m_CurrentXpScaleFactor * filterTable["experience"]
 	return true
 end
