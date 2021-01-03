@@ -1246,6 +1246,12 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 		unit = EntIndexToHScript(filterTable.units["0"])
 	end
 
+	if not IsInToolsMode() and unit and unit.GetTeam and PlayerResource:GetPlayer(playerId) then
+		if unit:GetTeam() ~= PlayerResource:GetPlayer(playerId):GetTeam() then
+			return false
+		end
+	end
+
 	if orderType == DOTA_UNIT_ORDER_CAST_TARGET then
 		if target:GetName() == "npc_dota_seasonal_ti9_drums" then
 			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#dota_hud_error_cant_cast_on_other" })
