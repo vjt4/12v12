@@ -1,11 +1,11 @@
 WebApi = WebApi or {}
 
-local isTesting = IsInToolsMode() and false
+local isTesting = IsInToolsMode() and true or false
 local serverHost = IsInToolsMode() and "http://127.0.0.1:5000" or "http://163.172.174.77:8000"
 local dedicatedServerKey = GetDedicatedServerKeyV2("1")
 
 function WebApi:Send(path, data, onSuccess, onError)
-	local request = CreateHTTPRequestScriptVM("POST", serverHost .. "/api/" .. path)
+	local request = CreateHTTPRequestScriptVM("POST", serverHost .. "/api/lua/" .. path)
 	if isTesting then
 		print("Request to " .. path)
 		DeepPrintTable(data)
@@ -64,6 +64,7 @@ function WebApi:BeforeMatch()
 		local publicStats = {}
 		for _,player in ipairs(data.players) do
 			local playerId = GetPlayerIdBySteamId(player.steamId)
+			player.patreon = player.patreon or {}
 			if player.patreon["emblemColor"] == nil then
 				local colorNames = {
 					"White",
