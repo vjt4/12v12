@@ -1,10 +1,10 @@
-require("game/battlepass/core")
+require("common/battlepass/core")
 
-require("game/webapi/webapi")
-require("game/webapi/error_tracking")
-require("game/webapi/match_events")
-require("game/webapi/payments")
-require("game/webapi/supporters")
-require("game/webapi/feedback")
+require("common/webapi/webapi")
+require("common/webapi/error_tracking")
+require("common/webapi/match_events")
+require("common/webapi/payments")
+require("common/webapi/supporters")
+require("common/webapi/feedback")
 
 

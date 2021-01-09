@@ -1,16 +1,22 @@
 WebApi = WebApi or {}
 WebApi.playerSettings = WebApi.playerSettings or {}
+
+local isTesting = IsInToolsMode() and true or false
 for playerId = 0, 23 do
 	WebApi.playerSettings[playerId] = WebApi.playerSettings[playerId] or {}
 end
 WebApi.matchId = IsInToolsMode() and RandomInt(-10000000, -1) or tonumber(tostring(GameRules:GetMatchID()))
 FREE_SUPPORTER_COUNT = 6
 
-local serverHost = IsInToolsMode() and "http://localhost:5000" or "https://chc-2.dota2unofficial.com"
+local serverHost = IsInToolsMode() and "http://127.0.0.1:5000" or "https://chc-2.dota2unofficial.com"
 local dedicatedServerKey = GetDedicatedServerKeyV2("1")
 
 function WebApi:Send(path, data, onSuccess, onError, retryWhile)
 	local request = CreateHTTPRequestScriptVM("POST", serverHost .. "/api/lua/" .. path)
+	if isTesting then
+		print("Request to " .. path)
+		DeepPrintTable(data)
+	end
 
 	request:SetHTTPRequestHeaderValue("Dedicated-Server-Key", dedicatedServerKey)
 	if data ~= nil then
@@ -18,15 +24,30 @@ function WebApi:Send(path, data, onSuccess, onError, retryWhile)
 	end
 
 	request:Send(function(response)
-		print("RESPONSE status code: ", response.StatusCode)
 		if response.StatusCode >= 200 and response.StatusCode < 300 then
 			local data = json.decode(response.Body)
+			if isTesting then
+				print("Response from " .. path .. ":")
+				DeepPrintTable(data)
+			end
 			if onSuccess then
 				onSuccess(data)
 			end
 		else
 			local err = json.decode(response.Body)
 			if type(err) ~= "table" then err = {} end
+
+			if isTesting then
+				print("Error from " .. path .. ": " .. response.StatusCode)
+				if response.Body then
+					local status, result = pcall(json.decode, response.Body)
+					if status then
+						DeepPrintTable(result)
+					else
+						print(response.Body)
+					end
+				end
+			end
 
 			local message = (response.StatusCode == 0 and "Could not establish connection to the server. Please try again later.") or err.title or "Unknown error."
 			if err.traceId then
@@ -51,6 +72,7 @@ local function retryTimes(times)
 end
 
 function WebApi:BeforeMatch()
+	-- TODO: Smart random Init, patreon init, nettables init
 	local players = {}
 	for playerId = 0, 23 do
 		if PlayerResource:IsValidPlayerID(playerId) then
@@ -58,13 +80,8 @@ function WebApi:BeforeMatch()
 		end
 	end
 
-	WebApi:Send("match/before", { mapName = GetMapName(), players = players }, function(data)
+	WebApi:Send("match/before", {customGame = "dota12v12", mapName = GetMapName(), players = players }, function(data)
 		print("BEFORE MATCH")
-		table.print(data)
-		CustomNetTables:SetTableValue("leaderboards", "rating", data.leaderboards.rating)
-		CustomNetTables:SetTableValue("leaderboards", "bestPvP", data.leaderboards.bestPvP)
-		CustomNetTables:SetTableValue("leaderboards", "bestPvE", data.leaderboards.bestPvE)
-
 		WebApi.player_ratings = {}
 		WebApi.patch_notes = data.patchnotes
 		local matchesCount = {}
@@ -86,14 +103,13 @@ function WebApi:BeforeMatch()
 			end
 		end
 
-		-- Generate cosmetics table for tournament winners who are not supporters
-		for playerId = 0, 23 do
-			if PlayerResource:IsValidPlayerID(playerId) then
-				Econ:RefreshPlayerSupporterStatus(playerId)
-			end
-		end
-		CustomNetTables:SetTableValue("game", "game_counts", matchesCount)
-		CustomNetTables:SetTableValue("leaderboards", "match_rating_info", WebApi.player_ratings)
+		--[[
+		fill those tables
+		CustomNetTables:SetTableValue("game_state", "player_stats", publicStats)
+		CustomNetTables:SetTableValue("game_state", "leaderboard", data.leaderboard)
+		CustomNetTables:SetTableValue("game_state", "player_ratings", data.mapPlayersRating)
+		]]
+
 		local mapName = GetMapName()
 		WebApi.player_deltas = {}
 		for this_player_id, this_player_rating_map in pairs(WebApi.player_ratings) do
@@ -101,7 +117,6 @@ function WebApi:BeforeMatch()
 
 			if this_player_rating_map[mapName] then
 				WebApi.player_deltas[this_player_id] = math.min(20, math.max(-20, math.floor(0.02 * (rating_average - this_player_rating_map[mapName]))))
-				table.print(WebApi.player_deltas)
 			end
 		end
 
@@ -137,6 +152,69 @@ function WebApi:ForceSaveSettings(_playerId)
 		end
 	end
 	WebApi:Send("match/update-settings", { players = players })
+end
+
+function WebApi:AfterMatch(winnerTeam)
+	if not isTesting then
+		if GameRules:IsCheatMode() then return end
+		if GameRules:GetDOTATime(false, true) < 60 then return end
+	end
+
+	if winnerTeam < DOTA_TEAM_FIRST or winnerTeam > DOTA_TEAM_CUSTOM_MAX then return end
+	if winnerTeam == DOTA_TEAM_NEUTRALS or winnerTeam == DOTA_TEAM_NOTEAM then return end
+
+	local requestBody = {
+		customGame = WebApi.customGame,
+		matchId = isTesting and RandomInt(1, 10000000) or tonumber(tostring(GameRules:GetMatchID())),
+		duration = math.floor(GameRules:GetDOTATime(false, true)),
+		mapName = GetMapName(),
+		winner = winnerTeam,
+
+		players = {}
+	}
+
+	for playerId = 0, 23 do
+		if PlayerResource:IsValidTeamPlayerID(playerId) and not PlayerResource:IsFakeClient(playerId) then
+			local playerData = {
+				playerId = playerId,
+				steamId = tostring(PlayerResource:GetSteamID(playerId)),
+				team = PlayerResource:GetTeam(playerId),
+
+				hero = PlayerResource:GetSelectedHeroName(playerId),
+				pickReason = SmartRandom.PickReasons[playerId] or (PlayerResource:HasRandomed(playerId) and "random" or "pick"),
+				kills = PlayerResource:GetKills(playerId),
+				deaths = PlayerResource:GetDeaths(playerId),
+				assists = PlayerResource:GetAssists(playerId),
+				level = 0,
+				items = {},
+			}
+
+			local patreonSettings = Patreons:GetPlayerSettings(playerId)
+			-- Always add an update, because chat wheel favorites is a public feature
+			playerData.patreonUpdate = patreonSettings
+
+			local hero = PlayerResource:GetSelectedHeroEntity(playerId)
+			if IsValidEntity(hero) then
+				playerData.level = hero:GetLevel()
+				for slot = DOTA_ITEM_SLOT_1, DOTA_STASH_SLOT_6 do
+					local item = hero:GetItemInSlot(slot)
+					if item then
+						table.insert(playerData.items, {
+							slot = slot,
+							name = item:GetAbilityName(),
+							charges = item:GetCurrentCharges()
+						})
+					end
+				end
+			end
+
+			table.insert(requestBody.players, playerData)
+		end
+	end
+
+	if isTesting or #requestBody.players >= 5 then
+		WebApi:Send("match/after", requestBody)
+	end
 end
 
 function WebApi:AfterMatchTeam(team_number, is_pve)
@@ -264,7 +342,7 @@ function WebApi:GetOtherPlayersAverageRating(player_id)
 
 	if IsInToolsMode() then return rating_average end
 
-	for id, ratingMap in pairs(WebApi.player_ratings) do
+	for id, ratingMap in pairs(WebApi.player_ratings or {}) do
 		if id ~= player_id then
 			rating_total = rating_total + (ratingMap[mapName] or 1500)
 			rating_count = rating_count + 1

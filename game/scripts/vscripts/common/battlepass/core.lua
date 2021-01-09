@@ -1,11 +1,11 @@
-require("game/battlepass/player_progress")
-require("game/battlepass/quests")
-require("game/battlepass/chests")
-require("game/battlepass/achievements")
-require("game/battlepass/masteries")
-require("game/battlepass/inventory/wear_functions")
-require("game/battlepass/inventory/inventory")
-require("game/battlepass/tracker/progress_tracker")
+require("common/battlepass/player_progress")
+require("common/battlepass/quests")
+require("common/battlepass/chests")
+require("common/battlepass/achievements")
+require("common/battlepass/masteries")
+require("common/battlepass/inventory/wear_functions")
+require("common/battlepass/inventory/inventory")
+require("common/battlepass/tracker/progress_tracker")
 
 Battlepass = Battlepass or {}
 
@@ -22,7 +22,7 @@ function Battlepass:Init()
 	BP_Inventory:Init()
 	WearFunc:Init()
 	Feedback:Init()
-	
+
 	Battlepass:InitConversionTables()
 end
 
@@ -87,12 +87,12 @@ function Battlepass:OnDataArrival(data)
 	table.print(player_stats)
 	print("---------------------INVENTORIES----------------------")
 	table.print(inventories)
-	
+
 	BP_Achievements:OnDataArrival(achievements, achievements_definition)
 	BP_Quests:OnDataArrival(quests, quests_definitions)
 	BP_PlayerProgress:OnDataArrival(player_stats)
 	BP_Inventory:OnDataArrival(inventories, equipped_items)
-	
+
 	--print("GLORY:", BP_PlayerProgress["76561198132422587"].glory)
 end
 

@@ -1,7 +1,7 @@
 WearFunc = WearFunc or {}
-LinkLuaModifier("modifier_cosmetic_pet", "game/battlepass/inventory/modifiers/modifier_cosmetic_pet", LUA_MODIFIER_MOTION_NONE)
-LinkLuaModifier("modifier_dummy_caster", "game/battlepass/inventory/modifiers/modifier_dummy_caster", LUA_MODIFIER_MOTION_NONE)
-LinkLuaModifier("modifier_cosmetic_pet_flying_visual", "game/battlepass/inventory/modifiers/modifier_cosmetic_pet_flying_visual", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_cosmetic_pet", "common/battlepass/inventory/modifiers/modifier_cosmetic_pet", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_dummy_caster", "common/battlepass/inventory/modifiers/modifier_dummy_caster", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_cosmetic_pet_flying_visual", "common/battlepass/inventory/modifiers/modifier_cosmetic_pet_flying_visual", LUA_MODIFIER_MOTION_NONE)
 
 function WearFunc:Init()
 	for category, _ in pairs(BP_Inventory.categories) do
@@ -14,7 +14,7 @@ function WearFunc.Equip_CosmeticAbilities(playerId, itemName)
 		BP_Inventory:TakeOffItem({ PlayerID = playerId, itemName = WearFunc.CosmeticAbilities[playerId] })
 	end
 	WearFunc.CosmeticAbilities[playerId] = itemName
-	
+
 	local hero = PlayerResource:GetSelectedHeroEntity(playerId)
 	hero.dummyCaster:RemoveAbility( "default_cosmetic_ability" )
 	Cosmetics:AddAbility(hero.dummyCaster, itemName)
@@ -83,7 +83,7 @@ function WearFunc.Equip_Auras(playerId, itemName)
 	else
 		BP_Inventory:TakeOffItem({ PlayerID = playerId, itemName = WearFunc.Auras[playerId].itemName })
 	end
-	
+
 	local particles = BP_Inventory.item_definitions[itemName].Particles
 	WearFunc.Auras[playerId].itemName = itemName
 	WearFunc.Auras[playerId].equippedParticles = {}
@@ -102,7 +102,7 @@ function WearFunc.TakeOff_Pets(playerId)
 			pet:Destroy()
 		end
 	end
-	
+
 	if WearFunc.Pets[playerId].particles then
 		for _, particle in pairs(WearFunc.Pets[playerId].particles) do
 			ParticleManager:DestroyParticle(particle, true)
@@ -116,7 +116,7 @@ function WearFunc.Equip_Pets(playerId, itemName)
 	if not WearFunc.Pets[playerId] then
 		WearFunc.Pets[playerId] = { particles = {} }
 	end
-	
+
 	local oldPet = WearFunc.Pets[playerId] and WearFunc.Pets[playerId].unit
 	local oldPetPos
 	local oldPetDir
@@ -134,21 +134,21 @@ function WearFunc.Equip_Pets(playerId, itemName)
 	else
 		pet = CreateUnitByName("npc_cosmetic_pet", oldPetPos or hero:GetAbsOrigin() + RandomVector(RandomInt(100, 160)), true, hero, hero, hero:GetTeam())
 	end
-	
+
 	pet:SetForwardVector(oldPetDir or hero:GetAbsOrigin())
 	pet:AddNewModifier(pet, nil, "modifier_cosmetic_pet", { hero = PlayerResource:GetSelectedHeroEntity(playerId) })
 	pet:SetModel(petData.Model)
 	pet:SetOriginalModel(petData.Model)
 	pet:SetModelScale(petData.ModelScale)
-	
+
 	if petData.MaterialGroup then
-		pet:SetMaterialGroup(tostring(petData.MaterialGroup))	
+		pet:SetMaterialGroup(tostring(petData.MaterialGroup))
 	end
 
 	if petData.IsFlying then
 		pet:AddNewModifier(pet, nil, "modifier_cosmetic_pet_flying_visual", {})
 	end
-	
+
 	if petData.Particles then
 		WearFunc:_CreateParticlesFromConfigList(petData.Particles, pet, WearFunc.Pets[playerId].particles)
 	end

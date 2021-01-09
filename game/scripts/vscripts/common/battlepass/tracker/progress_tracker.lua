@@ -1,14 +1,14 @@
 ProgressTracker = ProgressTracker or {}
 
-require("game/battlepass/tracker/progress_callbacks")
+require("common/battlepass/tracker/progress_callbacks")
 
-LinkLuaModifier("modifier_tracker_dummy", "game/battlepass/tracker/modifier_tracker_dummy", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_tracker_dummy", "common/battlepass/tracker/modifier_tracker_dummy", LUA_MODIFIER_MOTION_NONE)
 
 SERVER_UPDATE_DELAY = 10
 
 function ProgressTracker:Init()
 	ProgressTracker = ProgressTracker or {}
-	ProgressTracker.events_specs = LoadKeyValues("scripts/vscripts/game/battlepass/tracker/event_types.kv")
+	ProgressTracker.events_specs = LoadKeyValues("scripts/vscripts/common/battlepass/tracker/event_types.kv")
 
 	for name, event_spec in pairs(self.events_specs) do
 		if event_spec["Kind"] then
@@ -69,9 +69,9 @@ end
 
 
 --[[
-dummy gets event call 
--> propagates to tracker 
--> tracker calls all associated callbacks 
+dummy gets event call
+-> propagates to tracker
+-> tracker calls all associated callbacks
 -> they filter and apply changes
 -> tracker schedules quests and achievements changes to submit to server, if they were
 ]]
@@ -82,9 +82,9 @@ function ProgressTracker:SetupListeners(data, player_entry)
 	if not data then return end
 	if not data.type then return end
 	print("[ProgressTracker] Trackable Name:", data.name)
-	if player_entry.completed then 
+	if player_entry.completed then
 		print(player_entry.SteamId, "aleady completed trackable, ignoring")
-		return 
+		return
 	end
 	local m_type = data.type
 	local event_spec = ProgressTracker.events_specs[m_type]
@@ -204,7 +204,7 @@ function ProgressTracker:FilterCall(event_data, spec, hero)
 		-- print(lua_function, "result", func_res)
 		if not func_res then return false end
 	end
-	
+
 	return true
 end
 

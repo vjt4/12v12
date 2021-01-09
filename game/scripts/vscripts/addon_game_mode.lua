@@ -906,7 +906,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
         }
 		Timers:RemoveTimer("game_options_unpause")
 		Convars:SetFloat("host_timescale", 1)
-		Convars:SetFloat("host_timescale", 0.07)
+		Convars:SetFloat("host_timescale", IsInToolsMode() and 1 or 0.07)
 		Timers:CreateTimer({
 			useGameTime = false,
 			endTime = 2.1,

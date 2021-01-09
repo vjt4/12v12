@@ -65,33 +65,7 @@ function WebApi:BeforeMatch()
 		for _,player in ipairs(data.players) do
 			local playerId = GetPlayerIdBySteamId(player.steamId)
 			player.patreon = player.patreon or {}
-			if player.patreon["emblemColor"] == nil then
-				local colorNames = {
-					"White",
-					"Red",
-					"Green",
-					"Blue",
-					"Cyan",
-					"Yellow",
-					"Pink",
-					"Maroon",
-					"Brown",
-					"Olive",
-					"Teal",
-					"Navy",
-					"Black",
-					"Orange",
-					"Lime",
-					"Purple",
-					"Magenta",
-					"Grey",
-					"Apricot",
-					"Beige",
-					"Mint",
-					"Lavender",
-				}
-				player.patreon["emblemColor"] = colorNames[RandomInt(1, #colorNames)]
-			end
+			player.patreon["emblemColor"] = "Cyan"
 			Patreons:SetPlayerSettings(playerId, player.patreon)
 			SmartRandom:SetPlayerInfo(playerId, player.smartRandomHeroes, player.smartRandomHeroesError)
 
