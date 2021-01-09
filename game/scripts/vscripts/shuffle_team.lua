@@ -66,7 +66,7 @@ function ShuffleTeam:SortInMMR()
 					teamId = 3
 				end
 				for _, playerId in pairs(partyData.players) do
-					if #teams[teamId].players >= MAX_PLAYERS_IN_TEAM then
+					if (#teams[teamId].players + #partyData.players) > MAX_PLAYERS_IN_TEAM then
 						teamId = teamId == 2 and 3 or 2
 					end
 					table.insert(teams[teamId].players, playerId)
