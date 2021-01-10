@@ -12,7 +12,6 @@ end
 function Supporters:SetPlayerState(playerId, state)
 	Supporters.playerState[playerId] = state
 	CustomNetTables:SetTableValue("game", "player_supporter_" .. playerId, state)
-	Econ:RefreshPlayerSupporterStatus(playerId)
 end
 
 local developerSteamIds = {

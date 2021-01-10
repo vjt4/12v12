@@ -231,6 +231,7 @@ function CMegaDotaGameMode:InitGameMode()
 
 	GameOptions:Init()
 	UniquePortraits:Init()
+	Battlepass:Init()
 end
 
 function IsInBugZone(pos)

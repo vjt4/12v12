@@ -7,9 +7,9 @@ LinkLuaModifier("modifier_tracker_dummy", "common/battlepass/tracker/modifier_tr
 SERVER_UPDATE_DELAY = 10
 
 function ProgressTracker:Init()
+	print("[ProgressTracker] init")
 	ProgressTracker = ProgressTracker or {}
 	ProgressTracker.events_specs = LoadKeyValues("scripts/vscripts/common/battlepass/tracker/event_types.kv")
-
 	for name, event_spec in pairs(self.events_specs) do
 		if event_spec["Kind"] then
 			event_spec["Kind"] = ProgressTracker:ParseKvToNumber(event_spec["Kind"])
@@ -83,7 +83,7 @@ function ProgressTracker:SetupListeners(data, player_entry)
 	if not data.type then return end
 	print("[ProgressTracker] Trackable Name:", data.name)
 	if player_entry.completed then
-		print(player_entry.SteamId, "aleady completed trackable, ignoring")
+		print("[ProgressTracker]", player_entry.steamId, "already completed trackable, ignoring")
 		return
 	end
 	local m_type = data.type
@@ -95,11 +95,9 @@ function ProgressTracker:SetupListeners(data, player_entry)
 
 	local event_name = event_spec["EventListener"]
 	if not event_name then
-		print("[ProgressTracker] event name for event type <" .. m_type .. "> not found.")
+		print("[ProgressTracker] <EventListener> for event type <" .. m_type .. "> not found.")
 		return
 	end
-
-	print(event_name)
 
 	if event_name ~= "EVENT_CUSTOM" then
 		if not ProgressTracker.event_listeners[event_name] then

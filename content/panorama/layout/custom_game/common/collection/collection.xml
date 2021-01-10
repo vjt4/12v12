@@ -1,21 +1,21 @@
 <root>
 	<styles>
 		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
-		<include src="file://{resources}/layout/custom_game/collection/collection.css" />
-		<include src="file://{resources}/layout/custom_game/collection/payments.css" />
-		<include src="file://{resources}/layout/custom_game/barrage/barrage.css" />
-		<include src="file://{resources}/layout/custom_game/collection/mastery.css" />
+		<include src="file://{resources}/layout/custom_game/common/collection/collection.css" />
+		<include src="file://{resources}/layout/custom_game/common/collection/payments.css" />
+		<include src="file://{resources}/layout/custom_game/common/barrage/barrage.css" />
+		<include src="file://{resources}/layout/custom_game/common/collection/mastery.css" />
 	</styles>
 
 	<scripts>
 		<include src="file://{resources}/layout/custom_game/util.js" />
-		<include src="file://{resources}/layout/custom_game/collection/collection_const.js" />
-		<include src="file://{resources}/layout/custom_game/collection/mastery_const.js" />
-		<include src="file://{resources}/layout/custom_game/collection/payments_const.js" />
-		<include src="file://{resources}/layout/custom_game/collection/collection.js" />
-		<include src="file://{resources}/layout/custom_game/collection/payments.js" />
-		<include src="file://{resources}/layout/custom_game/collection/glory_shop.js" />
-		<include src="file://{resources}/layout/custom_game/collection/mastery.js" />
+		<include src="file://{resources}/layout/custom_game/common/collection/collection_const.js" />
+		<include src="file://{resources}/layout/custom_game/common/collection/mastery_const.js" />
+		<include src="file://{resources}/layout/custom_game/common/collection/payments_const.js" />
+		<include src="file://{resources}/layout/custom_game/common/collection/collection.js" />
+		<include src="file://{resources}/layout/custom_game/common/collection/payments.js" />
+		<include src="file://{resources}/layout/custom_game/common/collection/glory_shop.js" />
+		<include src="file://{resources}/layout/custom_game/common/collection/mastery.js" />
 	</scripts>
 
 	<snippets>
@@ -75,7 +75,7 @@
 							</Panel>
 						</Panel>
 						<Panel id="MasteryEquip">
-							<Button id="MasteryEquipButton" class="MasteryButton InfoButton" onactivate="EquipMasteryResponse()" 
+							<Button id="MasteryEquipButton" class="MasteryButton InfoButton" onactivate="EquipMasteryResponse()"
 									onmouseover="MasteryEquipHint()" onmouseout="DOTAHideTextTooltip()">
 								<Label class="MasteryButtonText" text="#equip_mastery"/>
 							</Button>

@@ -87,10 +87,6 @@ function WebApi:BeforeMatch()
 		local matchesCount = {}
 		for _, player in ipairs(data.players) do
 			local playerId = GetPlayerIdBySteamId(player.steamId)
-			if player.settings then
-				WebApi.playerSettings[playerId] = player.settings
-				ErrorTracking.Try(PlayerOptions.PlayerSettingsLoaded, PlayerOptions, playerId, player.settings)
-			end
 			if player.rating then
 				WebApi.player_ratings[playerId] = player.rating
 			end
