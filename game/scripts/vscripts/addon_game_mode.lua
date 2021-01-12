@@ -196,7 +196,7 @@ function CMegaDotaGameMode:InitGameMode()
 			if container then
 				local item = container:GetContainedItem()
 
-				if item:GetAbilityName():find( "item_ward_" ) then
+				if item and item:GetAbilityName():find( "item_ward_" ) then
 					local owner = item:GetOwner()
 
 					if owner then
@@ -1036,6 +1036,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		end
 
 		if hInventoryParent:IsRealHero() then
+			-- Case where player buys a patreon bundle on a hero
 			local plyID = hInventoryParent:GetPlayerID()
 			if not plyID then return true end
 			local pitems = {
@@ -1079,6 +1080,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				end
 			end
 		else
+			-- Case where player buys a patreon bundle on a unit that's not a hero
 			local pitems = {
 				"item_patreonbundle_1",
 				"item_patreonbundle_2",
@@ -1153,7 +1155,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			local psets = Patreons:GetPlayerSettings(prshID)
 			local correctInventory = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
 
-			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and (ItemIsFastBuying(hItem:GetName()) or psets.level > 0) then
+			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and not purchaser:IsInRangeOfShop(DOTA_SHOP_HOME, true) and (ItemIsFastBuying(hItem:GetName()) or psets.level > 0) then
 				if hItem:TransferToBuyer(hInventoryParent) == false then
 					return false
 				end
