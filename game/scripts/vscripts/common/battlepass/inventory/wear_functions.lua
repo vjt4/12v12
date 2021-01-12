@@ -7,6 +7,15 @@ function WearFunc:Init()
 	for category, _ in pairs(BP_Inventory.categories) do
 		WearFunc[category] = {}
 	end
+	ListenToGameEvent( "entity_killed", Dynamic_Wrap( self, "OnEntityKilled" ), self )
+end
+
+function WearFunc:OnEntityKilled(data)
+	local hKilledUnit = EntIndexToHScript(data.entindex_killed)
+	local hAttackerUnit = EntIndexToHScript( data.entindex_attacker )
+	if hAttackerUnit and hKilledUnit then
+		WearFunc:CreateKilledEffect(hAttackerUnit, hKilledUnit)
+	end
 end
 
 function WearFunc.Equip_CosmeticAbilities(playerId, itemName)

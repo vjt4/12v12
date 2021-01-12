@@ -6,6 +6,7 @@ require("common/battlepass/masteries")
 require("common/battlepass/inventory/wear_functions")
 require("common/battlepass/inventory/inventory")
 require("common/battlepass/tracker/progress_tracker")
+require("common/battlepass/cosmetic_abilities")
 
 Battlepass = Battlepass or {}
 
@@ -22,6 +23,7 @@ function Battlepass:Init()
 	BP_Inventory:Init()
 	WearFunc:Init()
 	Feedback:Init()
+	Cosmetics:Init()
 
 	Battlepass:InitConversionTables()
 end

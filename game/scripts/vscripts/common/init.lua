@@ -7,7 +7,6 @@ require("common/courier")
 
 require("common/disable_help")
 require("common/smart_random")
-require("common/cosmetic_abilities")
 
 require("common/personal_items_cooldown")
 require("common/fast_items")
@@ -16,3 +15,4 @@ require("common/patreons_game_perk/patreon_game_perk")
 require("common/voting_to_kick")
 require("common/auto_team")
 require("common/unique_portraits")
+require("common/custom_chat")

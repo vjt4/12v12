@@ -482,7 +482,8 @@ function InitCollection(_data) {
 						"UIShowCustomLayoutParametersTooltip",
 						panel,
 						"ChcItemTooltip",
-						"file://{resources}/layout/custom_game/collection/chc_item_tooltip/chc_item_tooltip.xml",
+
+						"file://{resources}/layout/custom_game/common/collection/chc_item_tooltip/chc_item_tooltip.xml",
 						params,
 					);
 					if (item.BHasClass("NewItemGlow")) {
@@ -603,8 +604,8 @@ function InitCollection(_data) {
 	};
 	createItems(_data.treasures, true);
 	createItems(_data.items, false);
-	SelectItemType("Masteries");
-	FindDotaHudElement("TopMenuIcon_Inventory").visible = true;
+	SelectItemType("Treasures");
+	FindDotaHudElement("CollectionTopButton").visible = true;
 }
 
 function ClearChildredFromClass(parentName, className) {

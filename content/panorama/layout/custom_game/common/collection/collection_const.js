@@ -141,3 +141,4 @@ const ITEMS_BUY_COINS_SOUNDS = {
 	false: "ui.contract_fail",
 };
 const ITEM_CHANGE_EQUIP_STATE_COOLDOWN = 0.5;
+const MAP_NAME = Game.GetMapInfo().map_display_name;

@@ -42,6 +42,7 @@ require("neutral_items_drop_choice")
 require("gpm_lib")
 require("game_options/game_options")
 require("shuffle_team")
+Precache = require( "precache" )
 
 WebApi.customGame = "Dota12v12"
 
@@ -77,24 +78,7 @@ if CMegaDotaGameMode == nil then
 	--refer to: http://stackoverflow.com/questions/6586145/lua-require-with-global-local
 end
 
-function Precache( context )
-	PrecacheResource( "soundfile", "soundevents/custom_soundboard_soundevents.vsndevts", context )
-
-	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_chen.vsndevts", context )
-	PrecacheResource( "particle", "particles/alert_ban_hammer.vpcf", context )
-	PrecacheResource( "particle", "particles/econ/items/faceless_void/faceless_void_weapon_bfury/faceless_void_weapon_bfury_cleave_c.vpcf", context )
-	PrecacheResource( "particle", "particles/custom_cleave.vpcf", context )
-
-	local heroeskv = LoadKeyValues("scripts/heroes.txt")
-	for hero, _ in pairs(heroeskv) do
-		PrecacheResource( "soundfile", "soundevents/voscripts/game_sounds_vo_"..string.sub(hero,15)..".vsndevts", context )
-	end
-
-	Cosmetics:Precache( context )
-end
-
 function Activate()
-	Cosmetics:Init()
 	CMegaDotaGameMode:InitGameMode()
 end
 
@@ -232,6 +216,7 @@ function CMegaDotaGameMode:InitGameMode()
 	GameOptions:Init()
 	UniquePortraits:Init()
 	Battlepass:Init()
+	CustomChat:Init()
 end
 
 function IsInBugZone(pos)
@@ -645,6 +630,9 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 		--local psets = Patreons:GetPlayerSettings(playerId)
 		if PlayerResource:GetPlayer(playerId) and not PlayerResource:GetPlayer(playerId).dummyInventory then
 			CreateDummyInventoryForPlayer(playerId, spawnedUnit)
+		end
+		if not spawnedUnit.dummyCaster then
+			Cosmetics:InitCosmeticForUnit(spawnedUnit)
 		end
 		--if psets.level > 1 and _G.personalCouriers[playerId] == nil then
 		--	local courier_spawn = {

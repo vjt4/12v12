@@ -74,6 +74,37 @@ function table.concat(tbl1,tbl2)
 	return tbl
 end
 
+function table.random(t)
+	local keys = {}
+	for k, _ in pairs(t) do
+		table.insert(keys, k)
+	end
+	local key = keys[RandomInt(1, # keys)]
+	return t[key], key
+end
+
+function toboolean(value)
+	if not value then return value end
+	local val_type = type(value)
+	if val_type == "boolean" then return value end
+	if val_type == "number"	then return value ~= 0 end
+	return true
+end
+
+function table.remove_item(tbl,item)
+	if not tbl then return end
+	local i,max=1,#tbl
+	while i<=max do
+		if tbl[i] == item then
+			table.remove(tbl,i)
+			i = i-1
+			max = max-1
+		end
+		i= i+1
+	end
+	return tbl
+end
+
 function CalculateDirection(ent1, ent2)
 	local pos1 = ent1
 	local pos2 = ent2

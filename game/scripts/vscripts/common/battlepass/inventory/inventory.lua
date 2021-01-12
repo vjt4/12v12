@@ -558,7 +558,7 @@ function BP_Inventory:InitBaseCollection(_data)
 	if not _data.PlayerID or  _data.PlayerID < 0 then return end
 	local playerId = _data.PlayerID
 	local hero = PlayerResource:GetSelectedHeroEntity(playerId)
-	if not hero or not hero.bSelected or not BP_Inventory.bCollectionLoaded then
+	if not hero or not IsValidEntity(hero) or not BP_Inventory.bCollectionLoaded then
 		Timers:CreateTimer(1, function()
 			BP_Inventory:InitBaseCollection(_data)
 		end)

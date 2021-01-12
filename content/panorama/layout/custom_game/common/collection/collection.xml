@@ -1,14 +1,16 @@
 <root>
 	<styles>
 		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
+		<include src="file://{resources}/layout/custom_game/common/barrage/barrage.css" />
 		<include src="file://{resources}/layout/custom_game/common/collection/collection.css" />
 		<include src="file://{resources}/layout/custom_game/common/collection/payments.css" />
-		<include src="file://{resources}/layout/custom_game/common/barrage/barrage.css" />
 		<include src="file://{resources}/layout/custom_game/common/collection/mastery.css" />
+		<include src="file://{resources}/layout/custom_game/common/collection/12v12/collection_12v12.css" />
 	</styles>
 
 	<scripts>
-		<include src="file://{resources}/layout/custom_game/util.js" />
+		<include src="file://{resources}/layout/custom_game/common/utils.js" />
+		<include src="file://{resources}/layout/custom_game/common/collection/12v12/collection_12v12.js" />
 		<include src="file://{resources}/layout/custom_game/common/collection/collection_const.js" />
 		<include src="file://{resources}/layout/custom_game/common/collection/mastery_const.js" />
 		<include src="file://{resources}/layout/custom_game/common/collection/payments_const.js" />
@@ -16,6 +18,7 @@
 		<include src="file://{resources}/layout/custom_game/common/collection/payments.js" />
 		<include src="file://{resources}/layout/custom_game/common/collection/glory_shop.js" />
 		<include src="file://{resources}/layout/custom_game/common/collection/mastery.js" />
+
 	</scripts>
 
 	<snippets>
@@ -151,7 +154,7 @@
 						<Image class="GloryOfferHeaderIcon" src="file://{resources}/images/custom_game/collection/collection_coin.png"/>
 						<Label id="GloryOfferHeaderText_Glory" text="100"/>
 					</Panel>
-					<Panel class="GloryTextRoot">
+					<Panel class="GloryTextRoot OfferFortune">
 						<Image class="GloryOfferHeaderIcon" src="file://{images}/custom_game/collection/mastery/fortune_icon.png"/>
 						<Label id="GloryOfferHeaderText_Fortune" text="100"/>
 					</Panel>
