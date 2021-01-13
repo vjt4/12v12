@@ -138,7 +138,7 @@ RegisterCustomEventListener("patreon:payments:create", function(args)
 	)
 end)
 
-MatchEvents.ResponseHandlers.paymentUpdate = function(response)
+MatchEvents.ResponseHandlers.paymentUpdate2 = function(response)
 	local payerSteamId = response.payerSteamId
 	local playerId = GetPlayerIdBySteamId(payerSteamId)
 
