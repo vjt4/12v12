@@ -1005,4 +1005,5 @@ function SelectSprays() {
 	GameEvents.Subscribe("battlepass_inventory:select_sprays", SelectSprays);
 	GameEvents.Subscribe("battlepass_inventory:open_specific_collection", OpenSpecificCollection);
 	SubscribeToNetTableKey("player_settings", Game.GetLocalPlayerID().toString(), SettingsFromSaved);
+	collectionCHC.AddClass(MAP_NAME);
 })();

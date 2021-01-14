@@ -7,7 +7,7 @@
 			ToggleMenu("CollectionCHC");
 		},
 		() => {
-			$.DispatchEvent("DOTAShowTextTooltip", collectionButton, "#TopMenuIcon_Inventory_message");
+			$.DispatchEvent("DOTAShowTextTooltip", collectionButton, "#TopMenuIcon_Collection_message");
 		},
 		() => {
 			$.DispatchEvent("DOTAHideTextTooltip");

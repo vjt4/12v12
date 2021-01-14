@@ -29,6 +29,21 @@
 	background-position: 50% 100%;
 	background-repeat: no-repeat;
 }
+.dota #CollectionImage,
+.dota_tournament #CollectionImage {
+	background-image: url("file://{resources}/images/custom_game/collection/collection_icon_12v12.png");
+}
+.core_quartet #CollectionImage,
+.desert_octet #CollectionImage,
+.desert_quintet #CollectionImage,
+.forest_solo #CollectionImage,
+.mines_trio #CollectionImage,
+.temple_quartet #CollectionImage,
+.temple_sextet #CollectionImage,
+.desert_duo #CollectionImage {
+	background-image: url("file://{resources}/images/custom_game/collection/collection_icon_OT.png");
+}
+
 #CollectionHeader {
 	horizontal-align: center;
 	font-size: 28px;
