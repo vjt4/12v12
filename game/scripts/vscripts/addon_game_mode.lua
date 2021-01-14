@@ -620,21 +620,22 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 		if not spawnedUnit.firstTimeSpawned then
 			spawnedUnit.firstTimeSpawned = true
 			spawnedUnit:SetContextThink("HeroFirstSpawn", function()
-
+				--[[
 				if spawnedUnit == PlayerResource:GetSelectedHeroEntity(playerId) then
 					Patreons:GiveOnSpawnBonus(playerId)
 				end
+				]]
 			end, 2/30)
 		end
 
-		--local psets = Patreons:GetPlayerSettings(playerId)
+		--local supporter_level = Supporters:GetLevel(playerId)
 		if PlayerResource:GetPlayer(playerId) and not PlayerResource:GetPlayer(playerId).dummyInventory then
 			CreateDummyInventoryForPlayer(playerId, spawnedUnit)
 		end
 		if not spawnedUnit.dummyCaster then
 			Cosmetics:InitCosmeticForUnit(spawnedUnit)
 		end
-		--if psets.level > 1 and _G.personalCouriers[playerId] == nil then
+		--if supporter_level > 1 and _G.personalCouriers[playerId] == nil then
 		--	local courier_spawn = {
 		--		[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant"),
 		--		[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire"),
@@ -1052,8 +1053,8 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				end
 			end
 			if pitem == true then
-				local psets = Patreons:GetPlayerSettings(plyID)
-				if psets.level < 1 then
+				local supporter_level = Supporters:GetLevel(plyID)
+				if supporter_level < 1 then
 					CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#nopatreonerror" })
 					UTIL_Remove(hItem)
 					return false
@@ -1088,8 +1089,8 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 								UTIL_Remove(hItem)
 								return false
 							end
-							local psets = Patreons:GetPlayerSettings(prshID)
-							if not psets then
+							local supporter_level = Supporters:GetLevel(prshID)
+							if not supporter_level then
 								UTIL_Remove(hItem)
 								return false
 							end
@@ -1100,7 +1101,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 									return false
 								end
 							else
-								if psets.level < 1 then
+								if supporter_level < 1 then
 									CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(prshID), "display_custom_error", { message = "#nopatreonerror" })
 									UTIL_Remove(hItem)
 									return false
@@ -1139,10 +1140,10 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 
 		if purchaser then
 			local prshID = purchaser:GetPlayerID()
-			local psets = Patreons:GetPlayerSettings(prshID)
+			local supporter_level = Supporters:GetLevel(prshID)
 			local correctInventory = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
 
-			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and (ItemIsFastBuying(hItem:GetName()) or psets.level > 0) then
+			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and (ItemIsFastBuying(hItem:GetName()) or supporter_level > 0) then
 				if hItem:TransferToBuyer(hInventoryParent) == false then
 					return false
 				end
@@ -1418,7 +1419,7 @@ end)
 votimer = {}
 vousedcol = {}
 SelectVO = function(keys)
-	local psets = Patreons:GetPlayerSettings(keys.PlayerID)
+	local supporter_level = Supporters:GetLevel(keys.PlayerID)
 	print(keys.num)
 	local heroes = {
 		"abaddon",

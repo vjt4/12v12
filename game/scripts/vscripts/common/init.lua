@@ -2,7 +2,7 @@ require("common/timers")
 require("common/utils")
 require("common/webapi/init")
 --require("common/match_events")
-require("common/patreons")
+-- require("common/patreons")
 require("common/courier")
 
 require("common/disable_help")
