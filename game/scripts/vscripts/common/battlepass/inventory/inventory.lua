@@ -140,7 +140,7 @@ function BP_Inventory:UpdateLocalItems(steam_id)
 	end
 
 	for itemName, itemData in pairs (self.item_definitions) do
-		addingItemFilter(itemName, itemData, "CHC_MMR", playerMMR)
+		addingItemFilter(itemName, itemData, "DOTAU_MMR", playerMMR)
 		addingItemFilter(itemName, itemData, "SupporterState", boosterStatus)
 	end
 end
@@ -511,7 +511,7 @@ function BP_Inventory:EquipItem(data)
 		return source and source[sourceName] and value < source[sourceName]
 	end
 
-	if equipItemFilter("CHC_MMR", playerMMR) or equipItemFilter("SupporterState", Supporters:GetLevel(playerId)) then
+	if equipItemFilter("DOTAU_MMR", playerMMR) or equipItemFilter("SupporterState", Supporters:GetLevel(playerId)) then
 		data.skipSave = nil
 		self:TakeOffItem(data)
 		return

@@ -1,5 +1,5 @@
 @define BorderColor: #171717;
-.CHCItemTooltipRoot {
+.DotaUItemTooltipRoot {
 	width: 280px;
 	background-color: #202324;
 	flow-children: down;

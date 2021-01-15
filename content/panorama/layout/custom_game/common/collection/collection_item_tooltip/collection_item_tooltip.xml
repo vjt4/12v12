@@ -2,16 +2,16 @@
 	<styles>
 		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
 		<include src="file://{resources}/layout/custom_game/common/collection/collection.css" />
-		<include src="file://{resources}/layout/custom_game/common/collection/chc_item_tooltip/chc_item_tooltip.css" />
+		<include src="file://{resources}/layout/custom_game/common/collection/collection_item_tooltip/collection_item_tooltip.css" />
 	</styles>
 
 	<scripts>
 		<include src="file://{resources}/layout/custom_game/common/utils.js" />
 		<include src="file://{resources}/layout/custom_game/common/collection/collection_const.js" />
 		<include src="file://{resources}/layout/custom_game/common/collection/payments_const.js" />
-		<include src="file://{resources}/layout/custom_game/common/collection/chc_item_tooltip/chc_item_tooltip.js" />
+		<include src="file://{resources}/layout/custom_game/common/collection/collection_item_tooltip/collection_item_tooltip.js" />
 	</scripts>
-	<Panel class="CHCItemTooltipRoot" hittest="false" hittestchildren="false" ontooltiploaded="setTooltip()">
+	<Panel class="DotaUItemTooltipRoot" hittest="false" hittestchildren="false" ontooltiploaded="setTooltip()">
 		<Label id="TooltipName" html="true"/>
 		<Label id="RarityLabel"/>
 		<Panel id="MainInfo">

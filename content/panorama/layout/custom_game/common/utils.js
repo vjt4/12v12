@@ -87,11 +87,11 @@ function CreateButtonInTopMenu(button, activateEvent, overEvent, outEvent) {
 
 let boostGlow = false;
 let glowSchelude;
-const CENTER_SCREEN_MENUS = ["CollectionCHC"];
+const CENTER_SCREEN_MENUS = ["CollectionDotaU"];
 
 function ToggleMenu(name) {
 	FindDotaHudElement(name).ToggleClass("show");
-	if (name == "CollectionCHC") {
+	if (name == "CollectionDotaU") {
 		if (glowSchelude != null) {
 			$.CancelScheduled(glowSchelude);
 		}

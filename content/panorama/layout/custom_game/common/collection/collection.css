@@ -5,7 +5,7 @@
 	width: 100%;
 	height: 100%;
 }
-#CollectionCHC {
+#CollectionDotaU {
 	width: 1200px;
 	height: 1015px;
 	vertical-align: center;
@@ -15,7 +15,7 @@
 	transform: translatey(-100px);
 	transition: opacity 0.2s ease-in-out 0s, transform 0.15s ease-in-out 0s;
 }
-#CollectionCHC.show {
+#CollectionDotaU.show {
 	opacity: 1;
 	transform: translatey(0px);
 }
@@ -61,6 +61,7 @@
 	background-image: url("file://{resources}/images/custom_game/leaderboards/leaderboards_background_1.png");
 	background-size: 100%;
 	background-color: #4f5179;
+	box-shadow: rgba(0, 0, 0, 0.65) 0px 0px 8px 0px;
 }
 #CollectionOverlayGrid {
 	width: 100%;
@@ -85,28 +86,28 @@
 	box-shadow: rgba(0, 0, 0, 0.55) 0px 0px 20px 0px;
 }
 
-.CloseCHC {
+.CloseDotaU {
 	flow-children: right;
 	align: right top;
 	margin-top: 18px;
 	margin-right: 25px;
 	transition: brightness 0.2s ease-in-out 0s;
 }
-.CloseCHC:hover {
+.CloseDotaU:hover {
 	brightness: 1.8;
 	transition: brightness 0.1s ease-in-out 0s;
 }
-.CloseCHC:active {
+.CloseDotaU:active {
 	brightness: 1.2;
 }
-.CloseCHC > Image {
+.CloseDotaU > Image {
 	width: 16px;
 	height: 16px;
 	vertical-align: center;
 	wash-color: #92a4bd;
 	margin-right: 4px;
 }
-.CloseCHC > Label {
+.CloseDotaU > Label {
 	font-size: 16px;
 	text-transform: uppercase;
 	margin-top: 1px;
@@ -201,19 +202,19 @@
 	margin-bottom: 22px;
 	margin-right: 120px;
 }
-#CHCLevel {
+#DotaUBP_Level {
 	align: right center;
 	margin-bottom: 27px;
 	font-size: 16px;
 	color: #dfba00;
 }
-#CHCLevelProgress {
+#DotaUBP_LevelProgress {
 	align: right center;
 	font-size: 14px;
 	margin-bottom: 1px;
 	color: #ed9a0e;
 }
-#CHCPlayerLevel {
+#DotaUBP_PlayerLevel {
 	width: 26px;
 	height: 30px;
 	margin-top: 9px;
@@ -569,19 +570,19 @@
 #ItemsList.FirstType {
 	border-top-left-radius: 0px;
 }
-#ItemsList.OnlyOwned .ItemCHC:not(.IsTreasure) {
+#ItemsList.OnlyOwned .ItemDotaU:not(.IsTreasure) {
 	visibility: collapse;
 }
-#ItemsList.OnlyOwned .ItemCHC.equip {
+#ItemsList.OnlyOwned .ItemDotaU.equip {
 	visibility: visible;
 }
-#ItemsList.OnlyOwned .ItemCHC.equipped {
+#ItemsList.OnlyOwned .ItemDotaU.equipped {
 	visibility: visible;
 }
-#ItemsList.OnlyOwned .ItemCHC.open_treasure {
+#ItemsList.OnlyOwned .ItemDotaU.open_treasure {
 	visibility: visible;
 }
-#ItemsList.OnlyOwned .ItemCHC.item_owned {
+#ItemsList.OnlyOwned .ItemDotaU.item_owned {
 	visibility: visible;
 }
 #ItemsTypesList.OnlyOwned .ItemType:not(.IsHasAvailbleItems) {
@@ -616,7 +617,7 @@
 	flow-children: right-wrap;
 	overflow: squish scroll;
 }
-.ItemCHC {
+.ItemDotaU {
 	width: 114px;
 	height: 159px;
 	margin-right: 20px;
@@ -624,7 +625,7 @@
 	flow-children: down;
 	transition: saturation 0.2s ease-in-out 0s;
 }
-.ItemCHC.NewItemGlow #ItemBackground {
+.ItemDotaU.NewItemGlow #ItemBackground {
 	animation-name: newItemGlow;
 	animation-duration: 1s;
 	animation-timing-function: linear;
@@ -648,41 +649,41 @@
 	height: 125px;
 }
 
-.ItemCHC #ItemBackground {
+.ItemDotaU #ItemBackground {
 	background-color: #c3c3c3;
 }
-.ItemCHC.Availeble #ItemBackground {
+.ItemDotaU.Availeble #ItemBackground {
 	background-color: black;
 }
 #ItemOverlay {
 	width: 100%;
 	height: 100%;
 }
-.ItemCHC.common #ItemOverlay,
+.ItemDotaU.common #ItemOverlay,
 .common #SourceOverlay {
 	background-color: gradient(linear, 0% 0%, 0% 100%, from(transparent), color-stop(0.1, transparent), to(#a7b2ce));
 }
-.ItemCHC.uncommon #ItemOverlay,
+.ItemDotaU.uncommon #ItemOverlay,
 .uncommon #SourceOverlay {
 	background-color: gradient(linear, 0% 0%, 0% 100%, from(transparent), color-stop(0.1, transparent), to(#5a92cd));
 }
-.ItemCHC.rare #ItemOverlay,
+.ItemDotaU.rare #ItemOverlay,
 .rare #SourceOverlay {
 	background-color: gradient(linear, 0% 0%, 0% 100%, from(transparent), color-stop(0.1, transparent), to(#4867f1));
 }
-.ItemCHC.mythical #ItemOverlay,
+.ItemDotaU.mythical #ItemOverlay,
 .mythical #SourceOverlay {
 	background-color: gradient(linear, 0% 0%, 0% 100%, from(transparent), color-stop(0.1, transparent), to(#834af5));
 }
-.ItemCHC.legendary #ItemOverlay,
+.ItemDotaU.legendary #ItemOverlay,
 .legendary #SourceOverlay {
 	background-color: gradient(linear, 0% 0%, 0% 100%, from(transparent), color-stop(0.1, transparent), to(#d033e2));
 }
-.ItemCHC.immortal #ItemOverlay,
+.ItemDotaU.immortal #ItemOverlay,
 .immortal #SourceOverlay {
 	background-color: gradient(linear, 0% 0%, 0% 100%, from(transparent), color-stop(0.1, transparent), to(#cc9e35));
 }
-.ItemCHC.arcana #ItemOverlay,
+.ItemDotaU.arcana #ItemOverlay,
 .arcana #SourceOverlay {
 	background-color: gradient(linear, 0% 0%, 0% 100%, from(transparent), color-stop(0.1, transparent), to(#a3d857));
 }
@@ -692,65 +693,65 @@
 	vertical-align: bottom;
 	box-shadow: fill rgba(0, 0, 0, 0.4) 0px 2px 5px 0px;
 }
-.ItemCHC.Treasure #ItemActionButton {
+.ItemDotaU.Treasure #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#45403c), to(#72716f));
 	border: 2px solid #a6a097;
 }
-.ItemCHC.SupporterState_1 #ItemActionButton {
+.ItemDotaU.SupporterState_1 #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#7e3724), to(#c45934));
 	border: 2px solid rgba(255, 201, 189, 0.56);
 }
-.ItemCHC.SupporterState_2 #ItemActionButton {
+.ItemDotaU.SupporterState_2 #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#7b651a), to(#d6b231));
 	border: 2px solid rgba(255, 246, 218, 0.56);
 }
-.ItemCHC.CHC_MMR #ItemActionButton {
+.ItemDotaU.DOTAU_MMR #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#45403c), to(#72716f));
 	border: 2px solid #a6a097;
 }
-.ItemCHC.Coins #ItemActionButton {
+.ItemDotaU.Coins #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#45403c), to(#72716f));
 	border: 2px solid #a6a097;
 }
-.ItemCHC.Other {
+.ItemDotaU.Other {
 	visibility: collapse;
 }
-.ItemCHC.equipped #ItemActionButton {
+.ItemDotaU.equipped #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#cc6104), to(#d08616));
 	border-top: 1px solid #dca61d;
 	border-right: 1px solid rgba(220, 166, 29, 0.4);
 }
-.ItemActionCD .ItemCHC.equipped #ItemActionButton {
+.ItemActionCD .ItemDotaU.equipped #ItemActionButton {
 	saturation: 0.5;
 }
-.ItemCHC.equip #ItemActionButton {
+.ItemDotaU.equip #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#16300e), to(#2b962b));
 	border-top: 1px solid rgba(255, 255, 255, 0.15);
 	border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
-.ItemActionCD .ItemCHC.equip #ItemActionButton {
+.ItemActionCD .ItemDotaU.equip #ItemActionButton {
 	saturation: 0.5;
 }
-.ItemCHC.item_owned #ItemActionButton {
+.ItemDotaU.item_owned #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#16300e), to(#2b962b));
 	border-top: 1px solid rgba(255, 255, 255, 0.15);
 	border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
-.ItemCHC.open_treasure #ItemActionButton {
+.ItemDotaU.open_treasure #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#92c422), to(#007a20));
 	border-top: 1px solid rgba(255, 255, 255, 0.15);
 	border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
-.ItemCHC.AccessToBuyCoins:not(.Availeble) #ItemActionButton {
+.ItemDotaU.AccessToBuyCoins:not(.Availeble) #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#5f4c22), to(#f5c12c));
 	border-color: #55452a;
 }
-.ItemCHC.Money #ItemActionButton {
+.ItemDotaU.Money #ItemActionButton {
 	background-color: gradient(linear, 0% 100%, 0% 0%, from(#332c1c), to(#6b674a));
 	border: 1px solid #9c5629;
 	box-shadow: inset rgba(245, 199, 12, 0.3) 0px 0px 5px -5px;
 }
-.ItemCHC.Money #ItemButtonText {
+.ItemDotaU.Money #ItemButtonText {
 	color: GoldPriceColor;
 	brightness: 1.2;
 }
@@ -977,7 +978,7 @@
 	align: center top;
 	margin-top: 20px;
 }
-#Item .ItemCHC {
+#Item .ItemDotaU {
 	margin: 0px 0px 0px 0px;
 }
 #AccessButtons {
@@ -1067,7 +1068,7 @@
 .InWheel #ItemBackground {
 	background-color: black;
 }
-.ItemCHC.InWheel {
+.ItemDotaU.InWheel {
 	transition: transform 5s ease-in-out 0s;
 	width: 114px;
 	height: 125px;
@@ -1082,7 +1083,7 @@
 	saturation: 1;
 	wash-color: rgba(0, 0, 0, 0);
 }
-.wheel .ItemCHC {
+.wheel .ItemDotaU {
 	transform: translateX(-3705px);
 }
 #PrizeBorder {
@@ -1422,12 +1423,12 @@
 	margin: 180px 10px 65px 10px;
 	box-shadow: inset rgba(0, 0, 0, 0.5) -15px 6px 10px -50px;
 	flow-children: right-wrap;
-	padding: 20px 51px 0px 51px;
+	padding: 20px 49px 0px 51px;
 	overflow: clip scroll;
 	border-top-right-radius: 5px;
 	border-top-left-radius: 5px;
 }
-#ItemsPreviewList .ItemCHC {
+#ItemsPreviewList .ItemDotaU {
 	height: 128px;
 }
 #ItemsPreviewList .BW #ItemImage {

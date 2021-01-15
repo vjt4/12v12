@@ -10,7 +10,7 @@ const HOVER_FUNC = {
 		$("#SourceName").text = $.Localize(sourceValue);
 		$("#SourceImage").SetImage(sourceParentPanel.imagePath);
 	},
-	CHC_MMR: (sourceValue) => {
+	DOTAU_MMR: (sourceValue) => {
 		CONTEXT.AddClass("RankOverlay");
 		$("#SourceName").text = sourceValue;
 		$("#SourceImage").SetImage("file://{images}/custom_game/collection/collection_trophy_source.png");
@@ -49,9 +49,12 @@ function setTooltip() {
 	bShowSource = (bShowSource || 1) == 1;
 	const rarityColor = ITEMS_RARITY[itemRariry].color;
 	$("#TooltipName").text = $.Localize(itemName);
-	$("#CategoryText").text = $.Localize("#chc_item_category").replace("##category_name##", $.Localize(itemCategory));
+	$("#CategoryText").text = $.Localize("#collection_item_category").replace(
+		"##category_name##",
+		$.Localize(itemCategory),
+	);
 
-	$("#RarityText").text = $.Localize("#chc_item_rarity").replace(
+	$("#RarityText").text = $.Localize("#collection_item_rarity").replace(
 		"##rarity_name##",
 		"<font color='" + rarityColor + "'>" + $.Localize(ITEMS_RARITY[itemRariry].name) + "</font>",
 	);
@@ -65,7 +68,7 @@ function setTooltip() {
 		"), to(transparent));";
 	$("#MainInfo").style.backgroundColor =
 		"gradient(linear, 0% 0%, 80% 250%, from(" + rarityColor + "26), to(transparent));";
-	$("#SourceValue").text = $.Localize("#chc_item_source").replace(
+	$("#SourceValue").text = $.Localize("#collection_item_source").replace(
 		"##source_name##",
 		$.Localize(sourceName + "_source"),
 	);

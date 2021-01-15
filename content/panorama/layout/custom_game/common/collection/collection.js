@@ -16,7 +16,7 @@ let currentSorting = "default";
 let lastPreviewPanel = "";
 
 const treasuresPreviewRoot = $("#TreasuresPreviewRoot");
-const collectionCHC = $("#CollectionCHC");
+const COLLECTION_DOTAU = $("#CollectionDotaU");
 
 function OpenTreasurePreview(treasureName) {
 	Game.EmitSound("ui.treasure_unlock.wav");
@@ -47,7 +47,7 @@ const ACTIVATE_FUNCTUIONS = {
 	SupporterState_2: () => {
 		BuyBoost("golden_booster");
 	},
-	CHC_MMR: () => {
+	DOTAU_MMR: () => {
 		Game.EmitSound("ui.contract_fail");
 	},
 	Money: (data) => {
@@ -65,10 +65,10 @@ const HOVER_FUNCTUIONS = {
 	Money: TooltipMoneyPrice,
 };
 function _ChangeItemEquipState(itemName, equipState) {
-	if (collectionCHC.BHasClass("ItemActionCD")) return;
-	collectionCHC.AddClass("ItemActionCD");
+	if (COLLECTION_DOTAU.BHasClass("ItemActionCD")) return;
+	COLLECTION_DOTAU.AddClass("ItemActionCD");
 	$.Schedule(ITEM_CHANGE_EQUIP_STATE_COOLDOWN, () => {
-		collectionCHC.RemoveClass("ItemActionCD");
+		COLLECTION_DOTAU.RemoveClass("ItemActionCD");
 	});
 	Game.EmitSound(equipState ? "ui.inv_equip" : "ui.inv_unequip");
 	GameEvents.SendCustomGameEventToServer(
@@ -259,7 +259,7 @@ function UpdatePlayerItems(data) {
 		.Children()
 		.forEach((panel, index) => {
 			const tabPanel = $("#ItemsTypesList").GetChild(index);
-			tabPanel.SetHasClass("IsHasAvailbleItems", index == 0);
+			tabPanel.SetHasClass("IsHasAvailbleItems", index < 2);
 			const itemParent = panel.FindChildTraverse("Items");
 			const items = itemParent.Children();
 			for (const item of items) {
@@ -290,11 +290,11 @@ function UpdatePlayerInfo(data) {
 		playerBooster.RemoveClass(className);
 	});
 	playerBooster.AddClass(PLAYER_BOOST_STATE[data.boosterStatus]);
-	const playerProgressText = $("#CHCLevelProgress");
+	const playerProgressText = $("#DotaUBP_LevelProgress");
 	playerProgressText.SetDialogVariable("curr_exp", data.playerCurrExp);
 	playerProgressText.SetDialogVariable("max_exp", data.playerNeedExp);
 	$("#BPProgressBar").value = data.playerCurrExp / data.playerNeedExp;
-	$("#CHCPlayerLevel").text = data.playerLevel;
+	$("#DotaUBP_PlayerLevel").text = data.playerLevel;
 	UpdateCoins({ coins: data.coins });
 	if (data.boosterStatus == 0) {
 		ShowBoostInfo("BaseBoost");
@@ -427,7 +427,7 @@ function InitCollection(_data) {
 			const itemsListWrap = $("#ItemsList_" + categoryName);
 			const itemsList = itemsListWrap.FindChildTraverse("Items");
 			const item = $.CreatePanel("Panel", itemsList, "Item_" + itemName);
-			item.BLoadLayoutSnippet("ItemCHC");
+			item.BLoadLayoutSnippet("ItemDotaU");
 			const sourceName = Object.entries(itemData.Source)[0][0];
 			const sourceValue = Object.entries(itemData.Source)[0][1];
 			item.AddClass(rarityName);
@@ -481,9 +481,9 @@ function InitCollection(_data) {
 					$.DispatchEvent(
 						"UIShowCustomLayoutParametersTooltip",
 						panel,
-						"ChcItemTooltip",
+						"DotaUItemTooltip",
 
-						"file://{resources}/layout/custom_game/common/collection/chc_item_tooltip/chc_item_tooltip.xml",
+						"file://{resources}/layout/custom_game/common/collection/collection_item_tooltip/collection_item_tooltip.xml",
 						params,
 					);
 					if (item.BHasClass("NewItemGlow")) {
@@ -493,7 +493,7 @@ function InitCollection(_data) {
 				});
 
 				panel.SetPanelEvent("onmouseout", () => {
-					$.DispatchEvent("UIHideCustomLayoutTooltip", panel, "ChcItemTooltip");
+					$.DispatchEvent("UIHideCustomLayoutTooltip", panel, "DotaUItemTooltip");
 				});
 			};
 			if (itemData.Blocked) {
@@ -579,7 +579,7 @@ function InitCollection(_data) {
 					"ItemPreview_" + itemName,
 				);
 				itemInPreview.AddClass("BW");
-				itemInPreview.BLoadLayoutSnippet("ItemCHC");
+				itemInPreview.BLoadLayoutSnippet("ItemDotaU");
 				const itemImagePreview = itemInPreview.FindChildTraverse("ItemImage");
 				itemImagePreview.SetImage(item.imagePath);
 				itemInPreview.FindChildTraverse("ItemActionButton").visible = false;
@@ -622,12 +622,12 @@ function SelectItemType(itemType) {
 
 	$("#ItemType_" + itemType).SetHasClass("Selected", true);
 	$("#ItemsList_" + itemType).SetHasClass("Show", true);
-	$("#ItemsList").SetHasClass("FirstType", itemType == "Masteries");
+	$("#ItemsList").SetHasClass("FirstType", itemType == "Treasures");
 }
 
-function CloseCollectionCHC() {
+function CloseCollectionDotaU() {
 	Game.EmitSound("ui_friends_slide_in");
-	collectionCHC.SetHasClass("show", false);
+	COLLECTION_DOTAU.SetHasClass("show", false);
 }
 
 function CancelPurchaseCoins() {
@@ -708,7 +708,7 @@ function AddItemToAccessCoins(data) {
 	parentPanel.itemCostByOne = data.sourceValue;
 	parentPanel.FindChild("Item").RemoveAndDeleteChildren();
 	const item = $.CreatePanel("Panel", parentPanel.FindChild("Item"), "");
-	item.BLoadLayoutSnippet("ItemCHC");
+	item.BLoadLayoutSnippet("ItemDotaU");
 	item.FindChild("ItemActionButton").visible = false;
 	item.AddClass(data.rarity);
 	if ($("#Item_" + data.itemName))
@@ -766,7 +766,7 @@ function UpdateCoins(data) {
 }
 
 function SetItemInWheel(panel, itemName, isPrize) {
-	panel.BLoadLayoutSnippet("ItemCHC");
+	panel.BLoadLayoutSnippet("ItemDotaU");
 	panel.FindChildTraverse("ItemActionButton").visible = false;
 	const baseItemPanel = $("#Item_" + itemName);
 	panel.FindChildTraverse("ItemImage").SetImage(baseItemPanel.imagePath);
@@ -939,7 +939,7 @@ function StartWheel(prizeItemName, itemData) {
 	});
 }
 
-function CloseWheelCHC() {
+function CloseWheelDotaU() {
 	ClickButton();
 	SetPanelsVisibilityByWheelActive(true);
 	$("#TreasuresWheelWrap").GetParent().SetHasClass("show", false);
@@ -985,12 +985,12 @@ function OpenSpecificCollection(data) {
 	if (data.boostGlow) {
 		boostGlow = data.boostGlow;
 	}
-	ToggleMenu("CollectionCHC");
+	ToggleMenu("CollectionDotaU");
 	SelectItemType(data.category);
 }
 
 function SelectSprays() {
-	collectionCHC.SetHasClass("show", true);
+	COLLECTION_DOTAU.SetHasClass("show", true);
 	SelectItemType("Sprays");
 }
 
@@ -1005,5 +1005,5 @@ function SelectSprays() {
 	GameEvents.Subscribe("battlepass_inventory:select_sprays", SelectSprays);
 	GameEvents.Subscribe("battlepass_inventory:open_specific_collection", OpenSpecificCollection);
 	SubscribeToNetTableKey("player_settings", Game.GetLocalPlayerID().toString(), SettingsFromSaved);
-	collectionCHC.AddClass(MAP_NAME);
+	COLLECTION_DOTAU.AddClass(MAP_NAME);
 })();

@@ -106,8 +106,8 @@
 				<Panel id="Items"/>
 			</Panel>
 		</snippet>
-		<snippet name="ItemCHC">
-			<Panel class="ItemCHC">
+		<snippet name="ItemDotaU">
+			<Panel class="ItemDotaU">
 				<Panel id="ItemBackground">
 					<Panel id="ItemOverlay"/>
 					<Image id="ItemImage"/>
@@ -173,7 +173,7 @@
 	</snippets>
 
 	<Panel class="CollectionRoot" hittest="false">
-		<Panel id="CollectionCHC">
+		<Panel id="CollectionDotaU">
 			<Panel id="CollectionDataWrap" onactivate="">
 				<Panel id="CollectionData">
 					<Panel id="CollectionDataOverlayBackground"/>
@@ -206,7 +206,7 @@
 						<Panel id="ItemsList"/>
 					</Panel>
 				</Panel>
-				<Button class="CloseCHC" onactivate="CloseCollectionCHC()">
+				<Button class="CloseDotaU" onactivate="CloseCollectionDotaU()">
 					<Image src="s2r://panorama/images/control_icons/x_close_png.vtex" />
 					<Label text="#Close" />
 				</Button>
@@ -269,9 +269,9 @@
 				<Label id="PlayerStatusBooster" />
 				<ProgressBar id="BPProgressBar" hittest="false"/>
 				<Panel id="BPLevelIcon"/>
-				<Label id="CHCLevel" text="#chc_level"/>
-				<Label id="CHCLevelProgress" text="{s:curr_exp}/{s:max_exp}"/>
-				<Label id="CHCPlayerLevel"/>
+				<Label id="DotaUBP_Level" text="#dotau_bp_level"/>
+				<Label id="DotaUBP_LevelProgress" text="{s:curr_exp}/{s:max_exp}"/>
+				<Label id="DotaUBP_PlayerLevel"/>
 			</Panel>
 		</Panel>
 
@@ -330,7 +330,7 @@
 						<Button id="SpinAgain" class="AccessButtons" onactivate="SpinAgain()">
 							<Label class="AccessText" text="#spin_again" />
 						</Button>
-						<Button id="CloseWheel" class="AccessButtons" onactivate="CloseWheelCHC()">
+						<Button id="CloseWheel" class="AccessButtons" onactivate="CloseWheelDotaU()">
 							<Label class="AccessText" text="#spin_close" />
 						</Button>
 					</Panel>

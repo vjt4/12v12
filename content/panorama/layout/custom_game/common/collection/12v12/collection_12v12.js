@@ -4,7 +4,7 @@
 	CreateButtonInTopMenu(
 		collectionButton,
 		() => {
-			ToggleMenu("CollectionCHC");
+			ToggleMenu("CollectionDotaU");
 		},
 		() => {
 			$.DispatchEvent("DOTAShowTextTooltip", collectionButton, "#TopMenuIcon_Collection_message");

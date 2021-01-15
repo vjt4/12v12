@@ -79,9 +79,9 @@ const PLAYER_BOOST_STATE = {
 	[2]: "golden_booster",
 };
 
-const TOOLTIPS_WITH_VALUES = { CHC_MMR: "mmr_min", Coins: "cost", Money: "cost" };
+const TOOLTIPS_WITH_VALUES = { DOTAU_MMR: "mmr_min", Coins: "cost", Money: "cost" };
 
-const SOURCES_WEIGHT = ["SupporterState_2", "SupporterState_1", "Money", "Other", "Coins", "CHC_MMR", "Treasure"];
+const SOURCES_WEIGHT = ["SupporterState_2", "SupporterState_1", "Money", "Other", "Coins", "DOTAU_MMR", "Treasure"];
 const TREASURES_WEIGHT = [
 	"treasure_starter",
 	"treasure_collection_1",
