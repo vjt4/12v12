@@ -1155,10 +1155,14 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			local psets = Patreons:GetPlayerSettings(prshID)
 			local correctInventory = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
 
-			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and not purchaser:IsInRangeOfShop(DOTA_SHOP_HOME, true) and (ItemIsFastBuying(hItem:GetName()) or psets.level > 0) then
-				if hItem:TransferToBuyer(hInventoryParent) == false then
+			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and not purchaser:IsInRangeOfShop(DOTA_SHOP_HOME, true) --[[and (ItemIsFastBuying(hItem:GetName()) or psets.level > 0)]] then
+				local transferCheck = hItem:TransferToBuyer(hInventoryParent)
+				if transferCheck == false then
 					return false
+				elseif transferCheck == true then
+					return true
 				end
+
 				local unique_key_cd = itemName .. "_" .. purchaser:GetEntityIndex()
 				if _G.lastTimeBuyItemWithCooldown[unique_key_cd] and (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) < _G.itemsCooldownForPlayer[itemName]) then
 					local checkMaxCount = CheckMaxItemCount(hItem, unique_key_cd, prshID, false)
