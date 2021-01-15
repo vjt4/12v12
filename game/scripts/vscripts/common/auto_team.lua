@@ -14,7 +14,7 @@ function AutoTeam:IsPatreon(pID)
 end
 
 function AutoTeam:GetPatreonLevel(pID)
-	return Patreons:GetPlayerSettings(pID).level
+	return Supporters:GetLevel(pID)
 end
 
 function AutoTeam:GetAllPlayers()
@@ -256,13 +256,13 @@ function AutoTeam:EnableFreePatreonForBalance()
 					if index then
 						table.remove(playersNotDonate,index)
 					end
-
-					local settings = Patreons:GetPlayerSettings(randomPlayerID)
+					-- TODO: free supporter support - new supporter system probably doesn't handle it well
+					local settings = Supporters:GetPlayerState(randomPlayerID)
 					settings.level = math.min(maxLevelInTeams - lvlTeam,2)
 					settings.bfreeSupport = 1
 					lvlTeam = lvlTeam + settings.level
 					AutoTeam:Debug('[authomatical] set lvl ' .. settings.level .. ' for Player by id = ' .. randomPlayerID .. '(' .. PlayerResource:GetPlayerName(randomPlayerID) .. ')')
-					Patreons:SetPlayerSettings(randomPlayerID, settings)
+					Supporters:SetPlayerState(randomPlayerID, settings)
 				end
 				if lvlTeam < maxLevelInTeams then
 					local playersSupporters = AutoTeam:filter(function(pID) return AutoTeam:GetPatreonLevel(pID) == 1 end,players)
@@ -286,13 +286,13 @@ function AutoTeam:EnableFreePatreonForBalance()
 							table.remove(playersSupporters,index)
 						end
 
-						local settings = Patreons:GetPlayerSettings(randomPlayerID)
+						local settings = Supporters:GetPlayerState(randomPlayerID)
 						local oldLvl = settings.level
 						settings.level =  math.min(settings.level + (maxLevelInTeams - lvlTeam),2)
 						settings.bfreeSupport = 1
 						lvlTeam = lvlTeam + (settings.level - oldLvl)
 						AutoTeam:Debug('[authomatical] set lvl ' .. settings.level .. ' for Player by id = ' .. randomPlayerID .. ' old lvl = ' .. oldLvl .. '(' .. PlayerResource:GetPlayerName(randomPlayerID) .. ')')
-						Patreons:SetPlayerSettings(randomPlayerID, settings)
+						Supporters:SetPlayerState(randomPlayerID, settings)
 					end
 				end
 			end
