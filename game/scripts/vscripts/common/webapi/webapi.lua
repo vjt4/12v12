@@ -204,7 +204,7 @@ function WebApi:AfterMatch(winnerTeam)
 		table.insert(requestBody.teams, team_data)
 	end
 
-	if #requestBody.teams[1].players + #requestBody.teams[2].players >= 1 then
+	if #requestBody.teams[1].players + #requestBody.teams[2].players >= 5 then
 		print("Sending aftermatch request: ", #requestBody.teams[1].players + #requestBody.teams[2].players)
 		WebApi:Send("match/after", requestBody)
 	else
