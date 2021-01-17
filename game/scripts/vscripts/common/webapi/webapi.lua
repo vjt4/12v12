@@ -8,7 +8,7 @@ end
 WebApi.matchId = IsInToolsMode() and RandomInt(-10000000, -1) or tonumber(tostring(GameRules:GetMatchID()))
 FREE_SUPPORTER_COUNT = 6
 
-local serverHost = IsInToolsMode() and "http://127.0.0.1:5000" or "https://chc-2.dota2unofficial.com"
+local serverHost = IsInToolsMode() and "http://127.0.0.1:5000" or "https://api.12v12.dota2unofficial.com"
 local dedicatedServerKey = GetDedicatedServerKeyV2("1")
 
 function WebApi:Send(path, data, onSuccess, onError, retryWhile)
@@ -80,15 +80,16 @@ function WebApi:BeforeMatch()
 		end
 	end
 
-	WebApi:Send("match/before", {customGame = "dota12v12", mapName = GetMapName(), players = players }, function(data)
+	WebApi:Send("match/before", {customGame = WebApi.customGame, mapName = GetMapName(), players = players }, function(data)
 		print("BEFORE MATCH")
 		WebApi.player_ratings = {}
 		WebApi.patch_notes = data.patchnotes
+		publicStats = {}
 		local matchesCount = {}
 		for _, player in ipairs(data.players) do
 			local playerId = GetPlayerIdBySteamId(player.steamId)
 			if player.rating then
-				WebApi.player_ratings[playerId] = player.rating
+				WebApi.player_ratings[playerId] = {[GetMapName()] = player.rating}
 			end
 			matchesCount[playerId] = player.matchCount
 			if player.supporterState then
@@ -97,24 +98,22 @@ function WebApi:BeforeMatch()
 			if player.masteries then
 				BP_Masteries:SetMasteriesForPlayer(playerId, player.masteries)
 			end
-		end
 
-		--[[
-		fill those tables
+			publicStats[playerId] = {
+				streak = 0,
+				bestStreak = 0,
+				averageKills = player.stats.kills,
+				averageDeaths = player.stats.deaths,
+				averageAssists = player.stats.assists,
+				wins = player.stats.wins,
+				loses = player.stats.loses,
+				rating = player.rating,
+			}
+			SmartRandom:SetPlayerInfo(playerId, nil, "no_stats") -- TODO: either make working or get rid of it
+		end
 		CustomNetTables:SetTableValue("game_state", "player_stats", publicStats)
-		CustomNetTables:SetTableValue("game_state", "leaderboard", data.leaderboard)
 		CustomNetTables:SetTableValue("game_state", "player_ratings", data.mapPlayersRating)
-		]]
-
-		local mapName = GetMapName()
-		WebApi.player_deltas = {}
-		for this_player_id, this_player_rating_map in pairs(WebApi.player_ratings) do
-			local rating_average = WebApi:GetOtherPlayersAverageRating(this_player_id)
-
-			if this_player_rating_map[mapName] then
-				WebApi.player_deltas[this_player_id] = math.min(20, math.max(-20, math.floor(0.02 * (rating_average - this_player_rating_map[mapName]))))
-			end
-		end
+		CustomNetTables:SetTableValue("game_state", "leaderboard", data.leaderboard)
 
 		Battlepass:OnDataArrival(data)
 	end,
@@ -159,6 +158,10 @@ function WebApi:AfterMatch(winnerTeam)
 	if winnerTeam < DOTA_TEAM_FIRST or winnerTeam > DOTA_TEAM_CUSTOM_MAX then return end
 	if winnerTeam == DOTA_TEAM_NEUTRALS or winnerTeam == DOTA_TEAM_NOTEAM then return end
 
+	local indexed_teams = {
+		DOTA_TEAM_GOODGUYS, DOTA_TEAM_BADGUYS
+	}
+
 	local requestBody = {
 		customGame = WebApi.customGame,
 		matchId = isTesting and RandomInt(1, 10000000) or tonumber(tostring(GameRules:GetMatchID())),
@@ -166,15 +169,50 @@ function WebApi:AfterMatch(winnerTeam)
 		mapName = GetMapName(),
 		winner = winnerTeam,
 
-		players = {}
+		teams = {},
 	}
 
+	for _, team in pairs(indexed_teams) do
+		local team_data = {
+			players = {},
+			teamId = team
+		}
+		for n = 1, PlayerResource:GetPlayerCountForTeam(team) do
+			local playerId = PlayerResource:GetNthPlayerIDOnTeam(team, n)
+			if PlayerResource:IsValidTeamPlayerID(playerId) and not PlayerResource:IsFakeClient(playerId) then
+				local player_data = {
+					playerId = playerId,
+					steamId = tostring(PlayerResource:GetSteamID(playerId)),
+					team = team,
+
+					heroName = PlayerResource:GetSelectedHeroName(playerId),
+					pickReason = SmartRandom.PickReasons[playerId] or (PlayerResource:HasRandomed(playerId) and "random" or "pick"),
+					kills = PlayerResource:GetKills(playerId),
+					deaths = PlayerResource:GetDeaths(playerId),
+					assists = PlayerResource:GetAssists(playerId),
+					level = 0,
+					items = {},
+				}
+
+				local hero = PlayerResource:GetSelectedHeroEntity(playerId)
+				if IsValidEntity(hero) then
+					player_data.level = hero:GetLevel()
+				end
+				table.insert(team_data.players, player_data)
+			end
+		end
+		table.insert(requestBody.teams, team_data)
+	end
+
+	--[[
 	for playerId = 0, 23 do
 		if PlayerResource:IsValidTeamPlayerID(playerId) and not PlayerResource:IsFakeClient(playerId) then
+			local team = PlayerResource:GetTeam(playerId)
+			requestBody.teams[team] = requestBody.teams[team] or {}
 			local playerData = {
 				playerId = playerId,
 				steamId = tostring(PlayerResource:GetSteamID(playerId)),
-				team = PlayerResource:GetTeam(playerId),
+				team = team,
 
 				hero = PlayerResource:GetSelectedHeroName(playerId),
 				pickReason = SmartRandom.PickReasons[playerId] or (PlayerResource:HasRandomed(playerId) and "random" or "pick"),
@@ -185,28 +223,15 @@ function WebApi:AfterMatch(winnerTeam)
 				items = {},
 			}
 
-			local patreonSettings = Patreons:GetPlayerSettings(playerId)
-			-- Always add an update, because chat wheel favorites is a public feature
-			playerData.patreonUpdate = patreonSettings
-
 			local hero = PlayerResource:GetSelectedHeroEntity(playerId)
 			if IsValidEntity(hero) then
 				playerData.level = hero:GetLevel()
-				for slot = DOTA_ITEM_SLOT_1, DOTA_STASH_SLOT_6 do
-					local item = hero:GetItemInSlot(slot)
-					if item then
-						table.insert(playerData.items, {
-							slot = slot,
-							name = item:GetAbilityName(),
-							charges = item:GetCurrentCharges()
-						})
-					end
-				end
 			end
 
-			table.insert(requestBody.players, playerData)
+			table.insert(requestBody.teams[team], playerData)
 		end
 	end
+	]]
 
 	if isTesting or #requestBody.players >= 5 then
 		WebApi:Send("match/after", requestBody)
