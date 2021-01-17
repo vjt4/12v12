@@ -50,6 +50,7 @@ LinkLuaModifier("modifier_dummy_inventory", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_patreon_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_silencer_new_int_steal", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_shadow_amulet_thinker", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_feed_token", 'anti_feed_system/modifier_troll_feed_token', LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_feed_token_couter", 'anti_feed_system/modifier_troll_feed_token_couter', LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_debuff_stop_feed", 'anti_feed_system/modifier_troll_debuff_stop_feed', LUA_MODIFIER_MOTION_NONE)
@@ -674,6 +675,11 @@ function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
 
 	if caster and parent and caster.bonusDebuffTime and (parent:GetTeamNumber() ~= caster:GetTeamNumber()) and filterTable.duration > 0 then
 		filterTable.duration = filterTable.duration/100*caster.bonusDebuffTime + filterTable.duration
+	end
+
+	if parent and filterTable.name_const and filterTable.name_const == "modifier_item_shadow_amulet_fade" then
+		filterTable.duration = 15
+		parent:AddNewModifier(parent, nil, "modifier_shadow_amulet_thinker", {})
 	end
 
 	return true
@@ -1459,6 +1465,7 @@ SelectVO = function(keys)
 		"faceless_void",
 		"grimstroke",
 		"gyrocopter",
+		"hoodwink",
 		"huskar",
 		"invoker",
 		"wisp",
@@ -2194,6 +2201,16 @@ SelectVO = function(keys)
 				"gyrocopter_gyro_deny_05",
 				"gyrocopter_gyro_kill_15",
 				"gyrocopter_gyro_kill_02",
+				},
+				{
+				"hoodwink_hoodwink_wheel_laugh_04",
+				"hoodwink_hoodwink_wheel_thanks_02_02",
+				"hoodwink_hoodwink_wheel_deny_01",
+				"hoodwink_hoodwink_net_hit_12",
+				"hoodwink_hoodwink_kill_23",
+				"hoodwink_hoodwink_levelup_26",
+				"hoodwink_hoodwink_attack_25",
+				"hoodwink_hoodwink_lasthit_03",
 				},
 				{
 				"huskar_husk_laugh_09",
