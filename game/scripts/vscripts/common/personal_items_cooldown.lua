@@ -47,21 +47,21 @@ function CDOTA_BaseNPC:CheckPersonalCooldown(item)
 	local itemName = item:GetAbilityName()
 	local unique_key = itemName .. "_" .. buyerEntIndex
 	local playerID = self:GetPlayerID()
-	local psets = Patreons:GetPlayerSettings(playerID)
+	local supporter_level = Supporters:GetLevel(playerID)
 
 	if _G.lastTimeBuyItemWithCooldown[unique_key] == nil or (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key]) >= _G.itemsCooldownForPlayer[itemName]) then
 		if not _G.stackedItems[itemName] then
 			_G.lastTimeBuyItemWithCooldown[unique_key] = GameRules:GetGameTime()
 			local checkMaxCount = CheckMaxItemCount(item, unique_key, playerID, true)
 			return (true and checkMaxCount)
-		elseif not ItemIsFastBuying(itemName) and (not (psets.level > 0)) then
+		elseif not ItemIsFastBuying(itemName) and (not (supporter_level > 0)) then
 			_G.lastTimeBuyItemWithCooldown[unique_key] = GameRules:GetGameTime()
 			local checkMaxCount = CheckMaxItemCount(item, unique_key, playerID, true)
 			return (true and checkMaxCount)
 		end
 	elseif _G.itemsCooldownForPlayer[itemName] then
 		if _G.stackedItems[itemName] then
-			if not ItemIsFastBuying(itemName) and (not (psets.level > 0)) then
+			if not ItemIsFastBuying(itemName) and (not (supporter_level > 0)) then
 				local checkMaxCount = CheckMaxItemCount(item, unique_key, playerID, false)
 				if checkMaxCount then
 					MessageToPlayerItemCooldown(itemName, playerID)

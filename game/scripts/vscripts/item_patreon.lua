@@ -22,8 +22,8 @@ function OnSpellStartBundle( event )
     local item3 = event.Item3
     local item4 = event.Item4
     if caster:IsRealHero() then
-        local psets = Patreons:GetPlayerSettings(caster:GetPlayerID())
-        if psets.level > 0 then
+        local supporter_level = Supporters:GetLevel(caster:GetPlayerID())
+        if supporter_level > 0 then
             ability:RemoveSelf()
             caster:AddItemByName(item1)
             caster:AddItemByName(item2)
@@ -40,10 +40,10 @@ function OnSpellStartBanHammer(event)
     local caster = event.caster
     local ability = event.ability
     if caster:IsRealHero() then
-        local psetsTarget = Patreons:GetPlayerSettings(target:GetPlayerID())
+        local supporter_level = Supporters:GetLevel(target:GetPlayerID())
 
         if target:IsRealHero() and target:IsControllableByAnyPlayer() and not target:IsTempestDouble() then
-            if (psetsTarget.level > 0) then
+            if (supporter_level > 0) then
                 CustomGameEventManager:Send_ServerToPlayer(caster:GetPlayerOwner(), "display_custom_error", { message = "#cannotkickotherpatreons" })
             else
                 if not _G.votingForKick then
