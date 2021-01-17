@@ -91,12 +91,15 @@ function CDOTA_Item:TransferToBuyer(unit)
 		return false
 	end
 
-	if not _G.stackedItems[itemName] then
-		Timers:CreateTimer(0.0001, function()
-			buyer:AddItem(buyer:TakeItem(self))
-		end)
-		return true
-	else
-		self:SetCooldownStackedItem(itemName, buyer)
+	_G.itemsIsBuy[unique_key] = not _G.itemsIsBuy[unique_key]
+
+	if _G.itemsIsBuy[unique_key] == true then
+		if not _G.stackedItems[itemName] then
+			UTIL_Remove(self)
+			buyer:AddItemByName(itemName)
+			return false
+		else
+			self:SetCooldownStackedItem(itemName, buyer)
+		end
 	end
 end
