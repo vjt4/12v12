@@ -1,9 +1,9 @@
 const PAYMENT_VALUES = {
 	base_booster: {
-		price: "3.99",
+		price: "8.50",
 	},
 	golden_booster: {
-		price: "19.99",
+		price: "34.00",
 	},
 };
 
