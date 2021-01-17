@@ -204,37 +204,11 @@ function WebApi:AfterMatch(winnerTeam)
 		table.insert(requestBody.teams, team_data)
 	end
 
-	--[[
-	for playerId = 0, 23 do
-		if PlayerResource:IsValidTeamPlayerID(playerId) and not PlayerResource:IsFakeClient(playerId) then
-			local team = PlayerResource:GetTeam(playerId)
-			requestBody.teams[team] = requestBody.teams[team] or {}
-			local playerData = {
-				playerId = playerId,
-				steamId = tostring(PlayerResource:GetSteamID(playerId)),
-				team = team,
-
-				hero = PlayerResource:GetSelectedHeroName(playerId),
-				pickReason = SmartRandom.PickReasons[playerId] or (PlayerResource:HasRandomed(playerId) and "random" or "pick"),
-				kills = PlayerResource:GetKills(playerId),
-				deaths = PlayerResource:GetDeaths(playerId),
-				assists = PlayerResource:GetAssists(playerId),
-				level = 0,
-				items = {},
-			}
-
-			local hero = PlayerResource:GetSelectedHeroEntity(playerId)
-			if IsValidEntity(hero) then
-				playerData.level = hero:GetLevel()
-			end
-
-			table.insert(requestBody.teams[team], playerData)
-		end
-	end
-	]]
-
-	if isTesting or #requestBody.players >= 5 then
+	if #requestBody.teams[1].players + #requestBody.teams[2].players >= 1 then
+		print("Sending aftermatch request: ", #requestBody.teams[1].players + #requestBody.teams[2].players)
 		WebApi:Send("match/after", requestBody)
+	else
+		print("Aftermatch send failed: ", #requestBody.teams[1].players + #requestBody.teams[2].players)
 	end
 end
 
