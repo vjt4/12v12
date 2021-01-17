@@ -721,6 +721,9 @@
 		"[english]cavern_game_info_tombstone_header"			"Tombstones"
 		"cavern_game_info_tombstone"							"墓碑可用于复活队友或淘汰敌人。"
 		"cavern_game_info_tombstone_header"						"墓碑"
+
+		"warning"				"警告"
+		"warning_server_error"	"我们的服务器出现了一些问题。\n--\n我们将尽一切努力迅速解决问题，但这可能需要一些时间。\n--\n在服务器投入使用之前，支持者的福利和mmr将无法使用。"
 	}
 }
 

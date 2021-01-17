@@ -423,6 +423,7 @@
 		"ItemStockTime"					"600.0"
 		"ItemInitialStockTime"			"690.0"
 		"BonusDelayedStockCount"		"4"
+		"ItemPurchasable"               "0"
 	}
 
     "item_ward_sentry"
