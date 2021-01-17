@@ -8,4 +8,5 @@ function ScheludeCloseWarning(time, panelName) {
 }
 (function () {
 	ScheludeCloseWarning(60, "WarningIngame_server");
+	ScheludeCloseWarning(60, "WarningIngame_patreonSteamIDS");
 })();
