@@ -30,8 +30,8 @@
 	horizontal-align: center;
 	margin-top: 100px;
 }
-.WarningIngame.hide {
-	/*opacity: 0;*/
+#WarningIngame_patreonSteamIDS.hide {
+	opacity: 0;
 }
 
 .WarningHeaderRoot {
@@ -124,6 +124,7 @@
 	color: white;
 	align: center center;
 	font-size: 20px;
+	text-align: center;
 }
 .WarningFoot {
 	width: 100%;

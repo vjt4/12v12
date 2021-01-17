@@ -8,15 +8,6 @@
 	</scripts>
 
 	<Panel class="IngameWarningRoot" hittest="false">
-		<Panel id="WarningIngame_server" class="WarningIngame">
-			<Panel class="WarningHeaderRoot">
-				<Label text="#warning"/>
-				<Panel class="WarningClose" onactivate="CloseWarning('WarningIngame_server')"/>
-			</Panel>
-			<Panel class="WarningTextRoot">
-				<Label class="WarningText" text="#warning_server_error"/>
-			</Panel>
-		</Panel>
 		<Panel id="WarningIngame_patreonSteamIDS" class="WarningIngame">
 			<Panel id="WarningIngame_patreonSteamIDS_ROOT">
 				<Panel class="WarningHeaderRoot">
