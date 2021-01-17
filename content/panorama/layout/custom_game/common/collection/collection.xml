@@ -225,11 +225,11 @@
 				<Panel id="BoostersInfoWrap">
 					<Panel class="BoostersInfo" id="BaseBoostPanel">
 						<Panel class="BoostDescription">
+							<Label class="BoostText FortuneText" text="#perks_level_1"/>
 							<Label class="BoostText" text="#base_booster_glory"/>
 							<Label class="BoostText" text="#base_booster_xp"/>
 <!--							<Label class="BoostText" text="#base_booster_daily"/>-->
 							<Label class="BoostText" text="#base_booster_items"/>
-							<Label class="BoostText FortuneText" text="#perks_level_1"/>
 							<Label class="BoostText" text="#first_pick"/>
 <!--							<Label class="BoostText FortuneText" text="#base_booster_fortune"/>-->
 						</Panel>
@@ -245,11 +245,11 @@
 					</Panel>
 					<Panel class="BoostersInfo" id="GoldBoostPanel">
 						<Panel class="BoostDescription">
+							<Label class="BoostText FortuneText" text="#perks_level_2"/>
 							<Label class="BoostText" text="#golden_booster_glory"/>
 							<Label class="BoostText" text="#golden_booster_xp"/>
 <!--							<Label class="BoostText" text="#golden_booster_daily"/>-->
 							<Label class="BoostText" text="#golden_booster_items"/>
-							<Label class="BoostText FortuneText" text="#perks_level_2"/>
 							<Label class="BoostText" text="#super_first_pick"/>
 <!--							<Label class="BoostText FortuneText" text="#golden_booster_fortune"/>-->
 						</Panel>
