@@ -4,6 +4,8 @@
 	tooltip-position: bottom;
 	visibility: collapse;
 	wash-color: #cdf;
+	margin-left: -40px;
+	margin-top: 40px;
 }
 #MasteryButtonTooltip,
 #MapPatreonButtonGrid,
