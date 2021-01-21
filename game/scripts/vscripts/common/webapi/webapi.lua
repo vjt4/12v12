@@ -179,7 +179,8 @@ function WebApi:AfterMatch(winnerTeam)
 	for _, team in pairs(indexed_teams) do
 		local team_data = {
 			players = {},
-			teamId = team
+			teamId = team,
+			otherTeamsAvgMMR = WebApi:GetOtherTeamsAverageRating(team),
 		}
 		for n = 1, PlayerResource:GetPlayerCountForTeam(team) do
 			local playerId = PlayerResource:GetNthPlayerIDOnTeam(team, n)
@@ -208,108 +209,12 @@ function WebApi:AfterMatch(winnerTeam)
 		table.insert(requestBody.teams, team_data)
 	end
 
-	if #requestBody.teams[1].players + #requestBody.teams[2].players >= 5 then
+	if isTesting or #requestBody.teams[1].players + #requestBody.teams[2].players >= 5 then
 		print("Sending aftermatch request: ", #requestBody.teams[1].players + #requestBody.teams[2].players)
 		WebApi:Send("match/after", requestBody)
 	else
 		print("Aftermatch send failed: ", #requestBody.teams[1].players + #requestBody.teams[2].players)
 	end
-end
-
-function WebApi:AfterMatchTeam(team_number, is_pve)
-	if not IsInToolsMode() then
-		if GameRules:IsCheatMode() or PartyMode.party_mode_enabled or PartyMode.tournament then return end
-		if GameRules:GetDOTATime(false, true) < 60 then return end
-		-- TODO: checks for sufficient player count (full lobby for pvp)
-	end
-	print("TEAM", team_number, " FINISHED AT RANK", GameMode.nRank)
-
-	local loseInfo = GameMode.teamLoseInfo[team_number]
-	local requestBody = {
-		mapName = GetMapName(),
-		matchId = WebApi.matchId,
-		isPvp = not is_pve,
-		team = {
-			teamId = team_number,
-			round = loseInfo.round,
-			time = loseInfo.time,
-			-- TODO: calculate that
-			matchPlace = GameMode.nRank - 1,  -- backend is 0-indexed
-			otherTeamsAvgMMR = WebApi:GetOtherTeamsAverageRating(team_number),
-		},
-	}
-	local players = {}
-	for n = 1, PlayerResource:GetPlayerCountForTeam(team_number) do
-		local playerId = PlayerResource:GetNthPlayerIDOnTeam(team_number, n)
-		local abilities = HeroBuilder:GetPlayerAbilities(playerId)
-		local round_death_data = HeroBuilder:GetPlayerRoundDeaths(playerId)
-		local items = HeroBuilder:GetPlayerItems(playerId)
-		table.insert(players, {
-			playerId = playerId,
-			steamId = tostring(PlayerResource:GetSteamID(playerId)),
-			innate = abilities.innate,
-			abilities = abilities.default,
-			roundDeaths = round_death_data,
-			items = items,
-			otherPlayersAvgMMR = WebApi:GetOtherPlayersAverageRating(playerId),
-			earlyLeaver = (GameMode.nRank > teams_layout[GetMapName()].max_fortune_rank),
-			mastery = WearFunc.Masteries[playerId] and WearFunc.Masteries[playerId].itemName or nil
-		})
-	end
-	requestBody.team.players = players
-	table.print(requestBody.team.players)
-	WebApi:Send(
-		not GameMode.bGameHasWinner and "match/after_match_team" or "match/set_match_player_round_data",
-		requestBody,
-		function(resp)
-			if not resp then return end
-			for steamId, data in pairs(resp.players) do
-				if steamId == "0" then return end
-				local playerId = Battlepass.playerid_map[steamId]
-				local place = not GameMode.bGameHasWinner and GameMode.nRank + 1 or GameMode.nRank
-				local dataForClient = {
-					mmr_changes = data.ratingChange,
-					bp_level_changes = data.battlepassChange.level,
-					bp_exp_changes = {
-						old = {
-							min = BP_PlayerProgress:GetCurrentExp(playerId),
-							max = BP_PlayerProgress:GetRequiredExp(playerId),
-						},
-						new = {
-							min = data.battlepassChange.exp.new,
-							max = data.battlepassChange.exp.levelup_requirement,
-						},
-					},
-					top = {
-						value = place,
-						exp = BP_PlayerProgress:GetBPExpByTop(place, playerId),
-					},
-					old_daily_limit = data.battlepassChange.exp.daily_exp_current - data.battlepassChange.exp.change,
-					new_daily_limit = data.battlepassChange.exp.daily_exp_current,
-					daily_limit = data.battlepassChange.exp.daily_exp_limit,
-				}
-				if GameMode.nValidTeamNumber == 1 then
-					dataForClient["rounds"] = {
-						value = loseInfo.round,
-						exp = BP_PlayerProgress:GetBPExpByRounds(loseInfo.round),
-					};
-				end
-				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), 'end_game:init_end_game_results', dataForClient)
-
-				BP_PlayerProgress.players[steamId].level = data.battlepassChange.level.new
-				BP_PlayerProgress.players[steamId].current_exp = data.battlepassChange.exp.new
-				BP_PlayerProgress.players[steamId].required_exp = data.battlepassChange.exp.levelup_requirement
-				BP_PlayerProgress:ChangeGlory(playerId, data.battlepassChange.glory.change)
-				BP_PlayerProgress:UpdatePlayerInfo(playerId)
-			end
-			print("Remote sending successful")
-			table.print(resp)
-		end,
-		function(err)
-			print("Remote sending error: ", err)
-			table.print(err)
-		end
-	)
 end
 
 function WebApi:GetOtherTeamsAverageRating(target_team_number)
@@ -322,7 +227,7 @@ function WebApi:GetOtherTeamsAverageRating(target_team_number)
 
 	for id, ratingMap in pairs(WebApi.player_ratings) do
 		if PlayerResource:GetTeam(id) ~= target_team_number then
-			rating_total = rating_total + (ratingMap[mapName] or 1500)
+			rating_total = rating_total + (ratingMap[GetMapName()] or 1500)
 			rating_count = rating_count + 1
 		end
 	end
