@@ -3309,3 +3309,16 @@ function ChangeTeamForPlayer(playerID, newTeam)
 	end
 	GameRules:SetCustomGameTeamMaxPlayers( newTeam, maxPlayerInTeam )
 end
+
+RegisterCustomEventListener("patreon_update_chat_wheel_favorites", function(data)
+	local playerId = data.PlayerID
+	if not playerId then return end
+
+	if WebApi.playerSettings and WebApi.playerSettings[data.PlayerID] then
+		local favourites = data.favourites
+		if not favourites then return end
+
+		WebApi.playerSettings[data.PlayerID].chatWheelFavourites = favourites
+		WebApi:ScheduleUpdateSettings(data.PlayerID)
+	end
+end)
