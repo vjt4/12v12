@@ -1465,7 +1465,7 @@
 		"perks_level_1"		"+更好的英雄Perk"
 		"perks_level_2"		"+高级Perk"
 
-		"open_in_browser"				"点击此处前往PATREON.COM\n并再次向我们发送你的Steam链接"
+		"open_in_browser"				"点击这里查看公开意见反馈表"
 		"link_steam"					"在Patreon上连接你的Steam账户以重新获得Perk"
 		"warning_patreon_ids_text"		"十分抱歉出现预料外的服务器停机。\n现在我们需要手动收集所有Steam URL/ID。\n我们将无法为缺失Steam URL或ID的玩家提供福利。"
 		
