@@ -30,7 +30,7 @@
 	margin-top: 100px;
 }
 #WarningIngame_patreonSteamIDS.hide {
-	opacity: 1;
+	opacity: 0;
 }
 
 .WarningHeaderRoot {
