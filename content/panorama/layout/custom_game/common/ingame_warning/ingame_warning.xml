@@ -4,6 +4,7 @@
 	</styles>
 
 	<scripts>
+		<include src="file://{resources}/layout/custom_game/common/utils.js" />
 		<include src="file://{resources}/layout/custom_game/common/ingame_warning/ingame_warning.js" />
 	</scripts>
 
@@ -16,12 +17,12 @@
 				<Panel class="WarningTextRoot">
 					<Label class="WarningText h1" text="#link_steam"/>
 				</Panel>
-				<Button class="WarningButton" onactivate="ExternalBrowserGoToURL('https://www.patreon.com/dota2unofficial')">
-					<Label class="WarningButtonText" text="#open_in_browser"/>
-				</Button>
 				<Panel class="WarningTextRoot">
 					<Label class="WarningText h2" text="#warning_patreon_ids_text"/>
 				</Panel>
+				<Button class="WarningButton" onactivate="OpenFeedback()">
+					<Label class="WarningButtonText" text="#open_in_browser"/>
+				</Button>
 				<Panel class="WarningFoot">
 				</Panel>
 			</Panel>
