@@ -91,7 +91,7 @@ RegisterCustomEventListener( "neutral_item_keep", function( data )
 	end
 	local item = EntIndexToHScript( data.item )
 	local hero = PlayerResource:GetSelectedHeroEntity( data.PlayerID )
-	local freeSlot = DoesHeroHasFreeSlot(hero)
+	local freeSlot = hero:DoesHeroHasFreeSlot()
 	if freeSlot then
 		hero:AddItem(item)
 		NotificationToAllPlayerOnTeam(data)
@@ -108,7 +108,7 @@ RegisterCustomEventListener( "neutral_item_take", function( data )
 	end
 	local item = EntIndexToHScript( data.item )
 	local hero = PlayerResource:GetSelectedHeroEntity( data.PlayerID )
-	local freeSlot = DoesHeroHasFreeSlot(hero)
+	local freeSlot = hero:DoesHeroHasFreeSlot()
 
 	if freeSlot then
 		if item.neutralDropInBase then
