@@ -629,38 +629,14 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 			end, 2/30)
 		end
 
-		--local supporter_level = Supporters:GetLevel(playerId)
 		if PlayerResource:GetPlayer(playerId) and not PlayerResource:GetPlayer(playerId).dummyInventory then
 			CreateDummyInventoryForPlayer(playerId, spawnedUnit)
 		end
+		
 		if not spawnedUnit.dummyCaster then
 			Cosmetics:InitCosmeticForUnit(spawnedUnit)
 		end
-		--if supporter_level > 1 and _G.personalCouriers[playerId] == nil then
-		--	local courier_spawn = {
-		--		[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant"),
-		--		[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire"),
-		--	}
-		--	local team = spawnedUnit:GetTeamNumber()
-		--	CreatePrivateCourier(playerId, spawnedUnit, courier_spawn[team]:GetAbsOrigin())
-		--end
 	end
-end
-
-function CreateDummyInventoryForPlayer(playerId, unit)
-	if PlayerResource:GetPlayer(playerId).dummyInventory then
-		PlayerResource:GetPlayer(playerId).dummyInventory:Kill(nil, nil)
-	end
-	local team = unit:GetTeamNumber()
-	local startPointSpawn = {
-		[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant"),
-		[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire"),
-	}
-	startPointSpawn = startPointSpawn[team]:GetAbsOrigin() + (RandomFloat(100, 100))
-	local dInventory = CreateUnitByName("npc_dummy_inventory", startPointSpawn, true, unit, unit, team)
-	dInventory:SetControllableByPlayer(playerId, true)
-	dInventory:AddNewModifier(dInventory, nil, "modifier_dummy_inventory", {duration = -1})
-	PlayerResource:GetPlayer(playerId).dummyInventory = dInventory
 end
 
 function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
@@ -1035,14 +1011,6 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			local plyID = hInventoryParent:GetPlayerID()
 			if not plyID then return true end
 			local pitems = {
-			--	"item_patreon_1",
-			--	"item_patreon_2",
-			--	"item_patreon_3",
-			--	"item_patreon_4",
-			--	"item_patreon_5",
-			--	"item_patreon_6",
-			--	"item_patreon_7",
-			--	"item_patreon_8",
 				"item_patreonbundle_1",
 				"item_patreonbundle_2"
 			}
@@ -1142,34 +1110,24 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 		end
 
 		local purchaser = hItem:GetPurchaser()
-		local itemCost = hItem:GetCost()
-
 		if purchaser then
 			local prshID = purchaser:GetPlayerID()
-			local supporter_level = Supporters:GetLevel(prshID)
-			local correctInventory = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
+			local correctInventory = hInventoryParent:IsMainHero() or hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear" or hInventoryParent:IsCourier()
 
-			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and (ItemIsFastBuying(hItem:GetName()) or supporter_level > 0) then
-				if hItem:TransferToBuyer(hInventoryParent) == false then
+			if (filterTable["item_parent_entindex_const"] > 0) and hItem and correctInventory then
+				if not purchaser:CheckPersonalCooldown(hItem) then
+					purchaser:RefundItem(hItem)
 					return false
 				end
-				local unique_key_cd = itemName .. "_" .. purchaser:GetEntityIndex()
-				if _G.lastTimeBuyItemWithCooldown[unique_key_cd] and (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) < _G.itemsCooldownForPlayer[itemName]) then
-					local checkMaxCount = CheckMaxItemCount(hItem, unique_key_cd, prshID, false)
-					if checkMaxCount then
-						MessageToPlayerItemCooldown(itemName, prshID)
-					end
-					Timers:CreateTimer(0.08, function()
-						UTIL_Remove(hItem)
-					end)
+
+				if not purchaser:IsMaxItemsForPlayer(hItem) then
+					purchaser:RefundItem(hItem)
 					return false
 				end
-			end
 
-			if (filterTable["item_parent_entindex_const"] > 0) and hItem and correctInventory and (not purchaser:CheckPersonalCooldown(hItem)) then
-				purchaser:ModifyGold(itemCost, false, 0)
-				UTIL_Remove(hItem)
-				return false
+				if hItem:ItemIsFastBuying(prshID) then
+					return hItem:TransferToBuyer(hInventoryParent)
+				end
 			end
 		end
 	end
