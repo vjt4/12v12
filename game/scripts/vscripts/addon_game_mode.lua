@@ -3064,7 +3064,7 @@ function GetTopPlayersList(fromTopCount, team, sortFunction)
 	local topPlayers = {}
 
 	local countPlayers = 0
-	while(countPlayers < fromTopCount or countPlayerss == 12) do
+	while(countPlayers < fromTopCount or countPlayers == 12) do
 		local bestPlayerValue = -1
 		local bestPlayer
 		for playerID, playerInfo in pairs(playersSortInfo) do
