@@ -168,7 +168,9 @@ function StartTrackPerks()
 					if PlayerResource:GetTeam(playerId) == teamId then
 						for insepctionTeamId, beaconPlayerIdFromEnemyTeam in pairs(beaconPlayers) do
 							if not table.contains(_G.VisiblePerksForEnemyTeam[insepctionTeamId], playerId) and beaconPlayers[insepctionTeamId] then
-								if PlayerResource:GetSelectedHeroEntity(beaconPlayerIdFromEnemyTeam):CanEntityBeSeenByMyTeam(PlayerResource:GetSelectedHeroEntity(playerId)) then
+								local beaconHero = PlayerResource:GetSelectedHeroEntity(beaconPlayerIdFromEnemyTeam)
+								local focusHero = PlayerResource:GetSelectedHeroEntity(playerId)
+								if beaconHero and focusHero and beaconHero:CanEntityBeSeenByMyTeam(focusHero) then
 									CustomGameEventManager:Send_ServerToTeam(insepctionTeamId, "show_player_perk", { playerId = playerId, perkName = _G.PlayersPatreonsPerk[playerId]:gsub("_t%d*", "_t0")})
 									table.insert(_G.VisiblePerksForEnemyTeam[insepctionTeamId], playerId)
 								else
