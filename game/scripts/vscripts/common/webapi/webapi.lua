@@ -176,6 +176,7 @@ function WebApi:AfterMatch(winnerTeam)
 		winner = winnerTeam,
 
 		teams = {},
+		timers = Timers._badPerformanceTimers,
 	}
 
 	for _, team in pairs(indexed_teams) do

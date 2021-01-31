@@ -94,6 +94,13 @@ function table.print(t, i)
     end
 end
 
+function table.merge(input1, input2)
+	for i,v in pairs(input2) do
+		input1[i] = v
+	end
+	return input1
+end
+
 function GetConnectionState(playerId)
 	return PlayerResource:IsFakeClient(playerId) and DOTA_CONNECTION_STATE_CONNECTED or PlayerResource:GetConnectionState(playerId)
 end
