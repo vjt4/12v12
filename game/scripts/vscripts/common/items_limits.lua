@@ -1,6 +1,6 @@
 local lastTimeBuyItemWithCooldown = {}
 local maxItemsForPlayersData = {}
-LinkLuaModifier("modifier_dummy_inventory_custom", LUA_MODIFIER_MOTION_VERTICAL)
+LinkLuaModifier("modifier_dummy_inventory_custom", LUA_MODIFIER_MOTION_NONE)
 
 -------------------------------------------------------------------------
 local itemsCooldownForPlayer = {
@@ -8,6 +8,7 @@ local itemsCooldownForPlayer = {
 	["item_mute_custom"] = 10,
 	["item_tome_of_knowledge"] = 300,
 	["item_banhammer"] = 600,
+	["item_reset_mmr"] = 20,
 }
 -------------------------------------------------------------------------
 local maxItemsForPlayers = {
@@ -107,7 +108,7 @@ function CDOTA_Item:TransferToBuyer(unit)
 	local buyer = self:GetPurchaser()
 	local itemName = self:GetName()
 
-	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer then
+	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer or not buyer:GetOwner().dummyInventory then
 		return true
 	end
 
@@ -167,6 +168,8 @@ function CreateDummyInventoryForPlayer(playerId, unit)
 	local dInventory = CreateUnitByName("npc_dummy_inventory", startPointSpawn, true, unit, unit, PlayerResource:GetTeam(playerId))
 	dInventory:SetControllableByPlayer(playerId, true)
 	dInventory:AddNewModifier(dInventory, nil, "modifier_dummy_inventory_custom", {duration = -1})
+	dInventory:AddNoDraw()
+	dInventory.isDummy = true
 	PlayerResource:GetPlayer(playerId).dummyInventory = dInventory
 end
 -------------------------------------------------------------------------

@@ -1,11 +1,5 @@
 modifier_dummy_inventory_custom = class({})
 
-function modifier_dummy_inventory_custom:OnCreated()
-	if not IsServer() then return end
-	self:ApplyVerticalMotionController()
-	self.newPoint = self:GetParent():GetAbsOrigin()+Vector(0,0,-5000)
-end
-
 function modifier_dummy_inventory_custom:IsHidden()
 	return false
 end
@@ -28,9 +22,4 @@ end
 
 function modifier_dummy_inventory_custom:GetModifierInvisibilityLevel()
 	return 4
-end
-
-function modifier_dummy_inventory_custom:UpdateVerticalMotion(me, dt)
-	if not IsServer() then return end
-	me:SetAbsOrigin(self.newPoint)
 end

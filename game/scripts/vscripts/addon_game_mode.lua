@@ -510,7 +510,7 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 	local tokenTrollCouter = "modifier_troll_feed_token_couter"
 
 	Timers:CreateTimer(0.1, function()
-		if spawnedUnit and spawnedUnit:IsTempestDouble() or spawnedUnit:IsClone()then
+		if spawnedUnit and not spawnedUnit:IsNull() and ((spawnedUnit.IsTempestDouble and spawnedUnit:IsTempestDouble()) or (spawnedUnit.IsClone and spawnedUnit:IsClone())) then
 			local playerId = spawnedUnit:GetPlayerOwnerID()
 			if _G.PlayersPatreonsPerk[playerId] then
 				local perkName = _G.PlayersPatreonsPerk[playerId]
@@ -657,7 +657,11 @@ function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
 		filterTable.duration = 15
 		parent:AddNewModifier(parent, nil, "modifier_shadow_amulet_thinker", {})
 	end
-
+	
+	if parent.isDummy then
+		return false
+	end
+	
 	return true
 end
 
@@ -1006,14 +1010,15 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			UTIL_Remove(hItem)
 			return false
 		end
-
+		local pitems = {
+			"item_patreonbundle_1",
+			"item_patreonbundle_2",
+			"item_reset_mmr"
+		}
 		if hInventoryParent:IsRealHero() then
 			local plyID = hInventoryParent:GetPlayerID()
 			if not plyID then return true end
-			local pitems = {
-				"item_patreonbundle_1",
-				"item_patreonbundle_2"
-			}
+
 			if itemName == "item_patreon_courier" then
 				BlockToBuyCourier(plyID, hItem)
 				return false
@@ -1043,10 +1048,6 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				end
 			end
 		else
-			local pitems = {
-				"item_patreonbundle_1",
-				"item_patreonbundle_2",
-			}
 			for i=1,#pitems do
 				if itemName == pitems[i] then
 					local prsh = hItem:GetPurchaser()
@@ -1216,6 +1217,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	local itemsToBeDestroy = {
 		["item_disable_help_custom"] = true,
 		["item_mute_custom"] = true,
+		["item_reset_mmr"] = true,
 	}
 	if orderType == DOTA_UNIT_ORDER_PURCHASE_ITEM then
 		local entIndexAbility = filterTable["entindex_ability"]
@@ -3084,10 +3086,15 @@ function GetTopPlayersList(fromTopCount, team, sortFunction)
 end
 
 function CheckTeamBalance()
+	if GameRules:GetDOTATime(false, true) >= TIME_LIMIT_FOR_CHANGE_TEAM then
+		CustomGameEventManager:Send_ServerToAllClients("HideTeamChangePanel", {} )
+		return
+	end
+	
 	if GameOptions:OptionsIsActive("no_switch_team") then
 		return
 	end
-
+	
 	if GetMapName() == "dota_tourtament" then
 		return
 	end
@@ -3145,14 +3152,18 @@ end
 
 function ChangeTeam(playerID, newTeam)
 	if GameRules:GetDOTATime(false, true) >= TIME_LIMIT_FOR_CHANGE_TEAM then
-		if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), GetHeroKD)[playerID] then
-			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_kda_for_change_team" })
-			return
-		end
-		if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), function(hero) return PlayerResource:GetNetWorth(hero:GetPlayerOwnerID())end)[playerID] then
-			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_nw_for_change_team" })
-			return
-		end
+		CustomGameEventManager:Send_ServerToAllClients("HideTeamChangePanel", {} )
+		return
+	end
+	if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), GetHeroKD)[playerID] then
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_kda_for_change_team" })
+		return
+	end
+	if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), function(hero)
+		return PlayerResource:GetNetWorth(hero:GetPlayerOwnerID())
+	end)[playerID] then
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_nw_for_change_team" })
+		return
 	end
 
 	if _G.changeTeamProgress or (not _G.isChangeTeamAvailable) then return end
@@ -3205,7 +3216,11 @@ function ChangeTeamForPlayer(playerID, newTeam)
 		hero:SetTeam(newTeam)
 		hero:Kill(nil, hero)
 		hero:SetTimeUntilRespawn(1)
-		CreateDummyInventoryForPlayer(hero:GetPlayerOwnerID(), hero)
+
+		Timers:CreateTimer(3, function()
+			CreateDummyInventoryForPlayer(hero:GetPlayerOwnerID(), hero)
+		end)
+
 		if hero:HasAbility('arc_warden_tempest_double') then
 			local clones = Entities:FindAllByName(hero:GetClassname())
 			for _,tempestDouble in pairs(clones) do
@@ -3279,4 +3294,31 @@ RegisterCustomEventListener("patreon_update_chat_wheel_favorites", function(data
 		WebApi.playerSettings[data.PlayerID].chatWheelFavourites = favourites
 		WebApi:ScheduleUpdateSettings(data.PlayerID)
 	end
+end)
+
+RegisterCustomEventListener("ResetMmrRequest", function(data)
+	if not IsServer() then return end
+
+	local playerId = data.PlayerID
+	if not playerId then return end
+
+	local steamId = Battlepass:GetSteamId(playerId)
+	if not steamId then return end
+
+	local mapName = GetMapName()
+	if not mapName then return end
+
+	WebApi:Send(
+		"match/reset_mmr",
+		{
+			mapName = mapName,
+			steamId = steamId,
+		},
+		function()
+			print("Successfully reset mmr")
+		end,
+		function(e)
+			print("error while reset mmr: ", e)
+		end
+	)
 end)

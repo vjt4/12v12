@@ -74,8 +74,10 @@ function DisableHelp.ExecuteOrderFilter(orderType, ability, target, unit, orderV
 	if not unit or not ability then
 		return
 	end
-	print(ability:GetAbilityName())
+	if not ability or ability:IsNull() then return end
+	
 	local caster_id = unit:GetPlayerOwnerID()
+	
 	if ability:GetAbilityName() == "furion_sprout" then
 		if (
 			orderType == DOTA_UNIT_ORDER_CAST_TARGET and
