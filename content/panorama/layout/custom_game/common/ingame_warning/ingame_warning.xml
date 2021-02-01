@@ -10,24 +10,6 @@
 	</scripts>
 
 	<Panel class="IngameWarningRoot" hittest="false">
-		<Panel id="WarningIngame_patreonSteamIDS" class="WarningIngame">
-			<Panel id="WarningIngame_patreonSteamIDS_ROOT">
-				<Panel class="WarningHeaderRoot">
-					<Panel class="WarningClose" onactivate="CloseWarning('WarningIngame_patreonSteamIDS')"/>
-				</Panel>
-				<Panel class="WarningTextRoot">
-					<Label class="WarningText h1" text="#link_steam"/>
-				</Panel>
-				<Panel class="WarningTextRoot">
-					<Label class="WarningText h2" text="#warning_patreon_ids_text"/>
-				</Panel>
-				<Button class="WarningButton" onactivate="OpenFeedback()">
-					<Label class="WarningButtonText" text="#open_in_browser"/>
-				</Button>
-				<Panel class="WarningFoot">
-				</Panel>
-			</Panel>
-		</Panel>
 		<Panel id="WarningIngame_ResetMMR" class="WarningIngame">
 			<Panel id="ResetMmrHeaderRoot">
 				<Label id="ResetMmrHeader" text="#reset_mmr"/>

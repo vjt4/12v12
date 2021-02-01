@@ -13,7 +13,7 @@ end
 function WearFunc:OnEntityKilled(data)
 	local hKilledUnit = data.entindex_killed and EntIndexToHScript(data.entindex_killed)
 	local hAttackerUnit = data.entindex_attacker and EntIndexToHScript( data.entindex_attacker )
-	if hAttackerUnit and hKilledUnit then
+	if hAttackerUnit and hKilledUnit and hKilledUnit.IsRealHero and hKilledUnit:IsRealHero() then
 		WearFunc:CreateKilledEffect(hAttackerUnit, hKilledUnit)
 	end
 end

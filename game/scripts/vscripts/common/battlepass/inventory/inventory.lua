@@ -165,7 +165,7 @@ function BP_Inventory:UpdateLocalPlayerInfo(playerId)
 	local steamId = Battlepass.steamid_map[playerId]
 	if not self.equipped_items[steamId] then return end
 	for category, itemsList in pairs(self.equipped_items[steamId]) do
-		if not (category == "id") and not (category == "steamId") and not (category == "equippedMasteries") and not (category == "equippedKillEffects") then
+		if not (category == "id") and not (category == "steamId") and not (category == "equippedMasteries") then
 			for _, itemName in pairs(itemsList) do
 				self:EquipItem({PlayerID = Battlepass.playerid_map[steamId], itemName = itemName, skipSave = true})
 			end
