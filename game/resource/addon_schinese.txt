@@ -1475,6 +1475,12 @@
 		"feedback_cooldown"			"你最近发送了一条消息。请等待一些时间以发送新消息。"
 		"feedback_blocked"			"发送消息前可稍微写一写。"
 		"feedback_top_menu_hint"	"向开发团队发送反馈"
+		
+		"DOTA_Tooltip_ability_item_reset_mmr"				"重置MMR"
+		"DOTA_Tooltip_ability_item_reset_mmr_Description"	"<b>只限支持者<b><br><br>此项目将在<b>12v12.</b>中重置你的MMR。<br><br>手动重置你的MMR不会给予任何季节重置奖励。<br><br>在重置您的 MMR 时，您的新 MMR 将在赛季重置时被考虑。您的旧MMR将永久丢失。<br><br><font color='#e78a0a'>基地支持者</font>此物品的冷却时间为2周。<br><font color='#f1cc23'>黄金支持者</font>此物品没有冷却时间。"
+		"reset_mmr"				"重置你的MMR"
+		"reset_mmr_hint"		"你确定要在<b>12v12</b>中重置MMR吗？?<br>这是无法挽回的。<br>手动重置你的MMR不会给予任何季节重置奖励。<br>在重置您的 MMR 时，您的新 MMR 将在赛季重置时被考虑。您的旧MMR将永久丢失。"
+		"reset_mmr_cooldown"	"你有重置mmr的冷却时间。<b>##cooldown_value##</b>才能再次使用。"
 	}
 }
 
