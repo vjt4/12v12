@@ -107,11 +107,11 @@ end
 function CDOTA_Item:TransferToBuyer(unit)
 	local buyer = self:GetPurchaser()
 	local itemName = self:GetName()
-
+	
 	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer or not buyer:GetOwner().dummyInventory then
 		return true
 	end
-
+	
 	if not buyer:DoesHeroHasFreeSlot() then
 		buyer:RefundItem(self)
 		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(buyer:GetPlayerID()), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
@@ -119,9 +119,9 @@ function CDOTA_Item:TransferToBuyer(unit)
 	end
 
 	self.isTransfer = true
-
 	Timers:CreateTimer(0.0000000000000000000001, function()
-		buyer:TakeItem(self)
+		local itemBuyerInventory = (unit.IsCourier and unit:IsCourier() and unit) or buyer
+		itemBuyerInventory:TakeItem(self)
 		local container = self:GetContainer()
 		if container then
 			UTIL_Remove(container)
