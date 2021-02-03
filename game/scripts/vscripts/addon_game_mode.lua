@@ -3219,6 +3219,7 @@ function ChangeTeamForPlayer(playerID, newTeam)
 
 		Timers:CreateTimer(3, function()
 			CreateDummyInventoryForPlayer(hero:GetPlayerOwnerID(), hero)
+			Cosmetics:InitCosmeticForUnit(hero)
 		end)
 
 		if hero:HasAbility('arc_warden_tempest_double') then
