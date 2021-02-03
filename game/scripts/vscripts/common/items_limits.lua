@@ -107,8 +107,8 @@ end
 function CDOTA_Item:TransferToBuyer(unit)
 	local buyer = self:GetPurchaser()
 	local itemName = self:GetName()
-	
-	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer or not buyer:GetOwner().dummyInventory then
+
+	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer then
 		return true
 	end
 	
@@ -116,36 +116,25 @@ function CDOTA_Item:TransferToBuyer(unit)
 		buyer:RefundItem(self)
 		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(buyer:GetPlayerID()), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
 		return false
-	end
+	else
+		local newItem = CreateItem( itemName, buyer:GetPlayerOwner(), buyer:GetPlayerOwner() )
+		newItem:SetPurchaser(buyer)
+		newItem:SetPurchaseTime(GameRules:GetGameTime())
+		newItem.isTransfer = true
 
-	self.isTransfer = true
-	Timers:CreateTimer(0.0000000000000000000001, function()
-		local itemBuyerInventory = (unit.IsCourier and unit:IsCourier() and unit) or buyer
-		itemBuyerInventory:TakeItem(self)
-		local container = self:GetContainer()
-		if container then
-			UTIL_Remove(container)
-		end
-		Timers:CreateTimer(0.04, function()
-			local dummyInventory = buyer:GetOwner().dummyInventory
-			dummyInventory:AddItem(self)
-			Timers:CreateTimer(0.2, function()
-				for i = 0, 15 do
-					local item = dummyInventory:GetItemInSlot(i)
-					if item then
-						dummyInventory:TakeItem(item)
-						Timers:CreateTimer(0.04, function()
-							if buyer:DoesHeroHasFreeSlot() then
-								buyer:AddItem(item)
-							else
-								buyer:RefundItem(item)
-							end
-						end)
-					end
-				end
-			end)
+		unit:TakeItem(self)
+		buyer:AddItem(newItem)
+
+		Timers:CreateTimer(0.0000000000000000000001, function()
+			local container = self:GetContainer()
+			if container then
+				UTIL_Remove(container)
+			end
+			UTIL_Remove(self)
 		end)
-	end)
+		return true
+	end
+	
 	return true
 end
 
