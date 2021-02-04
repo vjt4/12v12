@@ -1403,16 +1403,6 @@
 		"lonedruid_bear_sigurd"							"西格德"
 		"lonedruid_bear_iron_claw"						"钢爪"
 
-		"DOTA_Tooltip_ability_item_clarity_Description"							"<h1>使用：回魔</h1>向目标提供%mana_regen%点/秒魔法恢复，持续%buff_duration%秒。<br><br>受到敌方英雄或肉山攻击时效果会被驱散。<br><br>对友军施放距离：%abilitycastrange%\n<font color='#ffbb1f'>购买此商品时按住SHIFT键可立即使用。</font>"
-		"DOTA_Tooltip_ability_item_flask_Description"							"<h1>使用：药膏</h1>向目标提供%health_regen%点/秒生命恢复，持续%buff_duration%秒。<br><br>受到敌方英雄或肉山攻击时效果会被驱散。<br><br>对友军施放距离：%abilitycastrange%\n<font color='#ffbb1f'>购买此商品时按住SHIFT键可立即使用。</font>"
-
-		"DOTA_Tooltip_ability_item_enchanted_mango_Description"					"<h1>使用：吞食芒果</h1>立刻回复%replenish_amount%点魔法。<br><br>对友军施放距离：%abilitycastrange%\n<font color='#ffbb1f'>购买此商品时按住SHIFT键可立即使用。</font>"
-		"DOTA_Tooltip_ability_item_faerie_fire_Description"                     "<h1>使用：吞服</h1>立刻回复%hp_restore%点生命值。\n<font color='#ffbb1f'>购买此商品时按住SHIFT键可立即使用。</font>"
-		"DOTA_Tooltip_ability_item_smoke_of_deceit_Description"					"<h1>使用：潜行</h1>施法者和附近%visibility_radius%范围内的友方玩家控制单位在%duration%秒内获得隐身效果和%bonus_movement_speed%%%移动速度加成。他们在小地图上的图标也会消失。<br><br>发动攻击，或靠近敌方英雄或防御塔%visibility_radius%距离后将打破隐身效果。<br><br>潜行的隐身效果不受真实视域影响。\n<font color='#ffbb1f'>购买此商品时按住SHIFT键可立即使用。</font>"
-		"DOTA_Tooltip_ability_item_dust_Description"							"<h1>使用：现形</h1>立刻显示周围%radius%范围内的隐形英雄并造成%movespeed%%%减速，持续%duration%秒。\n<font color='#ffbb1f'>购买此商品时按住SHIFT键可立即使用。</font>"
-
-
-
 		// \n<font color='#ffbb1f'>购买此商品时按住SHIFT键可立即使用。</font>
 
 		"masteries"				"大师技能"
