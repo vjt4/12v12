@@ -131,7 +131,7 @@ function CMegaDotaGameMode:InitGameMode()
 
 	GameRules:GetGameModeEntity():SetKillableTombstones( true )
 	GameRules:GetGameModeEntity():SetFreeCourierModeEnabled(true)
-
+	Convars:SetInt("dota_max_physical_items_purchase_limit", 100)
 	if IsInToolsMode() then
 		GameRules:GetGameModeEntity():SetDraftingBanningTimeOverride(0)
 	end
@@ -181,7 +181,7 @@ function CMegaDotaGameMode:InitGameMode()
 			if container then
 				local item = container:GetContainedItem()
 
-				if item:GetAbilityName():find( "item_ward_" ) then
+				if item and item.GetAbilityName and not item:IsNull() and  item:GetAbilityName():find( "item_ward_" ) then
 					local owner = item:GetOwner()
 
 					if owner then
