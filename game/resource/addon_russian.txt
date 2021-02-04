@@ -884,15 +884,6 @@
 
 		"hud_error_rearm_cast"	"Нельзя использовать Rearm сейчас"
 
-		"DOTA_Tooltip_ability_item_clarity_Description"							"<h1>Использование: Replenish</h1> Увеличивает восстановление маны выбранного существа на %mana_regen%. Действует %buff_duration% сек.<br><br>Восстановление прекращается, если получить урон от вражеского героя или Рошана.<br><br>Дальность применения: %abilitycastrange%\n<font color='#ffbb1f'>Удерживайте SHIFT при покупке этого предмета для мгновенного использования.</font>"
-		"DOTA_Tooltip_ability_item_flask_Description"							"<h1>Использование: Salve</h1> Увеличивает восстановление здоровья выбранного существа на %health_regen%. Действует %buff_duration% сек. <br><br>Восстановление прекращается, если получить урон от вражеского героя или Рошана.<br><br>Дальность применения: %abilitycastrange%\n<font color='#ffbb1f'>Удерживайте SHIFT при покупке этого предмета для мгновенного использования.</font>"
-
-		"DOTA_Tooltip_ability_item_enchanted_mango_Description"					"<h1>Использование: Eat Mango</h1> Мгновенно восстанавливает %replenish_amount% маны.<br><br>Дальность применения: %abilitycastrange%\n<font color='#ffbb1f'>Удерживайте SHIFT при покупке этого предмета для мгновенного использования.</font>"
-		"DOTA_Tooltip_ability_item_faerie_fire_Description"                     "<h1>Использование: Imbue</h1> Мгновенно восстанавливает %hp_restore% здоровья.\n<font color='#ffbb1f'>Удерживайте SHIFT при покупке этого предмета для мгновенного использования.</font>"
-		"DOTA_Tooltip_ability_item_smoke_of_deceit_Description"					"<h1>Использование: Disguise</h1> Все подконтрольные игрокам существа и герои в радиусе %application_radius% на %duration% секунд становятся невидимыми, а скорость их передвижения увеличивается на %bonus_movement_speed%%%. <br><br>Если совершить атаку или приблизиться к вражескому герою или башне на расстояние в %visibility_radius%, то невидимость раскроется.<br><br>Другие эффекты, раскрывающие невидимость, не действуют.\n<font color='#ffbb1f'>Удерживайте SHIFT при покупке этого предмета для мгновенного использования.</font>"
-		"DOTA_Tooltip_ability_item_dust_Description"							"<h1>Использование: Reveal</h1>Делает всех невидимых героев в радиусе %radius% видимыми и замедляет их на %movespeed%%%. Эффект длится %duration% сек.\n<font color='#ffbb1f'>Удерживайте SHIFT при покупке этого предмета для мгновенного использования.</font>"
-
-
 		// "\n<font color='#ffbb1f'>Удерживайте SHIFT при покупке этого предмета для мгновенного использования.</font>"
 
 		"masteries"				"Боевые Вехи"
