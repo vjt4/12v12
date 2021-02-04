@@ -131,6 +131,14 @@ function CDOTA_Item:TransferToBuyer(unit)
 				UTIL_Remove(container)
 			end
 			UTIL_Remove(self)
+			Timers:CreateTimer(0.03, function()
+				for i = 0, GameRules:NumDroppedItems() do
+					container = GameRules:GetDroppedItem(i)
+					if container and not container:GetContainedItem() and container.GetSequence and container:GetSequence() == "gem01_idle" then
+						UTIL_Remove(container)
+					end
+				end
+			end)
 		end)
 		return true
 	end
