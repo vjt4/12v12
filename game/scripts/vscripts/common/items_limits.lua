@@ -123,7 +123,8 @@ function CDOTA_Item:TransferToBuyer(unit)
 		newItem.isTransfer = true
 
 		unit:TakeItem(self)
-		buyer:AddItem(newItem)
+		local unitForItem = unit:GetClassname() == "npc_dota_lone_druid_bear" and unit or buyer
+		unitForItem:AddItem(newItem)
 
 		Timers:CreateTimer(0.0000000000000000000001, function()
 			local container = self:GetContainer()
