@@ -108,7 +108,7 @@ function CDOTA_Item:TransferToBuyer(unit)
 	local buyer = self:GetPurchaser()
 	local itemName = self:GetName()
 
-	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer then
+	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer or unit:GetClassname() == "npc_dota_lone_druid_bear" then
 		return true
 	end
 	
@@ -123,8 +123,7 @@ function CDOTA_Item:TransferToBuyer(unit)
 		newItem.isTransfer = true
 
 		unit:TakeItem(self)
-		local unitForItem = unit:GetClassname() == "npc_dota_lone_druid_bear" and unit or buyer
-		unitForItem:AddItem(newItem)
+		buyer:AddItem(newItem)
 
 		Timers:CreateTimer(0.0000000000000000000001, function()
 			local container = self:GetContainer()
