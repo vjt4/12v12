@@ -108,7 +108,7 @@ function CDOTA_Item:TransferToBuyer(unit)
 	local buyer = self:GetPurchaser()
 	local itemName = self:GetName()
 
-	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer then
+	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer or unit:GetClassname() == "npc_dota_lone_druid_bear" then
 		return true
 	end
 	
