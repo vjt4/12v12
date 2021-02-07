@@ -752,7 +752,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
 
 	if newState == DOTA_GAMERULES_STATE_PRE_GAME then
 		if not GameRules.map_loaded then
-			MapLoader:Load("dota_winter_custom")
+			MapLoader:LoadRandom()
 			GameRules.map_loaded = true
 		end
 	end
