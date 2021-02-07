@@ -1,6 +1,15 @@
 local lastTimeBuyItemWithCooldown = {}
 local maxItemsForPlayersData = {}
 LinkLuaModifier("modifier_dummy_inventory_custom", LUA_MODIFIER_MOTION_NONE)
+-------------------------------------------------------------------------
+local itemsWithCharges = {}
+
+local dotaItemsKV = LoadKeyValues("scripts/npc/items.txt")
+for itemName, itemData in pairs(dotaItemsKV) do
+	if type(itemData) == 'table' and itemData.ItemStockMax then
+		itemsWithCharges[itemName] = true;
+	end
+end
 
 -------------------------------------------------------------------------
 local itemsCooldownForPlayer = {
@@ -121,11 +130,14 @@ function CDOTA_Item:TransferToBuyer(unit)
 		newItem:SetPurchaser(buyer)
 		newItem:SetPurchaseTime(GameRules:GetGameTime())
 		newItem.isTransfer = true
-
-		unit:TakeItem(self)
+		
 		buyer:AddItem(newItem)
 
-		Timers:CreateTimer(0.0000000000000000000001, function()
+		if not itemsWithCharges[itemName] then
+			self:SetPurchaser(nil)
+		end
+
+		Timers:CreateTimer(0, function()
 			local container = self:GetContainer()
 			if container then
 				UTIL_Remove(container)
