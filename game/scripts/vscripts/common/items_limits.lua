@@ -2,16 +2,6 @@ local lastTimeBuyItemWithCooldown = {}
 local maxItemsForPlayersData = {}
 LinkLuaModifier("modifier_dummy_inventory_custom", LUA_MODIFIER_MOTION_NONE)
 -------------------------------------------------------------------------
-local itemsWithCharges = {}
-
-local dotaItemsKV = LoadKeyValues("scripts/npc/items.txt")
-for itemName, itemData in pairs(dotaItemsKV) do
-	if type(itemData) == 'table' and itemData.ItemStockMax then
-		itemsWithCharges[itemName] = true;
-	end
-end
-
--------------------------------------------------------------------------
 local itemsCooldownForPlayer = {
 	["item_disable_help_custom"] = 10,
 	["item_mute_custom"] = 10,
@@ -120,22 +110,24 @@ function CDOTA_Item:TransferToBuyer(unit)
 	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer or unit:GetClassname() == "npc_dota_lone_druid_bear" then
 		return true
 	end
-	
+	local buyerPlayerId = buyer:GetPlayerID()
 	if not buyer:DoesHeroHasFreeSlot() then
 		buyer:RefundItem(self)
-		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(buyer:GetPlayerID()), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(buyerPlayerId), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
 		return false
 	else
 		local newItem = CreateItem( itemName, buyer:GetPlayerOwner(), buyer:GetPlayerOwner() )
 		newItem:SetPurchaser(buyer)
 		newItem:SetPurchaseTime(GameRules:GetGameTime())
 		newItem.isTransfer = true
-		
-		buyer:AddItem(newItem)
 
-		if not itemsWithCharges[itemName] then
-			self:SetPurchaser(nil)
-		end
+		self:SetPurchaser(nil)
+		self:SetShareability(ITEM_NOT_SHAREABLE)
+		local team = buyer:GetTeam()
+		local oldCharges = GameRules:GetItemStockCount(team, itemName, buyerPlayerId)
+		GameRules:SetItemStockCount(oldCharges - 2, team, itemName, buyerPlayerId)
+
+		buyer:AddItem(newItem)
 
 		Timers:CreateTimer(0, function()
 			local container = self:GetContainer()
