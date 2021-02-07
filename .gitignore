@@ -16,3 +16,6 @@ game/rich_presence_persistent_data.txt
 *.vagrp_c
 *.vmdl_c
 *.vmorf_c
+# dota original minimap texture and material, of which we don't have source
+!dota.vmat_c
+!dota_psd_8b4a9409.vtex_c
