@@ -128,7 +128,7 @@ function CMegaDotaGameMode:InitGameMode()
 	if GetMapName() == "dota_tournament" then
 		GameRules:SetCustomGameSetupAutoLaunchDelay(20)
 	else
-		GameRules:SetCustomGameSetupAutoLaunchDelay(1)
+		GameRules:SetCustomGameSetupAutoLaunchDelay(10)
 	end
 
 	GameRules:GetGameModeEntity():SetKillableTombstones( true )
