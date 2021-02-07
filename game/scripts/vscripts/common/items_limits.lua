@@ -120,21 +120,26 @@ function CDOTA_Item:TransferToBuyer(unit)
 		newItem:SetPurchaser(buyer)
 		newItem:SetPurchaseTime(GameRules:GetGameTime())
 		newItem.isTransfer = true
-
-		self:SetPurchaser(nil)
-		self:SetShareability(ITEM_NOT_SHAREABLE)
+		
+		if not unit:IsCourier() then
+			self:SetPurchaser(nil)
+			self:SetShareability(ITEM_NOT_SHAREABLE)
+		end
+		
 		local team = buyer:GetTeam()
 		local oldCharges = GameRules:GetItemStockCount(team, itemName, buyerPlayerId)
 		GameRules:SetItemStockCount(oldCharges - 2, team, itemName, buyerPlayerId)
 
 		buyer:AddItem(newItem)
-
+		
 		Timers:CreateTimer(0, function()
-			local container = self:GetContainer()
-			if container then
-				UTIL_Remove(container)
-			end
 			UTIL_Remove(self)
+			if self and not self:IsNull() and self.GetContainer then
+				local container = self:GetContainer()
+				if container then
+					UTIL_Remove(container)
+				end
+			end
 			Timers:CreateTimer(0.03, function()
 				for i = 0, GameRules:NumDroppedItems() do
 					container = GameRules:GetDroppedItem(i)
