@@ -69,9 +69,6 @@ _G.tableRadiantHeroes = {}
 _G.tableDireHeroes = {}
 _G.newRespawnTimes = {}
 
-_G.itemsIsBuy = {}
-_G.lastTimeBuyItemWithCooldown = {}
-
 _G.tPlayersMuted = {}
 
 if CMegaDotaGameMode == nil then
@@ -1105,25 +1102,35 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			})
 		end
 
+
 		local purchaser = hItem:GetPurchaser()
+		local itemCost = hItem:GetCost()
 		if purchaser then
 			local prshID = purchaser:GetPlayerID()
-			local correctInventory = hInventoryParent:IsMainHero() or hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear" or hInventoryParent:IsCourier()
+			local supporter_level = Supporters:GetLevel(prshID)
+			local correctInventory = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
 
-			if (filterTable["item_parent_entindex_const"] > 0) and hItem and correctInventory then
-				if not purchaser:CheckPersonalCooldown(hItem) then
-					purchaser:RefundItem(hItem)
+			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and (ItemIsFastBuying(hItem:GetName()) or supporter_level > 0) then
+				if hItem:TransferToBuyer(hInventoryParent) == false then
 					return false
 				end
-
-				if not purchaser:IsMaxItemsForPlayer(hItem) then
-					purchaser:RefundItem(hItem)
+				local unique_key_cd = itemName .. "_" .. purchaser:GetEntityIndex()
+				if _G.lastTimeBuyItemWithCooldown[unique_key_cd] and (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) < _G.itemsCooldownForPlayer[itemName]) then
+					local checkMaxCount = CheckMaxItemCount(hItem, unique_key_cd, prshID, false)
+					if checkMaxCount then
+						MessageToPlayerItemCooldown(itemName, prshID)
+					end
+					Timers:CreateTimer(0.08, function()
+						UTIL_Remove(hItem)
+					end)
 					return false
 				end
+			end
 
-				if hItem:ItemIsFastBuying(prshID) then
-					return hItem:TransferToBuyer(hInventoryParent)
-				end
+			if (filterTable["item_parent_entindex_const"] > 0) and hItem and correctInventory and (not purchaser:CheckPersonalCooldown(hItem)) then
+				purchaser:ModifyGold(itemCost, false, 0)
+				UTIL_Remove(hItem)
+				return false
 			end
 		end
 	end

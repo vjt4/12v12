@@ -1,19 +1,5 @@
-local lastTimeBuyItemWithCooldown = {}
-local maxItemsForPlayersData = {}
-LinkLuaModifier("modifier_dummy_inventory_custom", LUA_MODIFIER_MOTION_NONE)
--------------------------------------------------------------------------
-local itemsCooldownForPlayer = {
-	["item_disable_help_custom"] = 10,
-	["item_mute_custom"] = 10,
-	["item_tome_of_knowledge"] = 300,
-	["item_banhammer"] = 600,
-	["item_reset_mmr"] = 20,
-}
--------------------------------------------------------------------------
-local maxItemsForPlayers = {
-	["item_banhammer"] = 2,
-}
--------------------------------------------------------------------------
+LinkLuaModifier("modifier_dummy_inventory_custom", LUA_MODIFIER_MOTION_VERTICAL)
+
 local notFastItems = {
 	["item_ward_observer"] = true,
 	["item_ward_sentry"] = true,
@@ -27,142 +13,169 @@ local notFastItems = {
 	["item_tpscroll"] = true,
 	["item_dust"] = true,
 }
--------------------------------------------------------------------------
+
 local fastItems = {
 	["item_disable_help_custom"] = true,
 	["item_mute_custom"] = true,
 	["item_banhammer"] = true,
 }
--------------------------------------------------------------------------
 
-function CDOTA_BaseNPC:CheckPersonalCooldown(item)
-	local buyerEntIndex = self:GetEntityIndex()
-	local itemName = item:GetAbilityName()
-	local unique_key = itemName .. "_" .. buyerEntIndex
-	local playerID = self:GetPlayerID()
+local maxItemsForPlayer = {
+	["item_banhammer"] = 2,
+}
+_G.itemsCooldownForPlayer = {
+	["item_disable_help_custom"] = 10,
+	["item_mute_custom"] = 10,
+	["item_tome_of_knowledge"] = 300,
+	["item_banhammer"] = 600,
+	["item_reset_mmr"] = 20,
+}
 
-	if not itemsCooldownForPlayer[itemName] or item.isTransfer or not item:CheckMaxItemsForPlayer(unique_key) then return true end
 
-	local playerCanBuyItem = lastTimeBuyItemWithCooldown[unique_key] == nil or ((GameRules:GetGameTime() - lastTimeBuyItemWithCooldown[unique_key]) >= itemsCooldownForPlayer[itemName])
+local maxItemsForPlayersData = {}
+_G.itemsIsBuy = {}
+_G.lastTimeBuyItemWithCooldown = {}
+local itemsWithCharges = {}
 
-	if playerCanBuyItem then
-		lastTimeBuyItemWithCooldown[unique_key] = GameRules:GetGameTime()
-		return true
-	else
-		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#fast_buy_items" })
-		return false
+local dotaItemsKV = LoadKeyValues("scripts/npc/items.txt")
+for itemName, itemData in pairs(dotaItemsKV) do
+	if type(itemData) == 'table' and itemData.ItemStockMax then
+		itemsWithCharges[itemName] = true;
 	end
-
-	return true
 end
 
--------------------------------------------------------------------------
-
-function CDOTA_BaseNPC:IsMaxItemsForPlayer(item)
-	local buyerEntIndex = self:GetEntityIndex()
-	local itemName = item:GetAbilityName()
-	local unique_key = itemName .. "_" .. buyerEntIndex
-	local playerID = self:GetPlayerID()
-	if not maxItemsForPlayers[itemName] or item.isTransfer then return true end
-
-	local isPlayerBoughtMaxItems = item:CheckMaxItemsForPlayer(unique_key)
-
-	if isPlayerBoughtMaxItems then
-		maxItemsForPlayersData[unique_key] = maxItemsForPlayersData[unique_key] + 1
-	else
-		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#you_cannot_buy_more_items_this_type" })
-		return false
-	end
-
-	return true
+function ItemIsFastBuying(itemName)
+	return fastItems[itemName]
 end
 
--------------------------------------------------------------------------
-
-function CDOTA_BaseNPC:RefundItem(item)
-	self:ModifyGold(item:GetCost(), false, 0)
-	UTIL_Remove(item)
-end
-
--------------------------------------------------------------------------
-
-function CDOTA_BaseNPC:DoesHeroHasFreeSlot()
+function DoesHeroHasFreeSlot(unit)
 	for i = 0, 15 do
-		if self:GetItemInSlot(i) == nil then
+		if unit:GetItemInSlot(i) == nil then
 			return i
 		end
 	end
 	return false
 end
 
--------------------------------------------------------------------------
-
-function CDOTA_Item:ItemIsFastBuying(playerId)
-	return fastItems[self:GetName()] or (Supporters:GetLevel(playerId) > 0)
+function CDOTA_Item:SetCooldownStackedItem(itemName, buyer)
+	if _G.itemsCooldownForPlayer[itemName] then
+		local buyerEntIndex = buyer:GetEntityIndex()
+		Timers:CreateTimer(0.04, function()
+			local itemCost = self:GetCost()
+			local item = self
+			if not notFastItems[itemName] then
+				UTIL_Remove(item)
+				item = buyer:AddItemByName(itemName)
+			end
+			local unique_key_cd = itemName .. "_" .. buyerEntIndex
+			if _G.lastTimeBuyItemWithCooldown[unique_key_cd] == nil or (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key_cd]) >= _G.itemsCooldownForPlayer[itemName]) then
+				_G.lastTimeBuyItemWithCooldown[unique_key_cd] = GameRules:GetGameTime()
+			elseif _G.itemsCooldownForPlayer[itemName] then
+				buyer:ModifyGold(itemCost, false, 0)
+				MessageToPlayerItemCooldown(itemName, buyer:GetPlayerID())
+				UTIL_Remove(item)
+			end
+		end)
+	end
 end
-
--------------------------------------------------------------------------
 
 function CDOTA_Item:TransferToBuyer(unit)
 	local buyer = self:GetPurchaser()
+	local buyerEntIndex = buyer:GetEntityIndex()
 	local itemName = self:GetName()
-
-	if notFastItems[itemName] or unit:IsIllusion() or self.isTransfer or unit:GetClassname() == "npc_dota_lone_druid_bear" then
-		return true
+	if notFastItems[itemName] then
+		self:SetCooldownStackedItem(itemName, buyer)
+		return
 	end
-	local buyerPlayerId = buyer:GetPlayerID()
-	if not buyer:DoesHeroHasFreeSlot() then
-		buyer:RefundItem(self)
-		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(buyerPlayerId), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
+	local unique_key = itemName .. "_" .. buyerEntIndex
+
+	if unit:IsIllusion() then
+		return
+	end
+	if not DoesHeroHasFreeSlot(buyer) and not itemsWithCharges[itemName] then
+		buyer:ModifyGold(self:GetCost(), false, 0)
+		UTIL_Remove(self)
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(buyer:GetPlayerID()), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
 		return false
-	else
-		local newItem = CreateItem( itemName, buyer:GetPlayerOwner(), buyer:GetPlayerOwner() )
-		newItem:SetPurchaser(buyer)
-		newItem:SetPurchaseTime(GameRules:GetGameTime())
-		newItem.isTransfer = true
-		
-		if not unit:IsCourier() then
-			self:SetPurchaser(nil)
-			self:SetShareability(ITEM_NOT_SHAREABLE)
-		end
-		
-		local team = buyer:GetTeam()
-		local oldCharges = GameRules:GetItemStockCount(team, itemName, buyerPlayerId)
-		GameRules:SetItemStockCount(oldCharges - 2, team, itemName, buyerPlayerId)
-
-		buyer:AddItem(newItem)
-		
-		Timers:CreateTimer(0, function()
-			UTIL_Remove(self)
-			if self and not self:IsNull() and self.GetContainer then
-				local container = self:GetContainer()
-				if container then
-					UTIL_Remove(container)
-				end
-			end
-			Timers:CreateTimer(0.03, function()
-				for i = 0, GameRules:NumDroppedItems() do
-					container = GameRules:GetDroppedItem(i)
-					if container and not container:GetContainedItem() and container.GetSequence and container:GetSequence() == "gem01_idle" then
-						UTIL_Remove(container)
-					end
-				end
-			end)
-		end)
-		return true
 	end
-	
+
+	_G.itemsIsBuy[unique_key] = not _G.itemsIsBuy[unique_key]
+
+	if _G.itemsIsBuy[unique_key] == true then
+		if not itemsWithCharges[itemName] then
+			UTIL_Remove(self)
+			buyer:AddItemByName(itemName)
+			return false
+		else
+			self:SetCooldownStackedItem(itemName, buyer)
+		end
+	end
+end
+
+function CDOTA_Item:HasPersonalCooldown()
+	return itemsCooldownForPlayer[self:GetName()] and true
+end
+
+function MessageToPlayerItemCooldown(itemName, playerID)
+	if _G.itemsCooldownForPlayer[itemName] then
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#fast_buy_items" })
+	else
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#you_can_buy_only_one_item" })
+	end
+end
+
+function CheckMaxItemCount(item, unique_key,playerID,checker)
+	local itemName = item:GetAbilityName()
+	if maxItemsForPlayer[itemName] then
+		if not maxItemsForPlayersData[unique_key] then
+			maxItemsForPlayersData[unique_key] = 1
+		else
+			if maxItemsForPlayersData[unique_key] >=  maxItemsForPlayer[itemName] then
+				CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "you_cannot_buy_more_items_this_type" })
+				return false
+			elseif checker then
+				maxItemsForPlayersData[unique_key] = maxItemsForPlayersData[unique_key]+1
+			end
+		end
+	end
 	return true
 end
 
--------------------------------------------------------------------------
+function CDOTA_BaseNPC:CheckPersonalCooldown(item)
+	local buyerEntIndex = self:GetEntityIndex()
+	local itemName = item:GetAbilityName()
+	local unique_key = itemName .. "_" .. buyerEntIndex
+	local playerID = self:GetPlayerID()
+	local supporter_level = Supporters:GetLevel(playerID)
 
-function CDOTA_Item:CheckMaxItemsForPlayer(unique_key)
-	if not maxItemsForPlayers[self:GetAbilityName()] then return true end
-	if not maxItemsForPlayersData[unique_key] then
-		maxItemsForPlayersData[unique_key] = 1
+	if _G.lastTimeBuyItemWithCooldown[unique_key] == nil or (_G.itemsCooldownForPlayer[itemName] and (GameRules:GetGameTime() - _G.lastTimeBuyItemWithCooldown[unique_key]) >= _G.itemsCooldownForPlayer[itemName]) then
+		if not itemsWithCharges[itemName] then
+			_G.lastTimeBuyItemWithCooldown[unique_key] = GameRules:GetGameTime()
+			local checkMaxCount = CheckMaxItemCount(item, unique_key, playerID, true)
+			return (true and checkMaxCount)
+		elseif not ItemIsFastBuying(itemName) and (not (supporter_level > 0)) then
+			_G.lastTimeBuyItemWithCooldown[unique_key] = GameRules:GetGameTime()
+			local checkMaxCount = CheckMaxItemCount(item, unique_key, playerID, true)
+			return (true and checkMaxCount)
+		end
+	elseif _G.itemsCooldownForPlayer[itemName] then
+		if itemsWithCharges[itemName] then
+			if not ItemIsFastBuying(itemName) and (not (supporter_level > 0)) then
+				local checkMaxCount = CheckMaxItemCount(item, unique_key, playerID, false)
+				if checkMaxCount then
+					MessageToPlayerItemCooldown(itemName, playerID)
+				end
+				return false
+			end
+		else
+			local checkMaxCount = CheckMaxItemCount(item, unique_key, playerID, false)
+			if checkMaxCount then
+				MessageToPlayerItemCooldown(itemName, playerID)
+			end
+			return false
+		end
 	end
-	return maxItemsForPlayersData[unique_key] <= maxItemsForPlayers[self:GetAbilityName()]
+	return true
 end
 
 -------------------------------------------------------------------------
@@ -174,16 +187,6 @@ function CreateDummyInventoryForPlayer(playerId, unit)
 	local dInventory = CreateUnitByName("npc_dummy_inventory", startPointSpawn, true, unit, unit, PlayerResource:GetTeam(playerId))
 	dInventory:SetControllableByPlayer(playerId, true)
 	dInventory:AddNewModifier(dInventory, nil, "modifier_dummy_inventory_custom", {duration = -1})
-	dInventory:AddNoDraw()
-	dInventory.isDummy = true
 	PlayerResource:GetPlayer(playerId).dummyInventory = dInventory
-end
--------------------------------------------------------------------------
-function CDOTA_BaseNPC:IsMonkeyClone()
-	return (self:HasModifier("modifier_monkey_king_fur_army_soldier") or self:HasModifier("modifier_wukongs_command_warrior"))
-end
--------------------------------------------------------------------------
-function CDOTA_BaseNPC:IsMainHero()
-	return self and (not self:IsNull()) and self:IsRealHero() and (not self:IsTempestDouble()) and (not self:IsMonkeyClone()) and (not self:IsClone())
 end
 -------------------------------------------------------------------------
