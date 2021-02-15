@@ -48,9 +48,9 @@ function ItemIsFastBuying(itemName)
 	return fastItems[itemName]
 end
 
-function DoesHeroHasFreeSlot(unit)
+function CDOTA_BaseNPC:DoesHeroHasFreeSlot()
 	for i = 0, 15 do
-		if unit:GetItemInSlot(i) == nil then
+		if self:GetItemInSlot(i) == nil then
 			return i
 		end
 	end
@@ -92,7 +92,7 @@ function CDOTA_Item:TransferToBuyer(unit)
 	if unit:IsIllusion() then
 		return
 	end
-	if not DoesHeroHasFreeSlot(buyer) and not itemsWithCharges[itemName] then
+	if not buyer:DoesHeroHasFreeSlot() and not itemsWithCharges[itemName] then
 		buyer:ModifyGold(self:GetCost(), false, 0)
 		UTIL_Remove(self)
 		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(buyer:GetPlayerID()), "display_custom_error", { message = "#dota_hud_error_cant_purchase_inventory_full" })
