@@ -15,14 +15,16 @@ function NeutralItemPickedUp( data ) {
 	item.FindChildTraverse( "ItemImage" ).itemname = Abilities.GetAbilityName( data.item )
 	item.FindChildTraverse( "ButtonKeep" ).SetPanelEvent( "onactivate", function() {
 		GameEvents.SendCustomGameEventToServer( "neutral_item_keep", {
-			item: data.item
+			item: data.item,
+			PlayerID: Players.GetLocalPlayer(),
 		} )
 		item.visible = false
 		choiceWasMade = true
 	} )
 	item.FindChildTraverse( "ButtonDrop" ).SetPanelEvent( "onactivate", function() {
 		GameEvents.SendCustomGameEventToServer( "neutral_item_drop", {
-			item: data.item
+			item: data.item,
+			PlayerID: Players.GetLocalPlayer(),
 		} )
 		item.visible = false
 		choiceWasMade = true
