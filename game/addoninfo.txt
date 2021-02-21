@@ -37,7 +37,7 @@
 	{
 	}
 	HeroGuidesSupported = true
-	ForceDefaultGuide = true
+	ForceDefaultGuide = false
 	MinimalPrecache = false
 	MinPlayers = 1
 	MaxPlayers = 10
