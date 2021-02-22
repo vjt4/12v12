@@ -302,4 +302,24 @@
 			"item_mirror_shield"			  "1"
 		}
 	}
+	"15"
+	{
+		"drop_rates"
+		{
+			"56:00"
+			{
+				"0" "10"
+				"1" "10"
+				"2" "10"
+				"3" "10"
+			}
+		}
+		"items"
+		{
+			"item_recipe_trident"		 	  "1"
+			"item_woodland_striders"		  "1"
+			"item_phoenix_ash"				  "1"
+			"item_fusion_rune"			      "1"
+		}
+	}
 }
