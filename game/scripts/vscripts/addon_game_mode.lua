@@ -42,6 +42,7 @@ require("neutral_items_drop_choice")
 require("gpm_lib")
 require("game_options/game_options")
 require("shuffle_team")
+Precache = require( "precache" )
 
 WebApi.customGame = "Dota12v12"
 
@@ -49,6 +50,7 @@ LinkLuaModifier("modifier_dummy_inventory", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_core_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_patreon_courier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_silencer_new_int_steal", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_shadow_amulet_thinker", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_feed_token", 'anti_feed_system/modifier_troll_feed_token', LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_feed_token_couter", 'anti_feed_system/modifier_troll_feed_token_couter', LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_troll_debuff_stop_feed", 'anti_feed_system/modifier_troll_debuff_stop_feed', LUA_MODIFIER_MOTION_NONE)
@@ -67,9 +69,6 @@ _G.tableRadiantHeroes = {}
 _G.tableDireHeroes = {}
 _G.newRespawnTimes = {}
 
-_G.itemsIsBuy = {}
-_G.lastTimeBuyItemWithCooldown = {}
-
 _G.tPlayersMuted = {}
 
 if CMegaDotaGameMode == nil then
@@ -77,24 +76,7 @@ if CMegaDotaGameMode == nil then
 	--refer to: http://stackoverflow.com/questions/6586145/lua-require-with-global-local
 end
 
-function Precache( context )
-	PrecacheResource( "soundfile", "soundevents/custom_soundboard_soundevents.vsndevts", context )
-
-	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_chen.vsndevts", context )
-	PrecacheResource( "particle", "particles/alert_ban_hammer.vpcf", context )
-	PrecacheResource( "particle", "particles/econ/items/faceless_void/faceless_void_weapon_bfury/faceless_void_weapon_bfury_cleave_c.vpcf", context )
-	PrecacheResource( "particle", "particles/custom_cleave.vpcf", context )
-
-	local heroeskv = LoadKeyValues("scripts/heroes.txt")
-	for hero, _ in pairs(heroeskv) do
-		PrecacheResource( "soundfile", "soundevents/voscripts/game_sounds_vo_"..string.sub(hero,15)..".vsndevts", context )
-	end
-
-	Cosmetics:Precache( context )
-end
-
 function Activate()
-	Cosmetics:Init()
 	CMegaDotaGameMode:InitGameMode()
 end
 
@@ -146,7 +128,7 @@ function CMegaDotaGameMode:InitGameMode()
 
 	GameRules:GetGameModeEntity():SetKillableTombstones( true )
 	GameRules:GetGameModeEntity():SetFreeCourierModeEnabled(true)
-
+	Convars:SetInt("dota_max_physical_items_purchase_limit", 100)
 	if IsInToolsMode() then
 		GameRules:GetGameModeEntity():SetDraftingBanningTimeOverride(0)
 	end
@@ -196,7 +178,7 @@ function CMegaDotaGameMode:InitGameMode()
 			if container then
 				local item = container:GetContainedItem()
 
-				if item:GetAbilityName():find( "item_ward_" ) then
+				if item and item.GetAbilityName and not item:IsNull() and  item:GetAbilityName():find( "item_ward_" ) then
 					local owner = item:GetOwner()
 
 					if owner then
@@ -231,6 +213,8 @@ function CMegaDotaGameMode:InitGameMode()
 
 	GameOptions:Init()
 	UniquePortraits:Init()
+	Battlepass:Init()
+	CustomChat:Init()
 end
 
 function IsInBugZone(pos)
@@ -523,7 +507,7 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 	local tokenTrollCouter = "modifier_troll_feed_token_couter"
 
 	Timers:CreateTimer(0.1, function()
-		if spawnedUnit and spawnedUnit:IsTempestDouble() or spawnedUnit:IsClone()then
+		if spawnedUnit and not spawnedUnit:IsNull() and ((spawnedUnit.IsTempestDouble and spawnedUnit:IsTempestDouble()) or (spawnedUnit.IsClone and spawnedUnit:IsClone())) then
 			local playerId = spawnedUnit:GetPlayerOwnerID()
 			if _G.PlayersPatreonsPerk[playerId] then
 				local perkName = _G.PlayersPatreonsPerk[playerId]
@@ -634,42 +618,22 @@ function CMegaDotaGameMode:OnNPCSpawned(event)
 		if not spawnedUnit.firstTimeSpawned then
 			spawnedUnit.firstTimeSpawned = true
 			spawnedUnit:SetContextThink("HeroFirstSpawn", function()
-
+				--[[
 				if spawnedUnit == PlayerResource:GetSelectedHeroEntity(playerId) then
 					Patreons:GiveOnSpawnBonus(playerId)
 				end
+				]]
 			end, 2/30)
 		end
 
-		--local psets = Patreons:GetPlayerSettings(playerId)
 		if PlayerResource:GetPlayer(playerId) and not PlayerResource:GetPlayer(playerId).dummyInventory then
 			CreateDummyInventoryForPlayer(playerId, spawnedUnit)
 		end
-		--if psets.level > 1 and _G.personalCouriers[playerId] == nil then
-		--	local courier_spawn = {
-		--		[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant"),
-		--		[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire"),
-		--	}
-		--	local team = spawnedUnit:GetTeamNumber()
-		--	CreatePrivateCourier(playerId, spawnedUnit, courier_spawn[team]:GetAbsOrigin())
-		--end
+		
+		if not spawnedUnit.dummyCaster then
+			Cosmetics:InitCosmeticForUnit(spawnedUnit)
+		end
 	end
-end
-
-function CreateDummyInventoryForPlayer(playerId, unit)
-	if PlayerResource:GetPlayer(playerId).dummyInventory then
-		PlayerResource:GetPlayer(playerId).dummyInventory:Kill(nil, nil)
-	end
-	local team = unit:GetTeamNumber()
-	local startPointSpawn = {
-		[2] = Entities:FindByClassname(nil, "info_courier_spawn_radiant"),
-		[3] = Entities:FindByClassname(nil, "info_courier_spawn_dire"),
-	}
-	startPointSpawn = startPointSpawn[team]:GetAbsOrigin() + (RandomFloat(100, 100))
-	local dInventory = CreateUnitByName("npc_dummy_inventory", startPointSpawn, true, unit, unit, team)
-	dInventory:SetControllableByPlayer(playerId, true)
-	dInventory:AddNewModifier(dInventory, nil, "modifier_dummy_inventory", {duration = -1})
-	PlayerResource:GetPlayer(playerId).dummyInventory = dInventory
 end
 
 function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
@@ -680,12 +644,16 @@ function CMegaDotaGameMode:ModifierGainedFilter(filterTable)
 	end
 
 	local parent = filterTable.entindex_parent_const and filterTable.entindex_parent_const ~= 0 and EntIndexToHScript(filterTable.entindex_parent_const)
-	local caster = filterTable.entindex_caster_const and filterTable.entindex_caster_const ~= 0 and EntIndexToHScript(filterTable.entindex_caster_const)
 
-	if caster and parent and caster.bonusDebuffTime and (parent:GetTeamNumber() ~= caster:GetTeamNumber()) and filterTable.duration > 0 then
-		filterTable.duration = filterTable.duration/100*caster.bonusDebuffTime + filterTable.duration
+	if parent and filterTable.name_const and filterTable.name_const == "modifier_item_shadow_amulet_fade" then
+		filterTable.duration = 15
+		parent:AddNewModifier(parent, nil, "modifier_shadow_amulet_thinker", {})
 	end
-
+	
+	if parent.isDummy then
+		return false
+	end
+	
 	return true
 end
 
@@ -906,7 +874,7 @@ function CMegaDotaGameMode:OnGameRulesStateChange(keys)
         }
 		Timers:RemoveTimer("game_options_unpause")
 		Convars:SetFloat("host_timescale", 1)
-		Convars:SetFloat("host_timescale", 0.07)
+		Convars:SetFloat("host_timescale", IsInToolsMode() and 1 or 0.07)
 		Timers:CreateTimer({
 			useGameTime = false,
 			endTime = 2.1,
@@ -1034,22 +1002,15 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			UTIL_Remove(hItem)
 			return false
 		end
-
+		local pitems = {
+			"item_patreonbundle_1",
+			"item_patreonbundle_2",
+			"item_reset_mmr"
+		}
 		if hInventoryParent:IsRealHero() then
 			local plyID = hInventoryParent:GetPlayerID()
 			if not plyID then return true end
-			local pitems = {
-			--	"item_patreon_1",
-			--	"item_patreon_2",
-			--	"item_patreon_3",
-			--	"item_patreon_4",
-			--	"item_patreon_5",
-			--	"item_patreon_6",
-			--	"item_patreon_7",
-			--	"item_patreon_8",
-				"item_patreonbundle_1",
-				"item_patreonbundle_2"
-			}
+
 			if itemName == "item_patreon_courier" then
 				BlockToBuyCourier(plyID, hItem)
 				return false
@@ -1063,8 +1024,8 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				end
 			end
 			if pitem == true then
-				local psets = Patreons:GetPlayerSettings(plyID)
-				if psets.level < 1 then
+				local supporter_level = Supporters:GetLevel(plyID)
+				if supporter_level < 1 then
 					CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(plyID), "display_custom_error", { message = "#nopatreonerror" })
 					UTIL_Remove(hItem)
 					return false
@@ -1079,10 +1040,6 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 				end
 			end
 		else
-			local pitems = {
-				"item_patreonbundle_1",
-				"item_patreonbundle_2",
-			}
 			for i=1,#pitems do
 				if itemName == pitems[i] then
 					local prsh = hItem:GetPurchaser()
@@ -1099,8 +1056,8 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 								UTIL_Remove(hItem)
 								return false
 							end
-							local psets = Patreons:GetPlayerSettings(prshID)
-							if not psets then
+							local supporter_level = Supporters:GetLevel(prshID)
+							if not supporter_level then
 								UTIL_Remove(hItem)
 								return false
 							end
@@ -1111,7 +1068,7 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 									return false
 								end
 							else
-								if psets.level < 1 then
+								if supporter_level < 1 then
 									CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(prshID), "display_custom_error", { message = "#nopatreonerror" })
 									UTIL_Remove(hItem)
 									return false
@@ -1145,15 +1102,15 @@ function CMegaDotaGameMode:ItemAddedToInventoryFilter( filterTable )
 			})
 		end
 
+
 		local purchaser = hItem:GetPurchaser()
 		local itemCost = hItem:GetCost()
-
 		if purchaser then
 			local prshID = purchaser:GetPlayerID()
-			local psets = Patreons:GetPlayerSettings(prshID)
+			local supporter_level = Supporters:GetLevel(prshID)
 			local correctInventory = hInventoryParent:IsRealHero() or (hInventoryParent:GetClassname() == "npc_dota_lone_druid_bear") or hInventoryParent:IsCourier()
 
-			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and (ItemIsFastBuying(hItem:GetName()) or psets.level > 0) then
+			if (filterTable["item_parent_entindex_const"] > 0) and correctInventory and (ItemIsFastBuying(hItem:GetName()) or supporter_level > 0) then
 				if hItem:TransferToBuyer(hInventoryParent) == false then
 					return false
 				end
@@ -1246,6 +1203,12 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 		unit = EntIndexToHScript(filterTable.units["0"])
 	end
 
+	if not IsInToolsMode() and unit and unit.GetTeam and PlayerResource:GetPlayer(playerId) then
+		if unit:GetTeam() ~= PlayerResource:GetPlayer(playerId):GetTeam() then
+			return false
+		end
+	end
+
 	if orderType == DOTA_UNIT_ORDER_CAST_TARGET then
 		if target:GetName() == "npc_dota_seasonal_ti9_drums" then
 			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerId), "display_custom_error", { message = "#dota_hud_error_cant_cast_on_other" })
@@ -1256,6 +1219,7 @@ function CMegaDotaGameMode:ExecuteOrderFilter(filterTable)
 	local itemsToBeDestroy = {
 		["item_disable_help_custom"] = true,
 		["item_mute_custom"] = true,
+		["item_reset_mmr"] = true,
 	}
 	if orderType == DOTA_UNIT_ORDER_PURCHASE_ITEM then
 		local entIndexAbility = filterTable["entindex_ability"]
@@ -1423,7 +1387,7 @@ end)
 votimer = {}
 vousedcol = {}
 SelectVO = function(keys)
-	local psets = Patreons:GetPlayerSettings(keys.PlayerID)
+	local supporter_level = Supporters:GetLevel(keys.PlayerID)
 	print(keys.num)
 	local heroes = {
 		"abaddon",
@@ -1463,6 +1427,7 @@ SelectVO = function(keys)
 		"faceless_void",
 		"grimstroke",
 		"gyrocopter",
+		"hoodwink",
 		"huskar",
 		"invoker",
 		"wisp",
@@ -2198,6 +2163,16 @@ SelectVO = function(keys)
 				"gyrocopter_gyro_deny_05",
 				"gyrocopter_gyro_kill_15",
 				"gyrocopter_gyro_kill_02",
+				},
+				{
+				"hoodwink_hoodwink_wheel_laugh_04",
+				"hoodwink_hoodwink_wheel_thanks_02_02",
+				"hoodwink_hoodwink_wheel_deny_01",
+				"hoodwink_hoodwink_net_hit_12",
+				"hoodwink_hoodwink_kill_23",
+				"hoodwink_hoodwink_levelup_26",
+				"hoodwink_hoodwink_attack_25",
+				"hoodwink_hoodwink_lasthit_03",
 				},
 				{
 				"huskar_husk_laugh_09",
@@ -3093,7 +3068,7 @@ function GetTopPlayersList(fromTopCount, team, sortFunction)
 	local topPlayers = {}
 
 	local countPlayers = 0
-	while(countPlayers < fromTopCount or countPlayerss == 12) do
+	while(countPlayers < fromTopCount or countPlayers == 12) do
 		local bestPlayerValue = -1
 		local bestPlayer
 		for playerID, playerInfo in pairs(playersSortInfo) do
@@ -3113,10 +3088,15 @@ function GetTopPlayersList(fromTopCount, team, sortFunction)
 end
 
 function CheckTeamBalance()
+	if GameRules:GetDOTATime(false, true) >= TIME_LIMIT_FOR_CHANGE_TEAM then
+		CustomGameEventManager:Send_ServerToAllClients("HideTeamChangePanel", {} )
+		return
+	end
+	
 	if GameOptions:OptionsIsActive("no_switch_team") then
 		return
 	end
-
+	
 	if GetMapName() == "dota_tourtament" then
 		return
 	end
@@ -3174,14 +3154,18 @@ end
 
 function ChangeTeam(playerID, newTeam)
 	if GameRules:GetDOTATime(false, true) >= TIME_LIMIT_FOR_CHANGE_TEAM then
-		if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), GetHeroKD)[playerID] then
-			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_kda_for_change_team" })
-			return
-		end
-		if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), function(hero) return PlayerResource:GetNetWorth(hero:GetPlayerOwnerID())end)[playerID] then
-			CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_nw_for_change_team" })
-			return
-		end
+		CustomGameEventManager:Send_ServerToAllClients("HideTeamChangePanel", {} )
+		return
+	end
+	if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), GetHeroKD)[playerID] then
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_kda_for_change_team" })
+		return
+	end
+	if GetTopPlayersList(3, PlayerResource:GetTeam(playerID), function(hero)
+		return PlayerResource:GetNetWorth(hero:GetPlayerOwnerID())
+	end)[playerID] then
+		CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(playerID), "display_custom_error", { message = "#too_huge_nw_for_change_team" })
+		return
 	end
 
 	if _G.changeTeamProgress or (not _G.isChangeTeamAvailable) then return end
@@ -3234,7 +3218,12 @@ function ChangeTeamForPlayer(playerID, newTeam)
 		hero:SetTeam(newTeam)
 		hero:Kill(nil, hero)
 		hero:SetTimeUntilRespawn(1)
-		CreateDummyInventoryForPlayer(hero:GetPlayerOwnerID(), hero)
+
+		Timers:CreateTimer(3, function()
+			CreateDummyInventoryForPlayer(hero:GetPlayerOwnerID(), hero)
+			Cosmetics:InitCosmeticForUnit(hero)
+		end)
+
 		if hero:HasAbility('arc_warden_tempest_double') then
 			local clones = Entities:FindAllByName(hero:GetClassname())
 			for _,tempestDouble in pairs(clones) do
@@ -3296,3 +3285,43 @@ function ChangeTeamForPlayer(playerID, newTeam)
 	end
 	GameRules:SetCustomGameTeamMaxPlayers( newTeam, maxPlayerInTeam )
 end
+
+RegisterCustomEventListener("patreon_update_chat_wheel_favorites", function(data)
+	local playerId = data.PlayerID
+	if not playerId then return end
+
+	if WebApi.playerSettings and WebApi.playerSettings[data.PlayerID] then
+		local favourites = data.favourites
+		if not favourites then return end
+
+		WebApi.playerSettings[data.PlayerID].chatWheelFavourites = favourites
+		WebApi:ScheduleUpdateSettings(data.PlayerID)
+	end
+end)
+
+RegisterCustomEventListener("ResetMmrRequest", function(data)
+	if not IsServer() then return end
+
+	local playerId = data.PlayerID
+	if not playerId then return end
+
+	local steamId = Battlepass:GetSteamId(playerId)
+	if not steamId then return end
+
+	local mapName = GetMapName()
+	if not mapName then return end
+
+	WebApi:Send(
+		"match/reset_mmr",
+		{
+			mapName = mapName,
+			steamId = steamId,
+		},
+		function()
+			print("Successfully reset mmr")
+		end,
+		function(e)
+			print("error while reset mmr: ", e)
+		end
+	)
+end)

@@ -1,5 +1,4 @@
-.PatreonRoot
-{
+.PatreonRoot {
 	width: 100%;
 	height: 100%;
 	z-index: -1;
@@ -8,18 +7,18 @@
 #LocalServerWarningContainer {
 	width: 600px;
 	flow-children: down;
- 	border-style: solid;
+	border-style: solid;
 	border-width: 3px;
 	border-color: #000000;
 	background-image: url("s2r://panorama/images/hud/reborn/ability_bg_psd.vtex");
 	background-color: #263238;
 	background-size: 100%;
- 	align: center top;
+	align: center top;
 	border-radius: 6px;
 	margin-top: 80px;
 	transition-property: opacity;
 	transition-duration: 1.1s;
-	opacity: 0.0;
+	opacity: 0;
 	visibility: collapse;
 }
 
@@ -29,7 +28,7 @@
 	margin-top: 15px;
 	margin-left: 12px;
 	margin-right: 12px;
-	color: #FFFFFF;
+	color: #ffffff;
 	font-size: 24px;
 }
 
@@ -43,11 +42,11 @@
 	border-width: 3px;
 	border-color: #000000;
 	border-radius: 4px;
-	background-color: gradient( linear, 0% 0%, 0% 100%, from( #00ff0080 ), to( #00bb0040 ) );
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#00ff0080), to(#00bb0040));
 	box-shadow: #ffffff80 0px 0px 3px 0px;
 }
 
-#LocalServerWarningButton:Hover {
+#LocalServerWarningButton:hover {
 	brightness: 1.3;
 	box-shadow: #ffffff80 0px 0px 5px 0px;
 }
@@ -75,13 +74,13 @@
 
 #PaymentConfirmationContainer {
 	flow-children: down;
- 	border-style: solid;
+	border-style: solid;
 	border-width: 3px;
 	border-color: #000000ff;
 	background-image: url("s2r://panorama/images/hud/reborn/ability_bg_psd.vtex");
 	background-color: #263238ff;
 	background-size: 100%;
- 	align: center center;
+	align: center center;
 	border-radius: 6px;
 	flow-children: down;
 }
@@ -102,7 +101,7 @@
 	height: 96px;
 	width: 96px;
 	border-radius: 4px;
-	border: 2px solid #D8D8D8FF;
+	border: 2px solid #d8d8d8ff;
 }
 
 #PaymentConfirmationAvatarLabel {
@@ -133,10 +132,10 @@
 	margin-bottom: 20px;
 	border: 1px solid #ffffffff;
 	border-radius: 4px;
-	background-color: gradient( linear, 0% 0%, 0% 100%, from( #00ff0080 ), to( #00bb0040 ) );
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#00ff0080), to(#00bb0040));
 }
 
-#PaymentConfirmationButtonYes:Hover {
+#PaymentConfirmationButtonYes:hover {
 	brightness: 1.3;
 	box-shadow: #ffffff80 0px 0px 4px 0px;
 }
@@ -158,10 +157,10 @@
 	margin-bottom: 20px;
 	border: 1px solid #ffffffff;
 	border-radius: 4px;
-	background-color: gradient( linear, 0% 0%, 0% 100%, from( #ff000080 ), to( #bb000040 ) );
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#ff000080), to(#bb000040));
 }
 
-#PaymentConfirmationButtonNo:Hover {
+#PaymentConfirmationButtonNo:hover {
 	brightness: 1.3;
 	box-shadow: #ffffff80 0px 0px 4px 0px;
 }
@@ -211,12 +210,12 @@
 
 #PatreonPerkAccess {
 	width: 100%;
-	color: rgba( 222, 222, 222, 0.9 );
+	color: rgba(222, 222, 222, 0.9);
 	font-size: 18px;
 }
 
 #PatreonPerkAccess.Available {
-	color: #7CB342;
+	color: #7cb342;
 }
 
 #PatreonPerkAdditional {
@@ -233,17 +232,16 @@
 	margin-top: 0px;
 }
 
-#PatreonWindow
-{
+#PatreonWindow {
 	width: 730px;
 	flow-children: down;
- 	border-style: solid;
+	border-style: solid;
 	border-width: 1.5px;
 	background-image: url("s2r://panorama/images/hud/reborn/ability_bg_psd.vtex");
 	background-color: #263238;
 	background-size: 100%;
 	opacity: 1.2;
- 	align: center center;
+	align: center center;
 	border-radius: 10px;
 	visibility: collapse;
 }
@@ -258,7 +256,7 @@
 	vertical-align: bottom;
 	width: 100%;
 	height: 75px;
-	background-color: gradient( linear, 0% 0%, 0% 100%, from( #4d4d4d ), to( #4d4d4d ) );
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#4d4d4d), to(#4d4d4d));
 	background-image: url("s2r://panorama/images/front_page/ti8_front_bar_psd.vtex");
 	background-repeat: no-repeat;
 	flow-children: down;
@@ -305,7 +303,7 @@
 .PatreonHeader {
 	width: 100%;
 	height: 35px;
-	background-color: gradient( linear, 0% 0%, 0% 100%, from( #f96854 ), to( #f96854 ) );
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#f96854), to(#f96854));
 	background-image: url("s2r://panorama/images/backgrounds/background_play_button_2x_png.vtex");
 }
 
@@ -316,7 +314,7 @@
 	horizontal-align: center;
 	margin-bottom: 5px;
 }
- .PatreonLabel {
+.PatreonLabel {
 	vertical-align: center;
 	horizontal-align: center;
 	color: white;
@@ -340,7 +338,7 @@
 	width: 24px;
 	height: 24px;
 	background-size: 100%;
-	margin: 2px;
+	margin: 5px;
 	background-image: url("s2r://panorama/images/control_icons/x_close_png.vtex");
 }
 
@@ -407,7 +405,7 @@
 	width: 218px;
 	height: 40px;
 	padding: 4px 12px 4px 12px;
-	background-color: gradient( linear, 0% 0%, 0% 100%, from( #558B2F ), to( #7CB342 ) );
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#558b2f), to(#7cb342));
 	background-image: url("s2r://panorama/images/backgrounds/background_play_button_2x_png.vtex");
 	border-style: solid;
 	border-width: 0.4px;
@@ -417,12 +415,12 @@
 
 .SupportButton:hover {
 	box-shadow: #000000ff 0px 0px 16px 0px;
-	background-color: gradient( linear, 0% 0%, 0% 100%, from( #689F38 ), to( #8BC34A ) );
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#689f38), to(#8bc34a));
 }
 
 .SupportButton:selected {
 	/* wash-color: #00FF0088; */
-	background-color: gradient( linear, 0% 0%, 0% 100%, from( #3E9E39 ), to( #68C24A ) );
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#3e9e39), to(#68c24a));
 }
 
 .SupportButton > Label {
@@ -458,7 +456,7 @@
 	width: 244px;
 	height: 50px;
 	padding: 4px 12px 4px 12px;
-	background-color: gradient( linear, 0% 0%, 0% 100%, from( #f96854 ), to( #f96854 ) );
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#f96854), to(#f96854));
 	background-image: url("s2r://panorama/images/backgrounds/background_play_button_2x_png.vtex");
 	background-size: 240px 50px;
 	border-style: solid;
@@ -472,8 +470,8 @@
 }
 
 #PatreonButton:hover {
-  box-shadow: #000000ff 0px 0px 16px 0px;
-  background-color: gradient( linear, 0% 0%, 0% 100%, from( #052d49 ), to( #052d49 ) );
+	box-shadow: #000000ff 0px 0px 16px 0px;
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#052d49), to(#052d49));
 }
 
 #PatreonButton Label {
@@ -490,22 +488,21 @@
 	height: 60px;
 	margin-left: -5px;
 	padding: 4px 12px 4px 12px;
-	background-color: gradient( linear, 0% 0%, 0% 100%, from( #052d49 ), to( #052d49 ) );
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#052d49), to(#052d49));
 	background-size: 100%;
 	background-repeat: no-repeat;
 	border-style: solid;
 	border-width: 1px;
 	border-color: #052d49;
 	border-radius: 5px;
+	opacity: 0;
 }
 
- #PatreonButtonSmallerImage:hover
-{
-  background-color: gradient( linear, 0% 0%, 0% 100%, from( #074570 ), to( #074570 ) );
+#PatreonButtonSmallerImage:hover {
+	background-color: gradient(linear, 0% 0%, 0% 100%, from(#074570), to(#074570));
 }
 
-#VOIcon
-{
+#VOIcon {
 	height: 60px;
 	width: 60px;
 	margin-bottom: 60px;
@@ -534,7 +531,6 @@
 	background-color: #444;
 	border-radius: 3px;
 	padding-bottom: 10px;
-
 }
 
 #PaymentWindowBody,
@@ -602,7 +598,7 @@
 	height: 60px;
 	width: 60px;
 	border-radius: 4px;
-	border: 1px solid #D8D8D8FF;
+	border: 1px solid #d8d8d8ff;
 }
 
 #PaymentWindowPaymentKinds > RadioButton,
@@ -633,12 +629,12 @@
 
 #NewMethodsAnnouncement {
 	margin-left: 70px;
-	margin-bottom: 0px;
+	margin-bottom: 35px;
 }
 
 #NewMethodsAnnouncementImage {
-	width: 200px;
-	height: 90px;
+	width: 350px;
+	height: 100px;
 	margin-bottom: 70px;
 }
 
@@ -649,7 +645,6 @@
 
 #NewMethodsAnnouncementText {
 	vertical-align: bottom;
-	width: 235px;
 	flow-children: down;
 }
 
@@ -664,23 +659,24 @@
 #NewMethodsAnnouncementImages {
 	margin-top: 5px;
 	flow-children: right;
+	padding-left: -7px;
 }
 
 #NewMethodsAnnouncementImages > Image {
 	background-color: white;
 	width: 100px;
-	height: 40px;
-	margin: 0 7px;
-	border-radius: 8px;
+	height: 42px;
+	margin-left: 7px;
+	border-radius: 2px;
 	padding: 2px;
 }
 
 #NewMethodsAnnouncementImages > Image:hover {
-	pre-transform-scale2d: 0.98;
+	pre-transform-scale2d: 1.02;
 }
 
 #NewMethodsAnnouncementImages > Image:active {
-	pre-transform-scale2d: 1.02;
+	pre-transform-scale2d: 0.98;
 }
 
 #ClosePatreonButton {

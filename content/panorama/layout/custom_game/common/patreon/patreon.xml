@@ -63,8 +63,9 @@
 				<Panel id="NewMethodsAnnouncementText">
 					<Label html="true" text="#patreon_new_methods_announcement" />
 					<Panel id="NewMethodsAnnouncementImages">
-						<Image onactivate="openPurchasePaymentWindow('WeChat')" src="file://{resources}/layout/custom_game/common/patreon/wechat.png" />
-						<Image onactivate="openPurchasePaymentWindow('Alipay')" src="file://{resources}/layout/custom_game/common/patreon/alipay.png" />
+						<Image onactivate="OpenShop()" src="file://{resources}/images/custom_game/payment/payment_wechat.png" />
+						<Image onactivate="OpenShop()" src="file://{resources}/images/custom_game/payment/payment_alipay.png" />
+						<Image onactivate="OpenShop()" src="file://{resources}/images/custom_game/payment/payment_card.png" />
 					</Panel>
 				</Panel>
 				<Button class="PatreonCloseButtonX" onactivate="hideNewMethodsAnnouncement()" />
@@ -75,7 +76,7 @@
 				<Button class="PatreonCloseButtonX" onactivate="OnPatreonButtonPressed()" />
 				<Label id="HeaderLabel" class="PatreonLabel" text="#patreon_perks"/>
 			</Panel>
-			
+
 			<Panel id="PatreonPerksContainer" />
 
 			<Panel id="PatreonFooter">
@@ -92,7 +93,7 @@
 						id="SupportButtonPaymentWindow"
 						class="SupportButton"
 						text="#patreon_support_payment"
-						onactivate="togglePaymentWindowVisible()"
+						onactivate="OpenShop()"
 					/>
 				</Panel>
 
@@ -113,7 +114,7 @@
 		</Panel>
 		<Panel hittest="true" id="PaymentWindow">
 			<Button id="BackgroundCloseButton" onactivate="setPaymentWindowVisible(false)" />
-			
+
 			<Panel id="PaymentWindowContent" hittest="true" onactivate="" >
 				<Button class="PatreonCloseButtonX" onactivate="setPaymentWindowVisible(false)" />
 

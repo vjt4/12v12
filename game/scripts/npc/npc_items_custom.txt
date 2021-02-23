@@ -85,7 +85,7 @@
             "03"
             {
                 "var_type"              "FIELD_INTEGER"
-                "bonus_chance"          "75"
+                "bonus_chance"          "100"
             }
             "04"
             {
@@ -423,6 +423,7 @@
 		"ItemStockTime"					"600.0"
 		"ItemInitialStockTime"			"690.0"
 		"BonusDelayedStockCount"		"4"
+		"ItemPurchasable"               "1"
 	}
 
     "item_ward_sentry"
@@ -749,4 +750,27 @@
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
     }
+
+	"item_reset_mmr"
+	{
+		"BaseClass"						"item_lua"
+		"AbilityTextureName"			"custom/item_reset_mmr"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"ItemQuality"					"artifact"
+		"ScriptFile"					"items/item_reset_mmr"
+
+
+		"ItemInitialCharges"			"1"
+		"ItemStackable"					"0"
+		"ItemPermanent"					"0"
+		"ItemHideCharges"				"0"
+		"CastFilterRejectCaster" 		"1"
+		"IsTempestDoubleClonable"		"0"
+		"ShouldBeInitiallySuggested"	"1"
+	}
+    "item_aghanims_shard"
+	{
+		"ItemInitialStockTime"			"990"
+	}
+
 }

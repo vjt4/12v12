@@ -18,8 +18,8 @@ function ShuffleTeam:SortInMMR()
 	local players = {}
 	local playersStats = CustomNetTables:GetTableValue("game_state", "player_stats");
 	if not playersStats then return end
-	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 24 )
-	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 24)
+	GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 24)
+	GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 24)
 
 	local phantomPartyID = 456332
 	for playerId = 0, 23 do
@@ -57,16 +57,21 @@ function ShuffleTeam:SortInMMR()
 		return a.mmr > b.mmr
 	end)
 
-	local SortTeam = function(MIN_DIFFPlayerCount)
+	local SortTeam = function(MinDiffPlayersCount)
 		for _, partyData in pairs(sortedParties) do
-			if #partyData.players >= MIN_DIFFPlayerCount and not partyData.sorted then
+			if #partyData.players >= MinDiffPlayersCount and not partyData.sorted then
 				partyData.sorted = true
 				local teamId = 2
 				if teams[teamId].mmr > teams[3].mmr then
 					teamId = 3
 				end
+
+				if (#teams[teamId].players + #partyData.players) > MAX_PLAYERS_IN_TEAM then
+					teamId = teamId == 2 and 3 or 2
+				end
+				
 				for _, playerId in pairs(partyData.players) do
-					if #teams[teamId].players >= MAX_PLAYERS_IN_TEAM then
+					if (#teams[teamId].players + 1) > MAX_PLAYERS_IN_TEAM then
 						teamId = teamId == 2 and 3 or 2
 					end
 					table.insert(teams[teamId].players, playerId)
@@ -96,8 +101,8 @@ function ShuffleTeam:SortInMMR()
 	AutoTeam:Debug("")
 	AutoTeam:Debug("Team 2 averages MMR: " .. math.floor(teams[2].mmr/MAX_PLAYERS_IN_TEAM))
 	AutoTeam:Debug("Team 3 averages MMR: " .. math.floor(teams[3].mmr/MAX_PLAYERS_IN_TEAM))
-	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 12)
-	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS,12)
+	GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 12)
+	GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 12)
 end
 
 function ShuffleTeam:SendNotificationForWeakTeam()
