@@ -423,7 +423,7 @@
 		"ItemStockTime"					"600.0"
 		"ItemInitialStockTime"			"690.0"
 		"BonusDelayedStockCount"		"4"
-		"ItemPurchasable"               "0"
+		"ItemPurchasable"               "1"
 	}
 
     "item_ward_sentry"
@@ -750,7 +750,7 @@
             "ItemCost"                      "0"
             "ItemPurchasable"               "0"
     }
-    
+
 	"item_reset_mmr"
 	{
 		"BaseClass"						"item_lua"
@@ -758,8 +758,8 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"ItemQuality"					"artifact"
 		"ScriptFile"					"items/item_reset_mmr"
-		
-		
+
+
 		"ItemInitialCharges"			"1"
 		"ItemStackable"					"0"
 		"ItemPermanent"					"0"
@@ -770,7 +770,7 @@
 	}
     "item_aghanims_shard"
 	{
-		"ItemInitialStockTime"			"900"
+		"ItemInitialStockTime"			"990"
 	}
 
 }
