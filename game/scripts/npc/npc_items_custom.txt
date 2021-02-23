@@ -85,7 +85,7 @@
             "03"
             {
                 "var_type"              "FIELD_INTEGER"
-                "bonus_chance"          "75"
+                "bonus_chance"          "100"
             }
             "04"
             {
