@@ -278,7 +278,7 @@
 		{
 			"item_ballista"					  "1"
 			"item_desolator_2"				  "1"
-			"item_pirate_hat"				  "1"
+			"item_mirror_shield"			  "1"
 			"item_ex_machina"				  "1"
 		}
 	}
@@ -299,7 +299,7 @@
 			"item_giants_ring"		 		  "1"
 			"item_fallen_sky"				  "1"
 			"item_apex"						  "1"
-			"item_mirror_shield"			  "1"
+			"item_pirate_hat"				  "1"
 		}
 	}
 	"15"
