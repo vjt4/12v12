@@ -1,5 +1,8 @@
 patreon_perk_agi_for_kill_t2 = class({})
 --------------------------------------------------------------------------------
+function patreon_perk_agi_for_kill_t2:AllowIllusionDuplicate()
+	return true
+end
 
 function patreon_perk_agi_for_kill_t2:IsHidden()
 	return false

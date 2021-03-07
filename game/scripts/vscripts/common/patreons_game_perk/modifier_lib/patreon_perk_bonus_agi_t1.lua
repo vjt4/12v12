@@ -1,5 +1,8 @@
 patreon_perk_bonus_agi_t1 = class({})
 --------------------------------------------------------------------------------
+function patreon_perk_bonus_agi_t1:AllowIllusionDuplicate()
+	return true
+end
 
 function patreon_perk_bonus_agi_t1:IsHidden()
 	return false
@@ -20,9 +23,7 @@ function patreon_perk_bonus_agi_t1:RemoveOnDeath()
 	return false
 end
 --------------------------------------------------------------------------------
-function patreon_perk_bonus_agi_t1:AllowIllusionDuplicate()
-	return true
-end
+
 function patreon_perk_bonus_agi_t1:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_STATS_AGILITY_BONUS,
