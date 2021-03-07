@@ -20,6 +20,9 @@ function patreon_perk_bonus_agi_t2:RemoveOnDeath()
 	return false
 end
 --------------------------------------------------------------------------------
+function patreon_perk_bonus_agi_t2:AllowIllusionDuplicate()
+	return true
+end
 
 function patreon_perk_bonus_agi_t2:DeclareFunctions()
 	local funcs = {
